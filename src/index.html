@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="script.js"></script>
+    <title>Document</title>
+</head>
+<body onload="Load()">
+    <div class="wrapper">
+        <div class="navbar">
+            
+        </div>
+        <div class="game">
+            <div class="sectionLeft">
+                <div id="money">
+                    dinheiros: 0
+                    <div id="moneyPerSecond">por segundo: 0</div>
+                </div>
+                <div class="ancoragemCotuca">
+                    <div class="cotucaDiv" onclick="Up()">
+                        <img src="../img/cotuca.png" alt="Png do Cotuca" class="cotuca">
+                    </div>
+                </div>          
+            </div>
+            <div class="separatorRight" id="rightBeam"></div>
+            <div class="sectionMiddle">
+                <div class="comments">
+                    <div id="options" class="panelButton">
+                        <div class="subButton">Options</div>
+                    </div>
+                    <div id="stats" class="panelButton">
+                        <div class="subButton">Stats</div>
+                    </div>
+                    <div id="login" class="panelButton">
+                        <div class="subButton">Login</div>
+                    </div>
+                    <div id="ascend" class="panelButton">
+                        <div class="subButton">Ascend</div>
+                    </div>
+                    <div class="commentsText">
+                        <div id="commentsText1" class="commentsText risingUp"></div>
+                        <div id="commentsText2" class="commentsText risingAway"></div>
+                    </div>
+                    <div class="separatorBottom"></div>
+                </div>
+                <div id="foda" style="position: absolute;"></div>
+                <div class="centerArea">
+                    <div class="buildingsMaster">
+                        <div class="separatorBottom"></div>
+                    </div>
+                    <div class="rows">
+                        <div class="row" id="row1"></div>
+                        <div class="row" id="row2"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="sectionRight">
+                <div id="shopIcon" style="width: 300px; text-align: center; padding-bottom: 0px; position: relative; z-index: 100; height: auto !important;">
+                    <img src="../img/seller.png" alt="">
+                </div>
+                <div class="store">
+                    <div class="storeTitle">Mestre Kikau Kunavara</div>
+                    <div id="upgrades" class="storeSection"></div>
+                    <div id="products" class="storeSection">
+                        <div id="storeBulk" class="storePre"></div>
+                        <div class="product" onclick="Upgrade0()">
+                            <div class="icon" id="productIcon0"></div>
+                            <div class="content">
+                                <div class="title productName" id="productName0">Sword</div>
+                                <span class="price" id="productPrice0">R$5</span>
+                                <div class="title owned" id="productOwned0">0</div>
+                            </div>
+                        </div>
+                        <div id="product1" class="product locked" onclick="Upgrade1()">
+                            <div class="icon" id="productIcon1"></div>
+                            <div class="content">
+                                <div class="title productName" id="productName1">Shield</div>
+                                <span class="price" id="productPrice1">R$30</span>
+                                <div class="title owned" id="productOwned1">0</div>
+                            </div>
+                        </div>
+                        <div id="product2" class="product locked" onclick="Upgrade2()">
+                            <div class="icon" id="productIcon2"></div>
+                            <div class="content">
+                                <div class="title productName" id="productName2">Armor</div>
+                                <span class="price" id="productPrice2">R$120</span>
+                                <div class="title owned" id="productOwned2">0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
