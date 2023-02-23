@@ -1,4 +1,4 @@
-let clicks, upgrade, preco, moneyPS, kills, Equips
+let clicks, upgrade, preco, moneyPS, kills, Equips, clicksEarned, clicksReset, resets, globalCpsMult, cpsSucked;
 var startDate=new Date();
 startDate.setTime(Date.now());
 //Declara váriaveis globais que vão ser usadas em várias funções diferentes
@@ -10,6 +10,12 @@ function get(what) {
 function Load(){
     //Seta essas várias para valores padrões
     clicks = 50000
+	clicksEarned = clicks;
+	clicksReset = 0;
+	resets = 0;
+	cpsSucked = 0;
+	globalCpsMult = 0;
+	Equips = 0;
     preco = new Array(2)
     preco[0] = 5
     preco[1] = 30
@@ -39,6 +45,7 @@ function Up(){
     //Váriavel para aumentar a grana cada vez que clica no cotuca
     let money = get("money")
     clicks += 1 + upgrade[0] //Aumenta o click baseado na quantidade de espadas que a pessoa tem
+	clicksEarned += 1+ upgrade[0];
     money.innerHTML = "Moedas: " + Math.round(clicks) + '<div id="moneyPerSecond">Moedas por segundo: ' + Math.round(moneyPS * 100) / 100 + '</div>'
     //Atualiza o H1 que mostra a quantidade de grana
 }
@@ -105,8 +112,20 @@ function Upgrade1(){
 setInterval(farm, 1000)
 function farm(){
     let money = get("money")
+	clicksEarned += moneyPS;
     clicks += moneyPS
     money.innerHTML = "Moedas: " + Math.round(clicks) + '<div id="moneyPerSecond">Moedas por segundo: ' + Math.round(moneyPS * 100) / 100 + '</div>'
+	if(onMenu == 'stats'){
+		var status = document.getElementsByClassName('price plain')
+		status[0].innerHTML = Beautify(clicks)
+		status[1].innerHTML = Beautify(clicks)
+		status[2].innerHTML = Beautify(clicks)
+		var status2 = document.getElementsByClassName('listing')
+		status2[4].innerHTML = '<b>Moedas por Click: </b>' + Beautify(upgrade[0] + 1)
+		status2[5].innerHTML = '<b>Moedas por segundo: </b>' + Beautify(moneyPS,1) + '<small> (multiplicador: ' + Beautify(Math.round(globalCpsMult*100),1)+'%)</small> '
+		status2[6].innerHTML = '<b>Moedas por Click: </b>' + Beautify(upgrade[0] + 1)
+	}
+	
 
     evento0()
 }
@@ -153,7 +172,7 @@ let ShowMenu=function(what)
 	if (!what || what=='') what=onMenu;
 	if (onMenu=='' && what!='') get('game').classList.add('onMenu');
 	else if (onMenu!='' && what!=onMenu) addClass('onMenu');
-	else if (what==onMenu) {removeClass('onMenu');what='';}
+	else if (what==onMenu) {get('game').classList.remove('onMenu');what='';}
 	//if (what=='log') l('donateBox').className='on'; else l('donateBox').className='';
 	onMenu=what;
 			
@@ -175,7 +194,6 @@ let ShowMenu=function(what)
 		}
 	}
 }
-
 //Função que adiciona eventos em objetos
 function AddEvent(el,ev,func)
 {
@@ -203,21 +221,6 @@ let updateClasses=function() {
     get.className=cssClasses.join(' ');
 }
 
-let WriteSlider=function(slider,leftText,rightText,startValueFunction,callback)
-{
-    if (!callback) callback='';
-    return '<div class="sliderBox"><div style="float:left;" class="smallFancyButton">'+leftText+'</div><div style="float:right;" class="smallFancyButton" id="'+slider+'RightText">'+rightText.replace('[$]',startValueFunction())+'</div><input class="slider" style="clear:both;" type="range" min="0" max="100" step="1" value="'+startValueFunction()+'" onchange="'+callback+'" oninput="'+callback+'" onmouseup="PlaySound(\'../sound/clickSFX.mp3\');" id="'+slider+'"/></div>';
-}
-
-var prefs=[];
-
-let WritePrefButton=function(prefName,button,on,off,callback,invert)
-{
-    var invert=invert?1:0;
-    if (!callback) callback='';
-    callback+='PlaySound(\'../sound/clickSFX.mp3\');';
-    return '<a class="smallFancyButton prefButton option'+((prefs[prefName]^invert)?'':' off')+'" id="'+button+'" '+clickStr+'="Toggle(\''+prefName+'\',\''+button+'\',\''+on+'\',\''+off+'\',\''+invert+'\');'+callback+'">'+(prefs[prefName]?on:off)+'</a>';
-}
 var volume=1
 let setVolume=function(what)
 {
@@ -252,348 +255,94 @@ var PlaySound=function(url,vol)
 		try{sound.play();}catch(e){console.log('deu erro ao tocar')}
 	}
 }
-var ExportSave=function()
+
+function formatEveryThirdPower(notations)
 {
-		//if (App) return false;
-		prefs.showBackupWarning=0;
-		prompt('<id ExportSave><h3>'+loc("Export save")+'</h3><div class="block">'+loc("This is your save code.<br>Copy it and keep it somewhere safe!")+'</div><div class="block"><textarea id="textareaPrompt" style="width:100%;height:128px;" readonly>'+WriteSave(1)+'</textarea></div>',[loc("All done!")]);//prompt('Copy this text and keep it somewhere safe!',Game.WriteSave(1));
-		get('textareaPrompt').focus();
-		get('textareaPrompt').select();
-	}
-var ImportSave=function(def)
-{
-		//if (App) return false;
-		prompt('<id ImportSave><h3>'+loc("Import save")+'</h3><div class="block">'+loc("Please paste in the code that was given to you on save export.")+'<div id="importError" class="warning" style="font-weight:bold;font-size:11px;"></div></div><div class="block"><textarea id="textareaPrompt" style="width:100%;height:128px;">'+(def||'')+'</textarea></div>',[[loc("Load"),'if (l(\'textareaPrompt\').value.length==0){return false;}if (Game.ImportSaveCode(l(\'textareaPrompt\').value)){Game.ClosePrompt();}else{l(\'importError\').innerHTML=\'(\'+loc("Error importing save")+\')\';}'],loc("Nevermind")]);//prompt('Please paste in the text that was given to you on save export.','');
-		get('textareaPrompt').focus();
+	return function (val)
+	{
+		var base=0,notationValue='';
+		if (!isFinite(val)) return 'Infinity';
+		if (val>=1000000)
+		{
+			val/=1000;
+			while(Math.round(val)>=1000)
+			{
+				val/=1000;
+				base++;
+			}
+			if (base>=notations.length) {return 'Infinity';} else {notationValue=notations[base];}
+		}
+		return (Math.round(val*1000)/1000)+notationValue;
+	};
 }
+function rawFormatter(val){return Math.round(val*1000)/1000;}
+
+var formatShort=['k','M','B','T','Qa','Qi','Sx','Sp','Oc','No'];
+var formatLong=[' thousand',' million',' billion',' trillion',' quadrillion',' quintillion',' sextillion',' septillion',' octillion',' nonillion'];
+var prefixes=['','un','duo','tre','quattuor','quin','sex','septen','octo','novem'];
+var suffixes=['decillion','vigintillion','trigintillion','quadragintillion','quinquagintillion','sexagintillion','septuagintillion','octogintillion','nonagintillion'];
+
+var numberFormatters=
+[
+	formatEveryThirdPower(formatShort),
+	formatEveryThirdPower(formatLong),
+	rawFormatter
+];
+
 var fps=30
 var sayTime=function(time,detail)
-		{
-			//time is a value where one second is equal to Game.fps (30).
-			//detail skips days when >1, hours when >2, minutes when >3 and seconds when >4.
-			//if detail is -1, output something like "3 hours, 9 minutes, 48 seconds"
-			if (time<=0) return '';
-			var str='';
-			var detail=detail||0;
-			time=Math.floor(time);
-			if (detail==-1)
-			{
-				//var months=0;
-				var days=0;
-				var hours=0;
-				var minutes=0;
-				var seconds=0;
-				//if (time>=Game.fps*60*60*24*30) months=(Math.floor(time/(Game.fps*60*60*24*30)));
-				if (time>=fps*60*60*24) days=(Math.floor(time/(fps*60*60*24)));
-				if (time>=fps*60*60) hours=(Math.floor(time/(fps*60*60)));
-				if (time>=fps*60) minutes=(Math.floor(time/(fps*60)));
-				if (time>=fps) seconds=(Math.floor(time/(fps)));
-				//days-=months*30;
-				hours-=days*24;
-				minutes-=hours*60+days*24*60;
-				seconds-=minutes*60+hours*60*60+days*24*60*60;
-				if (days>10) {hours=0;}
-				if (days) {minutes=0;seconds=0;}
-				if (hours) {seconds=0;}
-				var bits=[];
-				//if (months>0) bits.push(Beautify(months)+' month'+(days==1?'':'s'));
-				if (days>0) bits.push(loc("%1 day",LBeautify(days)));
-				if (hours>0) bits.push(loc("%1 hour",LBeautify(hours)));
-				if (minutes>0) bits.push(loc("%1 minute",LBeautify(minutes)));
-				if (seconds>0) bits.push(loc("%1 second",LBeautify(seconds)));
-				if (bits.length==0) str=loc("less than 1 second");
-				else str=bits.join(', ');
-				/*//if (months>0) bits.push(Beautify(months)+' month'+(days==1?'':'s'));
-				if (days>0) bits.push(Beautify(days)+' day'+(days==1?'':'s'));
-				if (hours>0) bits.push(Beautify(hours)+' hour'+(hours==1?'':'s'));
-				if (minutes>0) bits.push(Beautify(minutes)+' minute'+(minutes==1?'':'s'));
-				if (seconds>0) bits.push(Beautify(seconds)+' second'+(seconds==1?'':'s'));
-				if (bits.length==0) str='less than 1 second';
-				else str=bits.join(', ');*/
-			}
-			else
-			{
-				/*if (time>=Game.fps*60*60*24*30*2 && detail<1) str=Beautify(Math.floor(time/(Game.fps*60*60*24*30)))+' months';
-				else if (time>=Game.fps*60*60*24*30 && detail<1) str='1 month';
-				else */if (time>=Game.fps*60*60*24 && detail<2) str=loc("%1 day",LBeautify(Math.floor(time/(Game.fps*60*60*24))));//Beautify(Math.floor(time/(Game.fps*60*60*24)))+' days';
-				else if (time>=Game.fps*60*60 && detail<3) str=loc("%1 hour",LBeautify(Math.floor(time/(Game.fps*60*60))));//Beautify(Math.floor(time/(Game.fps*60*60)))+' hours';
-				else if (time>=Game.fps*60 && detail<4) str=loc("%1 minute",LBeautify(Math.floor(time/(Game.fps*60))));//Beautify(Math.floor(time/(Game.fps*60)))+' minutes';
-				else if (time>=Game.fps && detail<5) str=loc("%1 second",LBeautify(Math.floor(time/(Game.fps))));//Beautify(Math.floor(time/(Game.fps)))+' seconds';
-				else str=loc("less than 1 second");
-			}
-			return str;
-		}
-
-var App = {};
-var clickStr='';
-ON=' '+("ON");
-OFF=' '+("OFF");
-let UpdateMenu=function()
-		{
-			var str='';
-			if (onMenu!='')
-			{
-				str+='<div class="close menuClose" '+clickStr+'onClick="ShowMenu();">x</div>';
-				//str+='<div style="position:absolute;top:8px;right:8px;cursor:pointer;font-size:16px;" '+clickStr+'="ShowMenu();">X</div>';
-			}
-			if (onMenu=='options')
-			{
-				str+='<div class="section">'+("Opções")+'</div>';
-				
-				str+=
-					'<div class="block" style="padding:0px;margin:8px 4px;">'+
-						'<div class="subsection" style="padding:0px;">'+
-						'<div class="title">'+("Geral")+'</div>'+
-							(App?'<div class="listing"><a class="option smallFancyButton" '+clickStr+'onClick="PlaySound(\'../sound/clickSFX.mp3\');toSave=true;toQuit=true;">'+("Salvar e sair")+'</a></div>':'')+
-							'<div class="listing"><a class="option smallFancyButton" '+clickStr+'onClick="toSave=true;PlaySound(\'../sound/clickSFX.mp3\');">'+("Save")+'</a><label>'+("Salvar manualmente (O jogo salva automaticamente a cada minuto; atalho: ctrl+S)")+'</label></div>'+
-							'<div class="listing"><a class="option smallFancyButton" '+clickStr+'onClick="ExportSave();PlaySound(\'../sound/clickSFX.mp3\');">'+("Exportar save")+'</a><a class="option smallFancyButton" '+clickStr+'="ImportSave();PlaySound(\'../sound/clickSFX.mp3\');">'+("Importar save")+'</a><label>'+("Você pode usar isso para fazer um backup ou transferir saves (atalho para importar: ctrl+O)")+'</label></div>'+
-							(!App?('<div class="listing"><a class="option smallFancyButton" '+clickStr+'onClick="FileSave();PlaySound(\'../sound/clickSFX.mp3);">'+("Salvar em arquivo")+'</a><a class="option smallFancyButton" style="position:relative;"><input id="FileLoadInput" type="file" style="cursor:pointer;opacity:0;position:absolute;left:0px;top:0px;width:100%;height:100%;" onchange="FileLoad(event);" '+clickStr+'="PlaySound(\'../sound/clickSFX.mp3\');"/>'+("Load from file")+'</a><label>'+("Use para manter seu progresso em um backup")+'</label></div>'):'')+
-							'<div class="listing" style="text-align:right;"><label>'+("Deletar todo progresso, incluindo conquistas")+'</label><a class="option smallFancyButton warning" '+clickStr+'="HardReset();PlaySound(\'../sound/clickSFX.mp3\');">'+("Deletar Save")+'</a></div>'+
-							
-						'</div>'+
-					'</div>'+
-					'<div class="block" style="padding:0px;margin:8px 4px;">'+
-						'<div class="subsection" style="padding:0px;">'+
-					
-						'<div class="title">'+("Configurações")+'</div>'+
-						((App && App.writeCloudUI)?App.writeCloudUI():'')+
-						'<div class="listing">'+
-							WriteSlider('volumeSlider',("Volume"),'[$]%',function(){return volume;},'setVolume(Math.round(get(\'volumeSlider\').value));get(\'volumeSliderRightText\').innerHTML=volume+\'%\';')+
-							'<br>'+
-						'</div>'+
-						//'<div class="listing">'+WritePrefButton('autosave','autosaveButton','Autosave ON','Autosave OFF')+'</div>'+
-						(!App?'<div class="listing"><a class="option smallFancyButton" '+clickStr+'="CheckModData();PlaySound(\'../sound/clickSFX.mp3\');">'+("Check mod data")+'</a><label>('+("view and delete save data created by mods")+')</label></div>':'')+
-						
-						'</div>'+
-					'</div>'+
-				'</div>';
-				
-				if (App && App.writeModUI)
-				{
-					str+=
-						'<div class="block" style="padding:0px;margin:8px 4px;">'+
-							'<div class="subsection" style="padding:0px;">'+
-							
-							'<div class="title">'+("Mods")+'</div>'+
-							App.writeModUI()+
-							'</div>'+
-						'</div>';
-				}
-				
-				str+='<div style="height:128px;"></div>';
-			}
-			else if (onMenu=='login')
-			{
-				//str+=replaceAlget('[bakeryName]',bakeryName,updateLog);
-				str+=updateLog;
-				if (!HasAchiev('Olden days')) str+='<div id="oldenDays" style="text-align:right;width:100%;"><div '+clickStr+'="SparkleAt(mouseX,mouseY);PlaySound(\'../sound/clickSFX.mp3\');PlaySound(\'snd/shimmerClick.mp3\');Win(\'Olden days\');UpdateMenu();" class="icon" style="display:inline-block;transform:scale(0.5);cursor:pointer;width:48px;height:48px;background-position:'+(-12*48)+'px '+(-3*48)+'px;"></div></div>';
-			}
-			else if (onMenu=='stats')
-			{
-				var equips=0;
-				equips=Equips;
-				var upgrades='';
-				var prestiges=0;
-				var upgradesOwned=0;
-
-				
-				var list=[];
-				//sort the upgrades
-				/*for (var i in Upgrades){list.push(Upgrades[i]);}//clone first
-				var sortMap=function(a,b)
-				{
-					if (a.order>b.order) return 1;
-					else if (a.order<b.order) return -1;
-					else return 0;
-				}*/
-				/*list.sort(sortMap);
-				for (var i in list)
-				{
-					var str2='';
-					var me=list[i];
-					
-					str2+=crate(me,'stats');
-					
-					if (me.bought)
-					{
-						if (CountsAsUpgradeOwned(me.pool)) upgradesOwned++;
-						else if (me.pool=='prestige') prestigeUpgradesOwned++;
-					}
-					
-					if (me.pool=='' || me.pool=='cookie' || me.pool=='tech') upgradesTotal++;
-					if (me.pool=='debug') hiddenUpgrades+=str2;
-					else if (me.pool=='prestige') {prestigeUpgrades+=str2;prestigeUpgradesTotal++;}
-					else if (me.pool=='cookie') cookieUpgrades+=str2;
-					else if (me.pool!='toggle' && me.pool!='unused') upgrades+=str2;
-				}*/
-				/*var achievements=[];
-				var achievementsOwned=0;
-				var achievementsOwnedOther=0;
-				var achievementsTotal=0;
-				
-				var list=[];
-				for (var i in Achievements)//sort the achievements
-				{
-					list.push(Achievements[i]);
-				}
-				var sortMap=function(a,b)
-				{
-					if (a.order>b.order) return 1;
-					else if (a.order<b.order) return -1;
-					else return 0;
-				}
-				list.sort(sortMap);
-				
-				
-				for (var i in list)
-				{
-					var me=list[i];
-					//if (me.pool=='normal' || me.won>0) achievementsTotal++;
-					if (CountsAsAchievementOwned(me.pool)) achievementsTotal++;
-					var pool=me.pool;
-					if (!achievements[pool]) achievements[pool]='';
-					achievements[pool]+=crate(me,'stats');
-					
-					if (me.won)
-					{
-						if (CountsAsAchievementOwned(me.pool)) achievementsOwned++;
-						else achievementsOwnedOther++;
-					}
-				}*/
-				
-				/*var ascensionModeStr='';
-				var icon=ascensionModes[ascensionMode].icon;
-				if (resets>0) ascensionModeStr='<span style="cursor:pointer;" '+getTooltip(
-							'<div style="min-width:200px;text-align:center;font-size:11px;" id="tooltipChallengeMode">'+ascensionModes[ascensionMode].desc+'</div>'
-							,'top')+'><div class="icon" style="display:inline-block;float:none;transform:scale(0.5);margin:-24px -16px -19px -8px;'+writeIcon(icon)+'"></div>'+ascensionModes[ascensionMode].dname+'</span>';
-				
-				var milkName=Milk.name;
-				
-				var researchStr=sayTime(researchT,-1);
-				var pledgeStr=sayTime(pledgeT,-1);
-				var wrathStr='';
-				if (elderWrath==1) wrathStr=("awoken");
-				else if (elderWrath==2) wrathStr=("displeased");
-				else if (elderWrath==3) wrathStr=("angered");
-				else if (elderWrath==0 && pledges>0) wrathStr=("appeased");
-				
-				var dropMult=dropRateMult();*/
-				
-				var date=new Date();
-				date.setTime(Date.now()-startDate);
-				var timeInSeconds=date.getTime()/1000;
-				var startDate=sayTime(timeInSeconds*fps,-1);
-				date.setTime(Date.now()-fullDate);
-				var fullDate=sayTime(date.getTime()/1000*fps,-1);
-				if (!fullDate || !fullDate || fullDate.length<1) fullDate=("a long while");
-				/*date.setTime(new Date().getTime()-lastDate);
-				var lastDate=sayTime(date.getTime()/1000*fps,2);*/
-				
-				var heavenlyMult=GetHeavenlyMultiplier();
-				
-				var seasonStr=sayTime(seasonT,-1);
-				
-				str+='<div class="section">'+("Estátisticas"+("stats"))+'</div>'+
-				'<div class="subsection">'+
-				'<div class="title">'+("General")+'</div>'+
-				'<div id="statsGeneral">'+
-					'<div class="listing"><b>'+("Cookies in bank:")+'</b> <div class="price plain">'+tinyCookie()+Beautify(cookies)+'</div></div>'+
-					'<div class="listing"><b>'+("Cookies baked (this ascension):")+'</b> <div class="price plain">'+tinyCookie()+Beautify(cookiesEarned)+'</div></div>'+
-					'<div class="listing"><b>'+("Cookies baked (all time):")+'</b> <div class="price plain">'+tinyCookie()+Beautify(cookiesEarned+cookiesReset)+'</div></div>'+
-					(cookiesReset>0?'<div class="listing"><b>'+("Cookies forfeited by ascending:")+'</b> <div class="price plain">'+tinyCookie()+Beautify(cookiesReset)+'</div></div>':'')+
-					(resets?('<div class="listing"><b>'+("Legacy started:")+'</b> '+(fullDate==''?("just now"):("%1 ago",fullDate))+', '+("with %1 ascension",LBeautify(resets))+'</div>'):'')+
-					'<div class="listing"><b>'+("Run started:")+'</b> '+(startDate==''?("just now"):("%1 ago",startDate))+'</div>'+
-					'<div class="listing"><b>'+("Buildings owned:")+'</b> '+Beautify(buildingsOwned)+'</div>'+
-					'<div class="listing"><b>'+("Cookies per second:")+'</b> '+Beautify(cookiesPs,1)+' <small>'+
-						'('+("multiplier:")+' '+Beautify(Math.round(globalCpsMult*100),1)+'%)'+
-						(cpsSucked>0?' <span class="warning">('+("withered:")+' '+Beautify(Math.round(cpsSucked*100),1)+'%)</span>':'')+
-						'</small></div>'+
-					'<div class="listing"><b>'+("Raw cookies per second:")+'</b> '+Beautify(cookiesPsRaw,1)+' <small>'+
-						'('+("highest this ascension:")+' '+Beautify(cookiesPsRawHighest,1)+')'+
-						'</small></div>'+
-					'<div class="listing"><b>'+("Cookies per click:")+'</b> '+Beautify(computedMouseCps,1)+'</div>'+
-					'<div class="listing"><b>'+("Cookie clicks:")+'</b> '+Beautify(cookieClicks)+'</div>'+
-					'<div class="listing"><b>'+("Hand-made cookies:")+'</b> '+Beautify(handmadeCookies)+'</div>'+
-					'<div class="listing"><b>'+("Golden cookie clicks:")+'</b> '+Beautify(goldenClicksLocal)+' <small>('+("all time:")+' '+Beautify(goldenClicks)+')</small></div>'+//' <span class="hidden">(<b>Missed golden cookies :</b> '+Beautify(missedGoldenClicks)+')</span></div>'+
-					(dropMult!=1?'<div class="listing"><b>'+("Random drop multiplier:")+'</b> <small>x</small>'+Beautify(dropMult,2)+'</div>':'')+
-				'</div>'+
-				'<br><div class="listing"><b>'+("Running version:")+'</b> '+version+'</div>'+
-				
-				((researchStr!='' || wrathStr!='' || pledgeStr!='' || santaStr!='' || dragonStr!='' || season!='' || ascensionModeStr!='' || canLumps())?(
-				'</div><div class="subsection">'+
-				'<div class="title">'+("Special")+'</div>'+
-				'<div id="statsSpecial">'+
-					(ascensionModeStr!=''?'<div class="listing"><b>'+("Challenge mode:")+'</b>'+ascensionModeStr+'</div>':'')+
-					(season!=''?'<div class="listing"><b>'+("Seasonal event:")+'</b> '+seasons[season].name+
-						(seasonStr!=''?' <small>('+("%1 remaining",seasonStr)+')</small>':'')+
-					'</div>':'')+
-					(researchStr!=''?'<div class="listing"><b>'+("Research:")+'</b> '+("%1 remaining",researchStr)+'</div>':'')+
-					(wrathStr!=''?'<div class="listing"><b>'+("Grandmatriarchs status:")+'</b> '+wrathStr+'</div>':'')+
-					(pledgeStr!=''?'<div class="listing"><b>'+("Pledge:")+'</b> '+("%1 remaining",pledgeStr)+'</div>':'')+
-					(wrinklersPopped>0?'<div class="listing"><b>'+("Wrinklers popped:")+'</b> '+Beautify(wrinklersPopped)+'</div>':'')+
-					((canLumps() && lumpsTotal>-1)?'<div class="listing"><b>'+("Sugar lumps harvested:")+'</b> <div class="price lump plain">'+Beautify(lumpsTotal)+'</div></div>':'')+
-					//(cookiesSucked>0?'<div class="listing warning"><b>Withered :</b> '+Beautify(cookiesSucked)+' cookies</div>':'')+
-					(reindeerClicked>0?'<div class="listing"><b>'+("Reindeer found:")+'</b> '+Beautify(reindeerClicked)+'</div>':'')+
-					(santaStr!=''?'<div class="listing"><b>'+("Santa stages unlocked:")+'</b></div><div>'+santaStr+'</div>':'')+
-					(dragonStr!=''?'<div class="listing"><b>'+("Dragon training:")+'</b></div><div>'+dragonStr+'</div>':'')+
-				'</div>'
-				):'')+
-				((prestige>0 || prestigeUpgrades!='')?(
-				'</div><div class="subsection">'+
-				'<div class="title">'+("Prestige")+'</div>'+
-				'<div id="statsPrestige">'+
-					'<div class="listing"><div class="icon" style="float:left;background-position:'+(-19*48)+'px '+(-7*48)+'px;"></div>'+
-						'<div style="margin-top:8px;"><span class="title" style="font-size:22px;">'+("Prestige level:")+' '+Beautify(prestige)+'</span> '+("at %1% of its potential <b>(+%2% CpS)</b>",[Beautify(heavenlyMult*100,1),Beautify(parseFloat(prestige)*heavenlyPower*heavenlyMult,1)])+'<br>'+("Heavenly chips:")+' <b>'+Beautify(heavenlyChips)+'</b></div>'+
-					'</div>'+
-					(prestigeUpgrades!=''?(
-					'<div class="listing" style="clear:left;"><b>'+("Prestige upgrades unlocked:")+'</b> '+prestigeUpgradesOwned+'/'+prestigeUpgradesTotal+' ('+Math.floor((prestigeUpgradesOwned/prestigeUpgradesTotal)*100)+'%)</div>'+
-					'<div class="listing crateBox">'+prestigeUpgrades+'</div>'):'')+
-				'</div>'
-				):'')+
-
-				'</div><div class="subsection">'+
-				'<div class="title">'+("Upgrades")+'</div>'+
-				'<div id="statsUpgrades">'+
-					(hiddenUpgrades!=''?('<div class="listing"><b>Debug</b></div>'+
-					'<div class="listing crateBox">'+hiddenUpgrades+'</div>'):'')+
-					'<div class="listing"><b>'+("Upgrades unlocked:")+'</b> '+upgradesOwned+'/'+upgradesTotal+' ('+Math.floor((upgradesOwned/upgradesTotal)*100)+'%)</div>'+
-					'<div class="listing crateBox">'+upgrades+'</div>'+
-					(cookieUpgrades!=''?('<div class="listing"><b>'+("Cookies")+'</b></div>'+
-					'<div class="listing crateBox">'+cookieUpgrades+'</div>'):'')+
-				'</div>'+
-				'</div><div class="subsection">'+
-				'<div class="title">'+("Achievements")+'</div>'+
-				'<div id="statsAchievs">'+
-					'<div class="listing"><b>'+("Achievements unlocked:")+'</b> '+achievementsOwned+'/'+achievementsTotal+' ('+Math.floor((achievementsOwned/achievementsTotal)*100)+'%)'+(achievementsOwnedOther>0?('<span style="font-weight:bold;font-size:10px;color:#70a;"> (+'+achievementsOwnedOther+')</span>'):'')+'</div>'+
-					(cookiesMultByType['kittens']>1?('<div class="listing"><b>'+("Kitten multiplier:")+'</b> '+Beautify((cookiesMultByType['kittens'])*100)+'%</div>'):'')+
-					'<div class="listing"><b>'+("Milk")+':</b> '+milkName+'</div>'+
-					(milkStr!=''?'<div class="listing"><b>'+("Milk flavors unlocked:")+'</b></div><div>'+milkStr+'</div>':'')+
-					'<div class="listing"><small style="opacity:0.75;">('+("Milk is gained with each achievement. It can unlock unique upgrades over time.")+')</small></div>'+
-					achievementsStr+
-				'</div>'+
-				'</div>'+
-				'<div style="padding-bottom:128px;"></div>'
-				;
-			}
-			//str='<div id="selectionKeeper" class="selectable">'+str+'</div>';
-			get('menu').innerHTML=str;
-			if (App)
-			{
-				var anchors=get('menu').getElementsByTagName('a');
-				for (var i=0;i<anchors.length;i++)
-				{
-					var it=anchors[i];
-					if (it.href)
-					{
-						console.log(it.href);
-						AddEvent(it,'click',function(href){return function(){
-							App.openLink(href);
-						}}(it.href));
-						it.removeAttribute('href');
-					}
-				}
-			}
-			/*AddEvent(get('selectionKeeper'),'mouseup',function(e){
-				console.log('selection:',window.getSelection());
-			});*/
-		}
+{
+	//time is a value where one second is equal to fps (30).
+	//detail skips days when >1, hours when >2, minutes when >3 and seconds when >4.
+	//if detail is -1, output something like "3 hours, 9 minutes, 48 seconds"
+	if (time<=0) return '';
+	var str='';
+	var detail=detail||0;
+	time=Math.floor(time);
+	if (detail==-1)
+	{
+		//var months=0;
+		var days=0;
+		var hours=0;
+		var minutes=0;
+		var seconds=0;
+		//if (time>=fps*60*60*24*30) months=(Math.floor(time/(fps*60*60*24*30)));
+		if (time>=fps*60*60*24) days=(Math.floor(time/(fps*60*60*24)));
+		if (time>=fps*60*60) hours=(Math.floor(time/(fps*60*60)));
+		if (time>=fps*60) minutes=(Math.floor(time/(fps*60)));
+		if (time>=fps) seconds=(Math.floor(time/(fps)));
+		//days-=months*30;
+		hours-=days*24;
+		minutes-=hours*60+days*24*60;
+		seconds-=minutes*60+hours*60*60+days*24*60*60;
+		if (days>10) {hours=0;}
+		if (days) {minutes=0;seconds=0;}
+		if (hours) {seconds=0;}
+		var bits=[];
+		//if (months>0) bits.push(Beautify(months)+' month'+(days==1?'':'s'));
+		if (days>0) bits.push(("%1 day",LBeautify(days)));
+		if (hours>0) bits.push(("%1 hour",LBeautify(hours)));
+		if (minutes>0) bits.push(("%1 minute",LBeautify(minutes)));
+		if (seconds>0) bits.push(("%1 second",LBeautify(seconds)));
+		if (bits.length==0) str=("less than 1 second");
+		else str=bits.join(', ');
+		/*//if (months>0) bits.push(Beautify(months)+' month'+(days==1?'':'s'));
+		if (days>0) bits.push(Beautify(days)+' day'+(days==1?'':'s'));
+		if (hours>0) bits.push(Beautify(hours)+' hour'+(hours==1?'':'s'));
+		if (minutes>0) bits.push(Beautify(minutes)+' minute'+(minutes==1?'':'s'));
+		if (seconds>0) bits.push(Beautify(seconds)+' second'+(seconds==1?'':'s'));
+		if (bits.length==0) str='less than 1 second';
+		else str=bits.join(', ');*/
+	}
+	else
+	{
+		/*if (time>=fps*60*60*24*30*2 && detail<1) str=Beautify(Math.floor(time/(fps*60*60*24*30)))+' months';
+		else if (time>=fps*60*60*24*30 && detail<1) str='1 month';
+		else */if (time>=fps*60*60*24 && detail<2) str=("%1 day",LBeautify(Math.floor(time/(fps*60*60*24))));//Beautify(Math.floor(time/(fps*60*60*24)))+' days';
+		else if (time>=fps*60*60 && detail<3) str=("%1 hour",LBeautify(Math.floor(time/(fps*60*60))));//Beautify(Math.floor(time/(fps*60*60)))+' hours';
+		else if (time>=fps*60 && detail<4) str=("%1 minute",LBeautify(Math.floor(time/(fps*60))));//Beautify(Math.floor(time/(fps*60)))+' minutes';
+		else if (time>=fps && detail<5) str=("%1 second",LBeautify(Math.floor(time/(fps))));//Beautify(Math.floor(time/(fps)))+' seconds';
+		else str=("less than 1 second");
+	}
+	return str;
+}

@@ -420,6 +420,7 @@ a, a:visited {
     right: 0px;
     top: 0px;
     bottom: 0px;
+    background-color: #000;
 }
 /*Configuração de toda aba direita (Shop)*/
 .panelButton:active{
@@ -553,6 +554,8 @@ input[type='range']::-webkit-slider-thumb {
 {
 	padding:3px 16px;
 	font-size:13px;
+	color:rgba(255,255,255,1);
+	border-bottom:1px dashed rgba(255,255,255,0.25);
 }
 .listing b
 {
@@ -563,13 +566,6 @@ input[type='range']::-webkit-slider-thumb {
 {
 	font-size:11px;
 	opacity:0.9;
-}
-.listing label
-{
-	font-size:11px;
-	color:rgba(255,255,255,1);
-	border-bottom:1px dashed rgba(255,255,255,0.25);
-	padding:2px 8px;
 }
 .update
 {
