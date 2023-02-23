@@ -1,4 +1,6 @@
-let clicks, upgrade, preco, moneyPS, kills
+let clicks, upgrade, preco, moneyPS, kills, Equips
+var startDate=new Date();
+startDate.setTime(Date.now());
 //Declara váriaveis globais que vão ser usadas em várias funções diferentes
 
 function get(what) {
@@ -7,7 +9,7 @@ function get(what) {
 
 function Load(){
     //Seta essas várias para valores padrões
-    clicks = 500
+    clicks = 50000
     preco = new Array(2)
     preco[0] = 5
     preco[1] = 30
@@ -18,6 +20,7 @@ function Load(){
     }
     moneyPS = 0
     kills = 0
+	setVolume(volume)
 	get('music').play();
     /*alert("Você dominou o mundo...")
     alert("Depois de sua incrível jornada, todos amavam seu pão de queijo")
@@ -30,7 +33,7 @@ function Load(){
     AddEvent(get('options'),'click',function(){ShowMenu('options');});
     AddEvent(get('stats'),'click',function(){ShowMenu('stats');});
     AddEvent(get('login'),'click',function(){ShowMenu('login');});
-    AddEvent(get('ascend'),'click',function(){PlaySound('snd/tick.mp3');Ascend();});
+    AddEvent(get('ascend'),'click',function(){PlaySound('../sound/clickSFX.mp3');Ascend();});
 }
 function Up(){
     //Váriavel para aumentar a grana cada vez que clica no cotuca
@@ -55,10 +58,13 @@ function Upgrade0(){
             get('product1').classList.remove('locked')
             $("#product1").show(500);
         }
+		Equips++;
         if(upgrade[0] < 10)
-            preco[0] = 1.8 * preco[0]
+            preco[0] = 1.5 * preco[0]
+		else if(upgrade[0] > 15)
+			preco[0] = 1.1 * preco[0]
         else
-            preco[0] = 2.6  * upgrade[0]
+            preco[0] = 1.4  * preco[0]
         preco0.innerHTML = "R$" + Math.round(preco[0])
         money.innerHTML = "Moedas: " + Math.round(clicks) + '<div id="moneyPerSecond">Moedas por segundo: ' + Math.round(moneyPS * 100) / 100 + '</div>'
         upgrade0.innerHTML = upgrade[0]
@@ -81,10 +87,13 @@ function Upgrade1(){
             get('product2').classList.remove('locked')
             $("#product2").show(500);
         }
+		Equips++;
         if(upgrade[1] < 10)
-            preco[1] = 1.5 * preco[1]
+            preco[1] = 1.4 * preco[1]
+		else if(upgrade[1] > 15)
+			preco[1] = 1.1 * preco[1]
         else
-            preco[1] = 2.4 * preco[1]
+            preco[1] = 1.4 * preco[1]
         preco1.innerHTML = "R$" + Math.round(preco[1])
         money.innerHTML = "Moedas: " + Math.round(clicks) + '<div id="moneyPerSecond">Moedas por segundo: ' + Math.round(moneyPS * 100) / 100 + '</div>'
         upgrade1.innerHTML = (Math.round(upgrade[1] * 100) / 10) / 5
@@ -120,11 +129,14 @@ function Upgrade2(){
         upgrade[2] += 1
         console.log("Upgrade comprado");
         clicks -= preco[2]
-        moneyPS += 1
+        moneyPS += 2
+		Equips++;
         if(upgrade[2] < 10)
-            preco[2] = 1.2 * preco[2]
+            preco[2] = 1.3 * preco[2]
+		else if(upgrade[2] > 15)
+			preco[2] = 1.1 * preco[2]
         else
-            preco[2] = 1.5 * preco[2]
+            preco[2] = 1.4 * preco[2]
         preco2.innerHTML = "R$" + Math.round(preco[2])
         money.innerHTML = "Moedas: " + Math.round(clicks) + '<div id="moneyPerSecond">Moedas por segundo: ' + Math.round(moneyPS * 100) / 100 + '</div>'
         upgrade2.innerHTML = upgrade[2]
@@ -194,7 +206,7 @@ let updateClasses=function() {
 let WriteSlider=function(slider,leftText,rightText,startValueFunction,callback)
 {
     if (!callback) callback='';
-    return '<div class="sliderBox"><div style="float:left;" class="smallFancyButton">'+leftText+'</div><div style="float:right;" class="smallFancyButton" id="'+slider+'RightText">'+rightText.replace('[$]',startValueFunction())+'</div><input class="slider" style="clear:both;" type="range" min="0" max="100" step="1" value="'+startValueFunction()+'" onchange="'+callback+'" oninput="'+callback+'" onmouseup="PlaySound(\'snd/tick.mp3\');" id="'+slider+'"/></div>';
+    return '<div class="sliderBox"><div style="float:left;" class="smallFancyButton">'+leftText+'</div><div style="float:right;" class="smallFancyButton" id="'+slider+'RightText">'+rightText.replace('[$]',startValueFunction())+'</div><input class="slider" style="clear:both;" type="range" min="0" max="100" step="1" value="'+startValueFunction()+'" onchange="'+callback+'" oninput="'+callback+'" onmouseup="PlaySound(\'../sound/clickSFX.mp3\');" id="'+slider+'"/></div>';
 }
 
 var prefs=[];
@@ -203,19 +215,115 @@ let WritePrefButton=function(prefName,button,on,off,callback,invert)
 {
     var invert=invert?1:0;
     if (!callback) callback='';
-    callback+='PlaySound(\'snd/tick.mp3\');';
+    callback+='PlaySound(\'../sound/clickSFX.mp3\');';
     return '<a class="smallFancyButton prefButton option'+((prefs[prefName]^invert)?'':' off')+'" id="'+button+'" '+clickStr+'="Toggle(\''+prefName+'\',\''+button+'\',\''+on+'\',\''+off+'\',\''+invert+'\');'+callback+'">'+(prefs[prefName]?on:off)+'</a>';
 }
-var volume=50
+var volume=1
 let setVolume=function(what)
+{
+	volume=what;
+	get('music').volume = (volume / 100) / 2;
+}
+var Sounds=[];
+var SoundInsts=[];
+for (var i=0;i<12;i++){SoundInsts[i]=new Audio();}
+var SoundI=0;
+var PlaySound=function(url,vol)
+{
+	var volumeSetting=volume;
+	if (typeof vol!=='undefined') volume=vol;
+	if (volume<-5) {volume+=10;volumeSetting=volumeMusic;}
+	if (!volumeSetting || volume==0) return 0;
+	if (typeof Sounds[url]=='undefined')
 	{
-		volume=what;
-		get('music').volume = volume / 100;
-		/*for (var i in Sounds)
-		{
-			Sounds[i].volume=Game.volume;
-		}*/
+		Sounds[url]=new Audio(url);
+		Sounds[url].onloadeddata=function(e){PlaySound(url,vol);}
 	}
+	else if (Sounds[url].readyState>=2)
+	{
+		var sound=SoundInsts[SoundI];
+		SoundI++;
+		if (SoundI>=12) SoundI=0;
+		sound.src=url
+		//sound.src=Sounds[url].src;
+
+		sound.volume=Math.pow(volume/100,2);
+
+		try{sound.play();}catch(e){console.log('deu erro ao tocar')}
+	}
+}
+var ExportSave=function()
+{
+		//if (App) return false;
+		prefs.showBackupWarning=0;
+		prompt('<id ExportSave><h3>'+loc("Export save")+'</h3><div class="block">'+loc("This is your save code.<br>Copy it and keep it somewhere safe!")+'</div><div class="block"><textarea id="textareaPrompt" style="width:100%;height:128px;" readonly>'+WriteSave(1)+'</textarea></div>',[loc("All done!")]);//prompt('Copy this text and keep it somewhere safe!',Game.WriteSave(1));
+		get('textareaPrompt').focus();
+		get('textareaPrompt').select();
+	}
+var ImportSave=function(def)
+{
+		//if (App) return false;
+		prompt('<id ImportSave><h3>'+loc("Import save")+'</h3><div class="block">'+loc("Please paste in the code that was given to you on save export.")+'<div id="importError" class="warning" style="font-weight:bold;font-size:11px;"></div></div><div class="block"><textarea id="textareaPrompt" style="width:100%;height:128px;">'+(def||'')+'</textarea></div>',[[loc("Load"),'if (l(\'textareaPrompt\').value.length==0){return false;}if (Game.ImportSaveCode(l(\'textareaPrompt\').value)){Game.ClosePrompt();}else{l(\'importError\').innerHTML=\'(\'+loc("Error importing save")+\')\';}'],loc("Nevermind")]);//prompt('Please paste in the text that was given to you on save export.','');
+		get('textareaPrompt').focus();
+}
+var fps=30
+var sayTime=function(time,detail)
+		{
+			//time is a value where one second is equal to Game.fps (30).
+			//detail skips days when >1, hours when >2, minutes when >3 and seconds when >4.
+			//if detail is -1, output something like "3 hours, 9 minutes, 48 seconds"
+			if (time<=0) return '';
+			var str='';
+			var detail=detail||0;
+			time=Math.floor(time);
+			if (detail==-1)
+			{
+				//var months=0;
+				var days=0;
+				var hours=0;
+				var minutes=0;
+				var seconds=0;
+				//if (time>=Game.fps*60*60*24*30) months=(Math.floor(time/(Game.fps*60*60*24*30)));
+				if (time>=fps*60*60*24) days=(Math.floor(time/(fps*60*60*24)));
+				if (time>=fps*60*60) hours=(Math.floor(time/(fps*60*60)));
+				if (time>=fps*60) minutes=(Math.floor(time/(fps*60)));
+				if (time>=fps) seconds=(Math.floor(time/(fps)));
+				//days-=months*30;
+				hours-=days*24;
+				minutes-=hours*60+days*24*60;
+				seconds-=minutes*60+hours*60*60+days*24*60*60;
+				if (days>10) {hours=0;}
+				if (days) {minutes=0;seconds=0;}
+				if (hours) {seconds=0;}
+				var bits=[];
+				//if (months>0) bits.push(Beautify(months)+' month'+(days==1?'':'s'));
+				if (days>0) bits.push(loc("%1 day",LBeautify(days)));
+				if (hours>0) bits.push(loc("%1 hour",LBeautify(hours)));
+				if (minutes>0) bits.push(loc("%1 minute",LBeautify(minutes)));
+				if (seconds>0) bits.push(loc("%1 second",LBeautify(seconds)));
+				if (bits.length==0) str=loc("less than 1 second");
+				else str=bits.join(', ');
+				/*//if (months>0) bits.push(Beautify(months)+' month'+(days==1?'':'s'));
+				if (days>0) bits.push(Beautify(days)+' day'+(days==1?'':'s'));
+				if (hours>0) bits.push(Beautify(hours)+' hour'+(hours==1?'':'s'));
+				if (minutes>0) bits.push(Beautify(minutes)+' minute'+(minutes==1?'':'s'));
+				if (seconds>0) bits.push(Beautify(seconds)+' second'+(seconds==1?'':'s'));
+				if (bits.length==0) str='less than 1 second';
+				else str=bits.join(', ');*/
+			}
+			else
+			{
+				/*if (time>=Game.fps*60*60*24*30*2 && detail<1) str=Beautify(Math.floor(time/(Game.fps*60*60*24*30)))+' months';
+				else if (time>=Game.fps*60*60*24*30 && detail<1) str='1 month';
+				else */if (time>=Game.fps*60*60*24 && detail<2) str=loc("%1 day",LBeautify(Math.floor(time/(Game.fps*60*60*24))));//Beautify(Math.floor(time/(Game.fps*60*60*24)))+' days';
+				else if (time>=Game.fps*60*60 && detail<3) str=loc("%1 hour",LBeautify(Math.floor(time/(Game.fps*60*60))));//Beautify(Math.floor(time/(Game.fps*60*60)))+' hours';
+				else if (time>=Game.fps*60 && detail<4) str=loc("%1 minute",LBeautify(Math.floor(time/(Game.fps*60))));//Beautify(Math.floor(time/(Game.fps*60)))+' minutes';
+				else if (time>=Game.fps && detail<5) str=loc("%1 second",LBeautify(Math.floor(time/(Game.fps))));//Beautify(Math.floor(time/(Game.fps)))+' seconds';
+				else str=loc("less than 1 second");
+			}
+			return str;
+		}
+
 var App = {};
 var clickStr='';
 ON=' '+("ON");
@@ -236,11 +344,11 @@ let UpdateMenu=function()
 					'<div class="block" style="padding:0px;margin:8px 4px;">'+
 						'<div class="subsection" style="padding:0px;">'+
 						'<div class="title">'+("Geral")+'</div>'+
-							(App?'<div class="listing"><a class="option smallFancyButton" '+clickStr+'="PlaySound(\'snd/tick.mp3\');toSave=true;toQuit=true;">'+("Salvar e sair")+'</a></div>':'')+
-							'<div class="listing"><a class="option smallFancyButton" '+clickStr+'="toSave=true;PlaySound(\'snd/tick.mp3\');">'+("Save")+'</a><label>'+("Salvar manualmente (O jogo salva automaticamente a cada minuto; atalho: ctrl+S)")+'</label></div>'+
-							'<div class="listing"><a class="option smallFancyButton" '+clickStr+'="ExportSave();PlaySound(\'snd/tick.mp3\');">'+("Exportar save")+'</a><a class="option smallFancyButton" '+clickStr+'="ImportSave();PlaySound(\'snd/tick.mp3\');">'+("Importar save")+'</a><label>'+("Você pode usar isso para fazer um backup ou transferir saves (atalho para importar: ctrl+O)")+'</label></div>'+
-							(!App?('<div class="listing"><a class="option smallFancyButton" '+clickStr+'="FileSave();PlaySound(\'snd/tick.mp3\');">'+("Salvar em arquivo")+'</a><a class="option smallFancyButton" style="position:relative;"><input id="FileLoadInput" type="file" style="cursor:pointer;opacity:0;position:absolute;left:0px;top:0px;width:100%;height:100%;" onchange="FileLoad(event);" '+clickStr+'="PlaySound(\'snd/tick.mp3\');"/>'+("Load from file")+'</a><label>'+("Use para manter seu progresso em um backup")+'</label></div>'):'')+
-							'<div class="listing" style="text-align:right;"><label>'+("Deletar todo progresso, incluindo conquistas")+'</label><a class="option smallFancyButton warning" '+clickStr+'="HardReset();PlaySound(\'snd/tick.mp3\');">'+("Deletar Save")+'</a></div>'+
+							(App?'<div class="listing"><a class="option smallFancyButton" '+clickStr+'onClick="PlaySound(\'../sound/clickSFX.mp3\');toSave=true;toQuit=true;">'+("Salvar e sair")+'</a></div>':'')+
+							'<div class="listing"><a class="option smallFancyButton" '+clickStr+'onClick="toSave=true;PlaySound(\'../sound/clickSFX.mp3\');">'+("Save")+'</a><label>'+("Salvar manualmente (O jogo salva automaticamente a cada minuto; atalho: ctrl+S)")+'</label></div>'+
+							'<div class="listing"><a class="option smallFancyButton" '+clickStr+'onClick="ExportSave();PlaySound(\'../sound/clickSFX.mp3\');">'+("Exportar save")+'</a><a class="option smallFancyButton" '+clickStr+'="ImportSave();PlaySound(\'../sound/clickSFX.mp3\');">'+("Importar save")+'</a><label>'+("Você pode usar isso para fazer um backup ou transferir saves (atalho para importar: ctrl+O)")+'</label></div>'+
+							(!App?('<div class="listing"><a class="option smallFancyButton" '+clickStr+'onClick="FileSave();PlaySound(\'../sound/clickSFX.mp3);">'+("Salvar em arquivo")+'</a><a class="option smallFancyButton" style="position:relative;"><input id="FileLoadInput" type="file" style="cursor:pointer;opacity:0;position:absolute;left:0px;top:0px;width:100%;height:100%;" onchange="FileLoad(event);" '+clickStr+'="PlaySound(\'../sound/clickSFX.mp3\');"/>'+("Load from file")+'</a><label>'+("Use para manter seu progresso em um backup")+'</label></div>'):'')+
+							'<div class="listing" style="text-align:right;"><label>'+("Deletar todo progresso, incluindo conquistas")+'</label><a class="option smallFancyButton warning" '+clickStr+'="HardReset();PlaySound(\'../sound/clickSFX.mp3\');">'+("Deletar Save")+'</a></div>'+
 							
 						'</div>'+
 					'</div>'+
@@ -252,10 +360,9 @@ let UpdateMenu=function()
 						'<div class="listing">'+
 							WriteSlider('volumeSlider',("Volume"),'[$]%',function(){return volume;},'setVolume(Math.round(get(\'volumeSlider\').value));get(\'volumeSliderRightText\').innerHTML=volume+\'%\';')+
 							'<br>'+
-							(App?WritePrefButton('bgMusic','bgMusicButton',("Musica de fundo")+ON,("Musica de fundo")+OFF,'')+'<label>('+("Musica vai continuar tocando mesmo sem estar na página")+')</label><br>':'')+
 						'</div>'+
 						//'<div class="listing">'+WritePrefButton('autosave','autosaveButton','Autosave ON','Autosave OFF')+'</div>'+
-						(!App?'<div class="listing"><a class="option smallFancyButton" '+clickStr+'="CheckModData();PlaySound(\'snd/tick.mp3\');">'+("Check mod data")+'</a><label>('+("view and delete save data created by mods")+')</label></div>':'')+
+						(!App?'<div class="listing"><a class="option smallFancyButton" '+clickStr+'="CheckModData();PlaySound(\'../sound/clickSFX.mp3\');">'+("Check mod data")+'</a><label>('+("view and delete save data created by mods")+')</label></div>':'')+
 						
 						'</div>'+
 					'</div>'+
@@ -279,31 +386,27 @@ let UpdateMenu=function()
 			{
 				//str+=replaceAlget('[bakeryName]',bakeryName,updateLog);
 				str+=updateLog;
-				if (!HasAchiev('Olden days')) str+='<div id="oldenDays" style="text-align:right;width:100%;"><div '+clickStr+'="SparkleAt(mouseX,mouseY);PlaySound(\'snd/tick.mp3\');PlaySound(\'snd/shimmerClick.mp3\');Win(\'Olden days\');UpdateMenu();" class="icon" style="display:inline-block;transform:scale(0.5);cursor:pointer;width:48px;height:48px;background-position:'+(-12*48)+'px '+(-3*48)+'px;"></div></div>';
+				if (!HasAchiev('Olden days')) str+='<div id="oldenDays" style="text-align:right;width:100%;"><div '+clickStr+'="SparkleAt(mouseX,mouseY);PlaySound(\'../sound/clickSFX.mp3\');PlaySound(\'snd/shimmerClick.mp3\');Win(\'Olden days\');UpdateMenu();" class="icon" style="display:inline-block;transform:scale(0.5);cursor:pointer;width:48px;height:48px;background-position:'+(-12*48)+'px '+(-3*48)+'px;"></div></div>';
 			}
 			else if (onMenu=='stats')
 			{
-				var buildingsOwned=0;
-				buildingsOwned=BuildingsOwned;
+				var equips=0;
+				equips=Equips;
 				var upgrades='';
-				var cookieUpgrades='';
-				var hiddenUpgrades='';
-				var prestigeUpgrades='';
-				var upgradesTotal=0;
+				var prestiges=0;
 				var upgradesOwned=0;
-				var prestigeUpgradesTotal=0;
-				var prestigeUpgradesOwned=0;
+
 				
 				var list=[];
 				//sort the upgrades
-				for (var i in Upgrades){list.push(Upgrades[i]);}//clone first
+				/*for (var i in Upgrades){list.push(Upgrades[i]);}//clone first
 				var sortMap=function(a,b)
 				{
 					if (a.order>b.order) return 1;
 					else if (a.order<b.order) return -1;
 					else return 0;
-				}
-				list.sort(sortMap);
+				}*/
+				/*list.sort(sortMap);
 				for (var i in list)
 				{
 					var str2='';
@@ -322,8 +425,8 @@ let UpdateMenu=function()
 					else if (me.pool=='prestige') {prestigeUpgrades+=str2;prestigeUpgradesTotal++;}
 					else if (me.pool=='cookie') cookieUpgrades+=str2;
 					else if (me.pool!='toggle' && me.pool!='unused') upgrades+=str2;
-				}
-				var achievements=[];
+				}*/
+				/*var achievements=[];
 				var achievementsOwned=0;
 				var achievementsOwnedOther=0;
 				var achievementsTotal=0;
@@ -356,9 +459,9 @@ let UpdateMenu=function()
 						if (CountsAsAchievementOwned(me.pool)) achievementsOwned++;
 						else achievementsOwnedOther++;
 					}
-				}
+				}*/
 				
-				var ascensionModeStr='';
+				/*var ascensionModeStr='';
 				var icon=ascensionModes[ascensionMode].icon;
 				if (resets>0) ascensionModeStr='<span style="cursor:pointer;" '+getTooltip(
 							'<div style="min-width:200px;text-align:center;font-size:11px;" id="tooltipChallengeMode">'+ascensionModes[ascensionMode].desc+'</div>'
@@ -374,7 +477,7 @@ let UpdateMenu=function()
 				else if (elderWrath==3) wrathStr=("angered");
 				else if (elderWrath==0 && pledges>0) wrathStr=("appeased");
 				
-				var dropMult=dropRateMult();
+				var dropMult=dropRateMult();*/
 				
 				var date=new Date();
 				date.setTime(Date.now()-startDate);
@@ -390,7 +493,7 @@ let UpdateMenu=function()
 				
 				var seasonStr=sayTime(seasonT,-1);
 				
-				str+='<div class="section">'+("Statistics"+("stats"))+'</div>'+
+				str+='<div class="section">'+("Estátisticas"+("stats"))+'</div>'+
 				'<div class="subsection">'+
 				'<div class="title">'+("General")+'</div>'+
 				'<div id="statsGeneral">'+

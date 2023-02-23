@@ -16,7 +16,16 @@
 <body onload="Load()">
     <div class="wrapper">
         <div class="navbar">
-            
+            <div>
+                <b style="font-weight: bold;">Cotuca Clicker</b>
+                <a href="https://github.com/Bey0ndzin" target="_blank" id="navbarBey">Bey0nd</a>
+                <a href="https://github.com/NurbTheSlime" target="_blank" id="navbarBey">Nurb</a>  
+                <a href="https://github.com/victor0barbosa" target="_blank" id="navbarBey">Torugo</a>  
+            </div>
+            <div style="position: relative;">
+                <div style="width:22px;height:32px;background:url(../img/Youtube.png);position:absolute;left:0px;top:0px;pointer-events:none;"></div>
+                <a href="https://www.youtube.com/@Bey0ndzin" target="_blank" style="padding-left:16px;" id="topbarDiscord">Youtube</a>
+            </div>
         </div>
         <div id="game">
             <div class="sectionLeft">
@@ -31,10 +40,11 @@
                 </div>
             </div>
             <audio id="music" src="../music/Musga.mp3" loop="loop"></audio>
+            <div class="separatorLeft" id="leftBeam"></div>
             <div class="separatorRight" id="rightBeam"></div>
             <div class="sectionMiddle">
                 <div class="comments">
-                    <div id="options" class="panelButton">
+                    <div id="options" class="panelButton" onclick="PlaySound('../sound/clickSFX.mp3')">
                         <div class="subButton">Opções</div>
                     </div>
                     <div id="stats" class="panelButton">

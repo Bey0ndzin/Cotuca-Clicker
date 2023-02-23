@@ -22,14 +22,27 @@ body{
     left: 0px;
     top: 0px;
     width: 100%;
-    height: 48px;
-    background-color: black;
+    height: 32px;
+    background-color: #000;
+    color: #fff;
+}
+.navbar>div{
+    display: inline-block;
+    float: left;
+    border-right: 1px solid #000;
+    box-shadow: 0px 0px 3px 1px rgb(255 255 255 / 20%) inset;
+    padding: 7px 8px 9px 8px;
+}
+a, a:visited {
+    text-decoration: underline;
+    cursor: pointer;
+    color: #fff;
 }
 /*Configuração da barra de navegação*/
 #game{
     position: absolute;
     left: 0px;
-    top: 48px;
+    top: 32px;
     right: 0px;
     bottom: 0px;
     overflow: hidden;
@@ -88,6 +101,7 @@ body{
 /*Configuração de toda a aba esquerda*/
 .sectionMiddle{
     background-image: url(../img/Menu.jpg);
+    background: url(../img/panelGradientTop.png) no-repeat top left,url(../img/panelGradientBottom.png) no-repeat bottom left,url(../img/Menu.jpg) repeat-y;
     position: absolute;
     left: 30%;
     padding-left: 16px;
@@ -98,11 +112,27 @@ body{
     min-width: 100px;
     overflow: hidden;
 }
-.separatorRight{
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 17px;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #bbb;
+    border: 2px solid #111;
+    box-shadow: 0px 0px 0px 1px #eee inset;
+}
+::-webkit-scrollbar-track {
+    background-color: #111;
+}
+.separatorLeft {
+    left: 30%;
+}
+.separatorLeft, .separatorRight{
     right: 315px;
     width: 18px;
     height: 100%;
     background: url(../img/Menu.jpg) repeat-y;
+    background: url(../img/panelGradientTop.png) no-repeat top left,url(../img/panelGradientBottom.png) no-repeat bottom left,url(../img/Menu.jpg) repeat-y;
     position: absolute;
     top: 0px;
     bottom: 0px;
@@ -122,6 +152,7 @@ body{
     width: 100%;
     height: 16px;
     background: url(../img/Menu.jpg) repeat-x;
+    background: url(../img/panelGradientLeft.png) no-repeat top left,url(../img/panelGradientRight.png) no-repeat top right,url(../img/Menu.jpg) repeat-x;
     position: absolute;
     left: 0px;
     bottom: 0px;
@@ -140,19 +171,11 @@ body{
     text-shadow: 0px 1px 0px #000;
     margin-bottom: 8px;
 }
-.separatorBottom{
-    width: 100%;
-    height: 16px;
-    background: url(../img/Menu.jpg) repeat-x;
-    position: absolute;
-    left: 0px;
-    bottom: 0px;
-}
 .centerArea {
     overflow-x: hidden;
     overflow-y: scroll;
     position: absolute;
-    background-image: url(../img/StoneMenu.jpg);
+    background-image: url(../img/PlankMenu.jpg);
     top: 112px;
     left: 16px;
     bottom: 0px;
@@ -254,6 +277,17 @@ body{
 .store{
     position: relative;
 }
+.store:after {
+    display: block;
+    height: 64px;
+    background: url(../img/blackGradientSmallTop.png) repeat-x top;
+    content: '';
+    pointer-events: none;
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    bottom: -64px;
+}
 .storeTitle{
     position: relative;
     width: 284px;
@@ -268,6 +302,7 @@ body{
     position: relative;
     overflow-y: hidden;
     background: url(../img/Menu.jpg) repeat-x top;
+    background: url(../img/panelGradientLeft.png) no-repeat top left,url(../img/panelGradientRight.png) no-repeat top right,url(../img/Menu.jpg) repeat-x;
     padding-top: 16px;
 }
 #storeBulk{
