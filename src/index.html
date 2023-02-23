@@ -68,10 +68,18 @@
                         <div class="separatorBottom"></div>
                     </div>
                     <div class="rows">
-                        <div class="row" id="row1"></div>
+                        <div class="row" id="row1">
+                            <div class="separatorBottom"></div>
+                            <canvas class="rowCanvas" id="rowCanvas1" width="366" height="128">
+                        </div>
                         <div class="row" id="row2"></div>
                     </div>
                     <div id="menu"></div>
+                </div>
+            </div>
+            <div id="sectionLeftExtra"><div class="productButtons">
+                <div id="productLevel0" class="productButton productLevel lumpsOnly" onclick="Game.ObjectsById[0].levelUp()" onmouseout="Game.tooltip.shouldHide=1;" onmouseover="Game.tooltip.dynamic=1;Game.tooltip.draw(this,function(){return Game.ObjectsById[0].levelTooltip();},'this');Game.tooltip.wobble();">lvl 0</div>
+                <div class="icon" style="vertical-align:middle;display:inline-block;background-position:-1440px -576px;transform:scale(0.5);margin:-20px -16px;"></div>
                 </div>
             </div>
             <div class="sectionRight">
