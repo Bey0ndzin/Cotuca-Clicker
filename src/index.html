@@ -35,7 +35,7 @@
                     <div id="moneyPerSecond">Moedas por segundo: 0</div>
                 </div>
                 <div class="ancoragemCotuca">
-                    <div class="cotucaDiv" onclick="Up()">
+                    <div class="cotucaDiv" onclick="Click()">
                         <img src="../img/cotuca.png" alt="Png do Cotuca" class="cotuca">
                     </div>
                 </div>
@@ -67,8 +67,8 @@
                     <div class="buildingsMaster">
                         <div class="separatorBottom"></div>
                     </div>
-                    <div class="rows">
-                        <div class="row" id="row1">
+                    <div id="rows">
+                        <div class="row enabled" id="row1">
                             <div class="separatorBottom"></div>
                             <canvas class="rowCanvas" id="rowCanvas1" width="366" height="128">
                         </div>
@@ -91,7 +91,7 @@
                     <div id="upgrades" class="storeSection"></div>
                     <div id="products" class="storeSection">
                         <div id="storeBulk" class="storePre"></div>
-                        <div class="product" onclick="Upgrade0()">
+                        <div class="product" id="0" onclick="Upgrade(this.id)">
                             <div class="icon" id="productIcon0"></div>
                             <div class="content">
                                 <div class="title productName" id="productName0">Espada</div>
@@ -99,15 +99,15 @@
                                 <div class="title owned" id="productOwned0">0</div>
                             </div>
                         </div>
-                        <div id="product1" class="product locked" onclick="Upgrade1()">
+                        <div id="product1" class="product locked" onclick="Upgrade(1)">
                             <div class="icon" id="productIcon1"></div>
                             <div class="content">
                                 <div class="title productName" id="productName1">Escudo</div>
-                                <span class="price" id="productPrice1">R$30</span>
+                                <span class="price" id="productPrice1">R$50</span>
                                 <div class="title owned" id="productOwned1">0</div>
                             </div>
                         </div>
-                        <div id="product2" class="product locked" onclick="Upgrade2()">
+                        <div id="product2" value="2" class="product locked" onclick="Upgrade(2)">
                             <div class="icon" id="productIcon2"></div>
                             <div class="content">
                                 <div class="title productName" id="productName2">Armadura</div>

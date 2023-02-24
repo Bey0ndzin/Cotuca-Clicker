@@ -195,6 +195,7 @@ a, a:visited {
     height: 128px;
     background-color: #000;
     display: block;
+    padding: 0 0;
 }
 #options{
     top: 0px;
