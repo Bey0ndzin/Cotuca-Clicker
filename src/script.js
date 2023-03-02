@@ -12,7 +12,7 @@ function choose(arr) {
 
 function Load(){
     //Seta essas várias para valores padrões
-    clicks = 50000
+    clicks = 500000000000
 	clicksEarned = clicks;
 	clicksReset = 0;
 	resets = 0;
@@ -48,9 +48,9 @@ function Click(){
     //Váriavel para aumentar a grana cada vez que clica no cotuca
     clicks += 1+upgrade[0]/2 //Aumenta o click baseado na quantidade de espadas que a pessoa tem
 	clicksEarned += 1+upgrade[0];
-    get('money').innerHTML = "Moedas: " + Math.round(clicks) + 
+    get('money').innerHTML = "Moedas: " + Beautify(clicks) + 
 	'<div id="moneyPerSecond">Moedas por segundo: '
-	 + Math.round(moneyPS * 100) / 100 + '</div>'
+	 + Beautify(moneyPS * 100) + '</div>'
     //Atualiza o H1 que mostra a quantidade de grana
 }
 function Upgrade(id){
@@ -66,8 +66,7 @@ function Upgrade(id){
             $("#product"+(parseInt(id)+1)).show(500);
         }
 		Equips++;
-		if(parseInt(id) == 1)
-			draw();
+		draw(parseInt(id+1));
 
         preco[id] = 1.15 * preco[id]
 
@@ -75,9 +74,9 @@ function Upgrade(id){
 			moneyPS += id/2
 		}
 
-        get('productPrice'+id).innerHTML = "R$" + Math.round(preco[id])
-        get('money').innerHTML = "Moedas: " + Math.round(clicks) + '<div id="moneyPerSecond">Moedas por segundo: ' + Math.round(moneyPS * 100) / 100 + '</div>'
-        get('productOwned'+id).innerHTML = upgrade[id]
+        get('productPrice'+id).innerHTML = "R$" + Beautify(preco[id]) //Beautify(Math.round(preco[id]))
+        get('money').innerHTML = "Moedas: " + Beautify(clicks) + '<div id="moneyPerSecond">Moedas por segundo: ' + Beautify(moneyPS) + '</div>'
+        get('productOwned'+id).innerHTML = Beautify(upgrade[id])
 
 		PlaySound('../sound/buySFX.mp3')
 	}
@@ -89,7 +88,7 @@ setInterval(farm, 1000)
 function farm(){
 	clicksEarned += moneyPS;
     clicks += moneyPS
-    get("money").innerHTML = "Moedas: " + Math.round(clicks) + '<div id="moneyPerSecond">Moedas por segundo: ' + Math.round(moneyPS * 100) / 100 + '</div>'
+    get("money").innerHTML = "Moedas: " + Beautify(clicks) + '<div id="moneyPerSecond">Moedas por segundo: ' + Beautify(moneyPS) + '</div>'
 	if(onMenu == 'stats'){
 		var status = document.getElementsByClassName('price plain')
 		status[0].innerHTML = Beautify(clicks)
@@ -106,7 +105,7 @@ function farm(){
     evento0()
 }
 function evento0(){
-    var random = Math.floor(Math.random() * 1500)
+    var random = Math.floor(Math.random() * 2500)
     if(random == 1)
     {
         if(upgrade[0] >= 1 && kills < 1){
@@ -336,20 +335,152 @@ CanvasRenderingContext2D.prototype.fillPattern=function(img,X,Y,W,H,iW,iH,offX,o
 	}
 }
 
-var firstLoading = [false];
-function draw(){
-	var ctx = get('rowCanvas1').getContext('2d')
-	if(firstLoading[0] == false){
+var firstLoading = [true, true];
+/*var numIdosas = 0;
+function draw(id){
+	var ctx = get('rowCanvas'+id).getContext('2d')
 	var img = new Image()
-	img.src = '../img/grandmaBackground.png'
-	img.onload = () =>{
-		ctx.fillPattern(img,0,0,get('rowCanvas1').width,get('rowCanvas1').height,128,128);
-	}
-	firstLoading[0] = true
-}
 	var sprite = new Image()
-	sprite.src = '../img/grandma.png'
-	sprite.onload = () =>{
-		ctx.drawImage(sprite,Math.floor(sprite.x+Math.random()*4-2),Math.floor(sprite.y+Math.random()*4-2));
+	if(id == 1){
+		if(firstLoading[0] == true){
+			get('row1').classList.add('enabled')
+			img.src = '../img/landBackground.jpg'
+			sprite.src = '../img/slime foda.png'
+			img.onload = () =>{
+				ctx.fillPattern(img,0,0,get('rowCanvas1').width,get('rowCanvas1').height,196,128);
+    			ctx.strokeRect(get('rowCanvas1').width/2.5, get('rowCanvas1').height/7, 96, 96);
+				ctx.fillStyle = '#fff'
+				ctx.fillRect(get('rowCanvas1').width/2.49, get('rowCanvas1').height/6.99, 94, 94);
+
+				ctx.beginPath();
+				ctx.fillStyle = '#FFFFFF'; 
+				ctx.fillStyle = 'rgba(0,0,0,1)';
+				ctx.fillRect(get('rowCanvas1').width/10,get('rowCanvas1').height/7,96,24);
+				ctx.fill();
+				ctx.lineWidth = 2;
+				ctx.strokeStyle = '#fff'; 
+				ctx.stroke();
+				ctx.closePath();
+				ctx.font = '18px monospace';
+				ctx.fillStyle = '#fff';
+				ctx.fillText('Atacar', get('rowCanvas1').width/7.4,get('rowCanvas1').height/3.6);
+
+				ctx.beginPath();
+				ctx.fillStyle = '#FFFFFF'; 
+				ctx.fillStyle = 'rgba(0,0,0,1)';
+				ctx.fillRect(get('rowCanvas1').width/10,get('rowCanvas1').height/1.6,96,24);
+				ctx.fill();
+				ctx.lineWidth = 2;
+				ctx.strokeStyle = '#fff'; 
+				ctx.stroke();
+				ctx.closePath();
+				ctx.font = '18px monospace';
+				ctx.fillStyle = '#fff';
+				ctx.fillText('Feitiço', get('rowCanvas1').width/8,get('rowCanvas1').height/1.3);
+
+				ctx.beginPath();
+				ctx.fillStyle = '#FFFFFF'; 
+				ctx.fillStyle = 'rgba(0,0,0,1)';
+				ctx.fillRect(get('rowCanvas1').width/1.4,get('rowCanvas1').height/7,96,24);
+				ctx.fill();
+				ctx.lineWidth = 2;
+				ctx.strokeStyle = '#fff'; 
+				ctx.stroke();
+				ctx.closePath();
+				ctx.font = '18px monospace';
+				ctx.fillStyle = '#fff';
+				ctx.fillText('Poupar', get('rowCanvas1').width/1.33,get('rowCanvas1').height/3.6);
+
+				ctx.beginPath();
+				ctx.fillStyle = '#FFFFFF'; 
+				ctx.fillStyle = 'rgba(0,0,0,1)';
+				ctx.fillRect(get('rowCanvas1').width/1.4,get('rowCanvas1').height/1.6,96,24);
+				ctx.fill();
+				ctx.lineWidth = 2;
+				ctx.strokeStyle = '#fff'; 
+				ctx.stroke();
+				ctx.closePath();
+				ctx.font = '18px monospace';
+				ctx.fillStyle = '#fff';
+				ctx.fillText('Correr', get('rowCanvas1').width/1.33,get('rowCanvas1').height/1.3);
+			}
+			sprite.onload = () =>{
+				ctx.drawImage(sprite,get('rowCanvas1').width/2.5, get('rowCanvas1').height/7, 95, 95);
+			}
+			firstLoading[0] = false;
+		}
 	}
-}
+	if(id == 2){
+		if(firstLoading[1] == true){
+			get('row2').classList.add('enabled')
+			img.src = '../img/PlatformBackground.png'
+			img.onload = () =>{
+				ctx.fillPattern(img,0,0,get('rowCanvas2').width,get('rowCanvas2').height,128,128);
+		}
+		firstLoading[1] = false
+
+		sprite.src = '../img/grandma.png'
+		sprite.onload = () =>{
+			if(numIdosas < 16)
+				ctx.drawImage(sprite,Math.floor(sprite.x+Math.random()*4-2)+numIdosas*30,Math.floor(sprite.y+Math.random()*2+40));
+			numIdosas++;
+		}
+		}
+	}
+	//Function to get the mouse position
+	function getMousePos(canvas, event) {
+		var rect = canvas.getBoundingClientRect();
+		return {
+			x: event.clientX - rect.left,
+			y: event.clientY - rect.top
+		};
+	}
+	//Function to check whether a point is inside a rectangle
+	function isInside(pos, rect){
+		return pos.x > rect.x && pos.x < rect.x+rect.width && pos.y < rect.y+rect.height && pos.y > rect.y
+	}
+
+	var canvas = get('rowCanvas1');
+	//The rectangle should have x,y,width,height properties
+	var rect = {
+		x:get('rowCanvas1').width/10,
+		y:get('rowCanvas1').height/7,
+		width:96,
+		height:24
+	};
+	var rect2 = {
+		x:get('rowCanvas1').width/10,
+		y:get('rowCanvas1').height/1.6,
+		width:96,
+		height:24
+	};
+	var rect3 = {
+		x:get('rowCanvas1').width/1.4,
+		y:get('rowCanvas1').height/7,
+		width:96,
+		height:24
+	};
+	var rect4 = {
+		x:get('rowCanvas1').width/1.4,
+		y:get('rowCanvas1').height/1.6,
+		width:96,
+		height:24
+	};
+	//Binding the click event on the canvas
+	canvas.addEventListener('click', function(evt) {
+		var mousePos = getMousePos(canvas, evt);
+
+		if (isInside(mousePos,rect)) {
+			ctx.fillRect(mousePos.x, mousePos.y, 2, 2)
+		}
+		if (isInside(mousePos,rect2)) {
+			alert('clicked inside rect2');
+		}
+		if (isInside(mousePos,rect3)) {
+			alert('clicked inside rect3');
+		}
+		if (isInside(mousePos,rect4)) {
+			alert('clicked inside rect4');
+		}
+	}, false);
+}*/
