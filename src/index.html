@@ -48,13 +48,13 @@
                     <div id="options" class="panelButton" onclick="PlaySound('../sound/clickSFX.mp3')">
                         <div class="subButton">Opções</div>
                     </div>
-                    <div id="stats" class="panelButton">
+                    <div id="stats" class="panelButton" onclick="PlaySound('../sound/clickSFX.mp3')">
                         <div class="subButton">Status</div>
                     </div>
-                    <div id="login" class="panelButton">
+                    <div id="login" class="panelButton" onclick="PlaySound('../sound/clickSFX.mp3')">
                         <div class="subButton">Login</div>
                     </div>
-                    <div id="ascend" class="panelButton">
+                    <div id="ascend" class="panelButton" onclick="PlaySound('../sound/clickSFX.mp3')">
                         <div class="subButton">Ascender</div>
                     </div>
                     <div class="commentsText">
@@ -70,15 +70,27 @@
                     <div id="rows">
                         <div class="row" id="row1">
                             <div class="separatorBottom"></div>
-                            <canvas class="rowCanvas" id="rowCanvas1" width="530" height="128">
+                            <div class="rowCanvas" id="rowCanvas1" width="530" height="128">
+                                <div id="enemy" class="rowEnemy">
+                                    <img src="" id="enemyImg" alt="Inimigo">
+                                </div>
+                                <div class="hpContainer">
+                                    <div id='hp' class="hpBar" style="height:24px;width:100%">100%</div>
+                                  </div>
+                                <button id="attack" class="row1Button">Atacar</button>
+                                <button id="spell" class="row1Button">Feitiço</button>
+                                <button id="spare" class="row1Button">Poupar</button>
+                                <button id="run" class="row1Button">Correr</button>
+                            </div>
+                            <!---<canvas class="rowCanvas" id="rowCanvas1" width="530" height="128">-->
                         </div>
                         <div class="row" id="row2">
                             <div class="separatorBottom"></div>
-                            <canvas class="rowCanvas" id="rowCanvas2" width="530" height="128">
+                            <!---<canvas class="rowCanvas" id="rowCanvas2" width="530" height="128">-->
                         </div>
                         <div class="row" id="row3">
                             <div class="separatorBottom"></div>
-                            <canvas class="rowCanvas" id="rowCanvas3" width="530" height="128">
+                            <!---<canvas class="rowCanvas" id="rowCanvas3" width="530" height="128">-->
                         </div>
                     </div>
                     <div id="menu"></div>
@@ -98,6 +110,7 @@
                     <div id="upgrades" class="storeSection"></div>
                     <div id="products" class="storeSection">
                         <div id="storeBulk" class="storePre"></div>
+
                         <div class="product" id="0" onclick="Upgrade(this.id)">
                             <div class="icon" id="productIcon0"></div>
                             <div class="content">
@@ -106,6 +119,7 @@
                                 <div class="title owned" id="productOwned0">0</div>
                             </div>
                         </div>
+
                         <div id="product1" class="product locked" onclick="Upgrade(1)">
                             <div class="icon" id="productIcon1"></div>
                             <div class="content">
@@ -114,7 +128,8 @@
                                 <div class="title owned" id="productOwned1">0</div>
                             </div>
                         </div>
-                        <div id="product2" value="2" class="product locked" onclick="Upgrade(2)">
+
+                        <div id="product2" class="product locked" onclick="Upgrade(2)">
                             <div class="icon" id="productIcon2"></div>
                             <div class="content">
                                 <div class="title productName" id="productName2">Armadura</div>
@@ -122,6 +137,106 @@
                                 <div class="title owned" id="productOwned2">0</div>
                             </div>
                         </div>
+
+                        <div id="product3" class="product locked" onclick="Upgrade(3)">
+                            <div class="icon" id="productIcon3"></div>
+                            <div class="content">
+                                <div class="title productName" id="productName3">Bota</div>
+                                <span class="price" id="productPrice3">R$500</span>
+                                <div class="title owned" id="productOwned3">0</div>
+                            </div>
+                        </div>
+
+                        <div id="product4" class="product locked" onclick="Upgrade(4)">
+                            <div class="icon" id="productIcon4"></div>
+                            <div class="content">
+                                <div class="title productName" id="productName4">Arco</div>
+                                <span class="price" id="productPrice4">R$1,500</span>
+                                <div class="title owned" id="productOwned4">0</div>
+                            </div>
+                        </div>
+
+                        <div id="product5" class="product locked" onclick="Upgrade(5)">
+                            <div class="icon" id="productIcon5"></div>
+                            <div class="content">
+                                <div class="title productName" id="productName5">Cajado</div>
+                                <span class="price" id="productPrice5">R$5,000</span>
+                                <div class="title owned" id="productOwned5">0</div>
+                            </div>
+                        </div>
+
+                        <div id="product6" class="product locked" onclick="Upgrade(6)">
+                            <div class="icon" id="productIcon6"></div>
+                            <div class="content">
+                                <div class="title productName" id="productName6">Elfo</div>
+                                <span class="price" id="productPrice6">R$15,000</span>
+                                <div class="title owned" id="productOwned6">0</div>
+                            </div>
+                        </div>
+
+                        <div id="product7" class="product locked" onclick="Upgrade(7)">
+                            <div class="icon" id="productIcon7"></div>
+                            <div class="content">
+                                <div class="title productName" id="productName7">Orc</div>
+                                <span class="price" id="productPrice7">R$50,000</span>
+                                <div class="title owned" id="productOwned7">0</div>
+                            </div>
+                        </div>
+
+                        <div id="product8" class="product locked" onclick="Upgrade(8)">
+                            <div class="icon" id="productIcon8"></div>
+                            <div class="content">
+                                <div class="title productName" id="productName8">Sérgio</div>
+                                <span class="price" id="productPrice8">R$100,000</span>
+                                <div class="title owned" id="productOwned8">0</div>
+                            </div>
+                        </div>
+
+                        <div id="product9" class="product locked" onclick="Upgrade(9)">
+                            <div class="icon" id="productIcon9"></div>
+                            <div class="content">
+                                <div class="title productName" id="productName9">Simone</div>
+                                <span class="price" id="productPrice9">R$500,000</span>
+                                <div class="title owned" id="productOwned9">0</div>
+                            </div>
+                        </div>
+
+                        <div id="product10" class="product locked" onclick="Upgrade(10)">
+                            <div class="icon" id="productIcon10"></div>
+                            <div class="content">
+                                <div class="title productName" id="productName10">Patrícia</div>
+                                <span class="price" id="productPrice10">R$1.000 million</span>
+                                <div class="title owned" id="productOwned10">0</div>
+                            </div>
+                        </div>
+
+                        <div id="product11" class="product locked" onclick="Upgrade(11)">
+                            <div class="icon" id="productIcon11"></div>
+                            <div class="content">
+                                <div class="title productName" id="productName11">Sampaio</div>
+                                <span class="price" id="productPrice11">R$2.500 million</span>
+                                <div class="title owned" id="productOwned11">0</div>
+                            </div>
+                        </div>
+
+                        <div id="product12" class="product locked" onclick="Upgrade(12)">
+                            <div class="icon" id="productIcon12"></div>
+                            <div class="content">
+                                <div class="title productName" id="productName12">Maligno</div>
+                                <span class="price" id="productPrice12">R$5.000 million</span>
+                                <div class="title owned" id="productOwned12">0</div>
+                            </div>
+                        </div>
+
+                        <div id="product13" class="product locked" onclick="Upgrade(13)">
+                            <div class="icon" id="productIcon13"></div>
+                            <div class="content">
+                                <div class="title productName" id="productName13">Chico</div>
+                                <span class="price" id="productPrice13">R$100.000 million</span>
+                                <div class="title owned" id="productOwned13">0</div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>

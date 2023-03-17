@@ -197,6 +197,66 @@ a, a:visited {
     display: block;
     padding: 0 0;
 }
+#rowCanvas1{
+    background-image: url('../img/landBackground.jpg');
+    background-size: cover;
+    background-repeat: none;
+}
+.row1Button{
+    font-size: 16px;
+    padding: 6px 25px;
+    background-color: #000;
+    color: #fff;
+    border-color: #fff;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+#attack{
+    position: absolute;
+    top: 20%;
+    left: 15%;
+}
+#spell{
+    position: absolute;
+    top: 60%;
+    left: 15%;
+}
+#spare{
+    position: absolute;
+    top: 20%;
+    left: 65%;
+}
+#run{
+    position: absolute;
+    top: 60%;
+    left: 65%;
+}
+.rowEnemy{
+    position: absolute;
+    top: 20%;
+    left: 40%;
+    background-color: #000;
+    padding: 3px 3px;
+}
+#enemyImg{
+    width: 116px;
+    height: 116px;
+}
+.hpContainer{
+    position: absolute;
+    left: 24%;
+    color: #fff;
+    background-color: #000000;
+    padding: 0.01em 0px;
+    width: 50%;
+}
+.hpBar{
+    color: #fff;
+    background-color: #49f743;
+    text-align: center;
+    font-size: 20px;
+}
 #options{
     top: 0px;
     left: 0px;

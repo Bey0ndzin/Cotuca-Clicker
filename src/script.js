@@ -12,7 +12,7 @@ function choose(arr) {
 
 function Load(){
     //Seta essas várias para valores padrões
-    clicks = 500000000000
+    clicks = 50000000
 	clicksEarned = clicks;
 	clicksReset = 0;
 	resets = 0;
@@ -46,6 +46,7 @@ function Load(){
 }
 function Click(){
     //Váriavel para aumentar a grana cada vez que clica no cotuca
+	PlaySound('../sound/clickerSFX.mp3')
     clicks += 1+upgrade[0]/2 //Aumenta o click baseado na quantidade de espadas que a pessoa tem
 	clicksEarned += 1+upgrade[0];
     get('money').innerHTML = "Moedas: " + Beautify(clicks) + 
@@ -336,151 +337,79 @@ CanvasRenderingContext2D.prototype.fillPattern=function(img,X,Y,W,H,iW,iH,offX,o
 }
 
 var firstLoading = [true, true];
-/*var numIdosas = 0;
+var secondsToSpellAgain = 0
 function draw(id){
-	var ctx = get('rowCanvas'+id).getContext('2d')
-	var img = new Image()
-	var sprite = new Image()
+	var img = get('enemyImg')
 	if(id == 1){
 		if(firstLoading[0] == true){
 			get('row1').classList.add('enabled')
-			img.src = '../img/landBackground.jpg'
-			sprite.src = '../img/slime foda.png'
-			img.onload = () =>{
-				ctx.fillPattern(img,0,0,get('rowCanvas1').width,get('rowCanvas1').height,196,128);
-    			ctx.strokeRect(get('rowCanvas1').width/2.5, get('rowCanvas1').height/7, 96, 96);
-				ctx.fillStyle = '#fff'
-				ctx.fillRect(get('rowCanvas1').width/2.49, get('rowCanvas1').height/6.99, 94, 94);
-
-				ctx.beginPath();
-				ctx.fillStyle = '#FFFFFF'; 
-				ctx.fillStyle = 'rgba(0,0,0,1)';
-				ctx.fillRect(get('rowCanvas1').width/10,get('rowCanvas1').height/7,96,24);
-				ctx.fill();
-				ctx.lineWidth = 2;
-				ctx.strokeStyle = '#fff'; 
-				ctx.stroke();
-				ctx.closePath();
-				ctx.font = '18px monospace';
-				ctx.fillStyle = '#fff';
-				ctx.fillText('Atacar', get('rowCanvas1').width/7.4,get('rowCanvas1').height/3.6);
-
-				ctx.beginPath();
-				ctx.fillStyle = '#FFFFFF'; 
-				ctx.fillStyle = 'rgba(0,0,0,1)';
-				ctx.fillRect(get('rowCanvas1').width/10,get('rowCanvas1').height/1.6,96,24);
-				ctx.fill();
-				ctx.lineWidth = 2;
-				ctx.strokeStyle = '#fff'; 
-				ctx.stroke();
-				ctx.closePath();
-				ctx.font = '18px monospace';
-				ctx.fillStyle = '#fff';
-				ctx.fillText('Feitiço', get('rowCanvas1').width/8,get('rowCanvas1').height/1.3);
-
-				ctx.beginPath();
-				ctx.fillStyle = '#FFFFFF'; 
-				ctx.fillStyle = 'rgba(0,0,0,1)';
-				ctx.fillRect(get('rowCanvas1').width/1.4,get('rowCanvas1').height/7,96,24);
-				ctx.fill();
-				ctx.lineWidth = 2;
-				ctx.strokeStyle = '#fff'; 
-				ctx.stroke();
-				ctx.closePath();
-				ctx.font = '18px monospace';
-				ctx.fillStyle = '#fff';
-				ctx.fillText('Poupar', get('rowCanvas1').width/1.33,get('rowCanvas1').height/3.6);
-
-				ctx.beginPath();
-				ctx.fillStyle = '#FFFFFF'; 
-				ctx.fillStyle = 'rgba(0,0,0,1)';
-				ctx.fillRect(get('rowCanvas1').width/1.4,get('rowCanvas1').height/1.6,96,24);
-				ctx.fill();
-				ctx.lineWidth = 2;
-				ctx.strokeStyle = '#fff'; 
-				ctx.stroke();
-				ctx.closePath();
-				ctx.font = '18px monospace';
-				ctx.fillStyle = '#fff';
-				ctx.fillText('Correr', get('rowCanvas1').width/1.33,get('rowCanvas1').height/1.3);
-			}
-			sprite.onload = () =>{
-				ctx.drawImage(sprite,get('rowCanvas1').width/2.5, get('rowCanvas1').height/7, 95, 95);
-			}
+			img.src = '../img/Slime foda.png'
+			get('attack').addEventListener('click', () =>{
+				var hp = get('hp').style.width;
+				hp = parseInt(hp) - 1*upgrade[0]
+				get('hp').style.width = hp+'%'
+				get('hp').innerText = hp+'%'
+				if(hp <= 0)
+				{
+					get('hp').style.width = 100+'%'
+					get('hp').innerText = 100+'%'
+					clicks += moneyPS * 0.1;
+				}
+				PlaySound('../sound/slashSFX.mp3')
+			})
+			get('spell').addEventListener('click', () =>{
+				if(secondsToSpellAgain <= 0){
+					var hp = get('hp').style.width;
+					hp = parseInt(hp) - 10
+					get('hp').style.width = hp+'%'
+					get('hp').innerText = hp+'%'
+					if(hp < 0)
+					{
+						get('hp').style.width = 100+'%'
+						get('hp').innerText = 100+'%'
+						clicks += moneyPS * 0.1;
+					}
+					PlaySound('../sound/spellSFX.mp3')
+					secondsToSpellAgain = 10
+					get('spell').innerText = 'Aguarde '+secondsToSpellAgain+'s'
+					diminuteSpellTime();
+				}
+			})
+			get('spare').addEventListener('click', () =>{
+				alert("Você sentiu dó desta pobre criatura e saiu andando...")
+				get('hp').style.width = 100+'%'
+				get('hp').innerText = 100+'%'
+			})
+			get('run').addEventListener('click', () =>{
+				alert("Você corre dessa criatura até suas pernas começarem a doer...")
+				var random = Math.floor(Math.random() * 20)
+				if(random == 1)
+					alert("o monstro te seguiu por todo esse caminho, ele realmente é persistente né?");
+				else{
+					get('hp').style.width = 100+'%'
+					get('hp').innerText = 100+'%'
+				}
+			})
 			firstLoading[0] = false;
 		}
 	}
 	if(id == 2){
 		if(firstLoading[1] == true){
 			get('row2').classList.add('enabled')
-			img.src = '../img/PlatformBackground.png'
-			img.onload = () =>{
-				ctx.fillPattern(img,0,0,get('rowCanvas2').width,get('rowCanvas2').height,128,128);
-		}
 		firstLoading[1] = false
-
-		sprite.src = '../img/grandma.png'
-		sprite.onload = () =>{
-			if(numIdosas < 16)
-				ctx.drawImage(sprite,Math.floor(sprite.x+Math.random()*4-2)+numIdosas*30,Math.floor(sprite.y+Math.random()*2+40));
-			numIdosas++;
-		}
 		}
 	}
-	//Function to get the mouse position
-	function getMousePos(canvas, event) {
-		var rect = canvas.getBoundingClientRect();
-		return {
-			x: event.clientX - rect.left,
-			y: event.clientY - rect.top
-		};
-	}
-	//Function to check whether a point is inside a rectangle
-	function isInside(pos, rect){
-		return pos.x > rect.x && pos.x < rect.x+rect.width && pos.y < rect.y+rect.height && pos.y > rect.y
-	}
+}
 
-	var canvas = get('rowCanvas1');
-	//The rectangle should have x,y,width,height properties
-	var rect = {
-		x:get('rowCanvas1').width/10,
-		y:get('rowCanvas1').height/7,
-		width:96,
-		height:24
-	};
-	var rect2 = {
-		x:get('rowCanvas1').width/10,
-		y:get('rowCanvas1').height/1.6,
-		width:96,
-		height:24
-	};
-	var rect3 = {
-		x:get('rowCanvas1').width/1.4,
-		y:get('rowCanvas1').height/7,
-		width:96,
-		height:24
-	};
-	var rect4 = {
-		x:get('rowCanvas1').width/1.4,
-		y:get('rowCanvas1').height/1.6,
-		width:96,
-		height:24
-	};
-	//Binding the click event on the canvas
-	canvas.addEventListener('click', function(evt) {
-		var mousePos = getMousePos(canvas, evt);
-
-		if (isInside(mousePos,rect)) {
-			ctx.fillRect(mousePos.x, mousePos.y, 2, 2)
+function diminuteSpellTime(){
+	setTimeout(() => {
+		console.log(secondsToSpellAgain)
+		secondsToSpellAgain = secondsToSpellAgain - 1
+		if(secondsToSpellAgain == 0)
+			get('spell').innerText = 'Feitiço'
+		if(secondsToSpellAgain > 0){
+			diminuteSpellTime();
+			get('spell').innerText = 'Aguarde '+secondsToSpellAgain+'s';
 		}
-		if (isInside(mousePos,rect2)) {
-			alert('clicked inside rect2');
-		}
-		if (isInside(mousePos,rect3)) {
-			alert('clicked inside rect3');
-		}
-		if (isInside(mousePos,rect4)) {
-			alert('clicked inside rect4');
-		}
-	}, false);
-}*/
+	}, 800)
+}
