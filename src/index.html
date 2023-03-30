@@ -12,6 +12,8 @@
     <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
     <script src="script.js"></script>
     <script src="buttons.js"></script>
+    <script src="volume.js"></script>
+    <script src="formatter.js"></script>
     <title>Cotuca Clicker</title>
 </head>
 <body onload="Load()">
@@ -35,7 +37,7 @@
                     <div id="moneyPerSecond">Moedas por segundo: 0</div>
                 </div>
                 <div class="ancoragemCotuca">
-                    <div class="cotucaDiv" onclick="Click()">
+                    <div class="cotucaDiv" onclick="Click(); PlaySound('../sound/cotucaSFX.mp3')">
                         <img src="../img/cotuca.png" alt="Png do Cotuca" class="cotuca">
                     </div>
                 </div>
@@ -85,11 +87,27 @@
                             <!---<canvas class="rowCanvas" id="rowCanvas1" width="530" height="128">-->
                         </div>
                         <div class="row" id="row2">
+                            <div class="rowCanvas" id="rowCanvas2" width="530" height="128">
+                                <div id="target" class="rowTarget" onclick="PlaySound('../sound/arrowSFX.mp3')">
+                                    <img src="" id="targetImg" alt="Alvo">
+                                </div>
+                            </div>
                             <div class="separatorBottom"></div>
                             <!---<canvas class="rowCanvas" id="rowCanvas2" width="530" height="128">-->
                         </div>
                         <div class="row" id="row3">
                             <div class="separatorBottom"></div>
+                            <canvas class="rowCanvas" id="rowCanvas3" width="530" height="128"/>
+                            <!---<canvas class="rowCanvas" id="rowCanvas3" width="530" height="128">-->
+                        </div>
+                        <div class="row" id="row4">
+                            <div class="separatorBottom"></div>
+                            <canvas class="rowCanvas" id="rowCanvas4" width="530" height="128"/>
+                            <!---<canvas class="rowCanvas" id="rowCanvas3" width="530" height="128">-->
+                        </div>
+                        <div class="row" id="row5">
+                            <div class="separatorBottom"></div>
+                            <canvas class="rowCanvas" id="rowCanvas5" width="530" height="128"/>
                             <!---<canvas class="rowCanvas" id="rowCanvas3" width="530" height="128">-->
                         </div>
                     </div>

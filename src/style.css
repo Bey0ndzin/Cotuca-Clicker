@@ -1,5 +1,6 @@
 *{
     font-family: monospace;
+    user-select: none;
 }
 body{
     padding: 0%;
@@ -199,6 +200,12 @@ a, a:visited {
 }
 #rowCanvas1{
     background-image: url('../img/landBackground.jpg');
+    background-size: cover;
+    background-repeat: none;
+}
+#rowCanvas2{
+    background-image: url('../img/barnBackground.jpg');
+    background-position: 13px -55px;
     background-size: cover;
     background-repeat: none;
 }
@@ -431,10 +438,43 @@ a, a:visited {
     background-image: url(../img/sword.png);
 }
 #productIcon1{
-    background-image: url(../img/shield.webp);
+    background-image: url(../img/shield.png);
 }
 #productIcon2{
     background-image: url(../img/armor.png);
+}
+#productIcon3{
+    background-image: url(../img/bootIcon.png);
+}
+#productIcon4{
+    background-image: url(../img/bowIcon.png);
+}
+#productIcon5{
+    background-image: url(../img/staffIcon.png);
+}
+#productIcon6{
+    background-image: url(../img/elfIcon.webp);
+}
+#productIcon7{
+    background-image: url(../img/orcIcon.png);
+}
+#productIcon8{
+    background-image: url(../img/SergioIcon.png);
+}
+#productIcon9{
+    background-image: url(../img/simoneIcon.png);
+}
+#productIcon10{
+    background-image: url(../img/patIcon.png);
+}
+#productIcon11{
+    background-image: url(../img/sampIcon.png);
+}
+#productIcon12{
+    background-image: url(../img/malignoIcon.png);
+}
+#productIcon13{
+    background-image: url(../img/chicoIcon.png);
 }
 .icon{
     width: 48px;
@@ -792,4 +832,16 @@ a.option.neato:active
 .info a:active
 {
 	background-color:#999;
+}
+.rowTarget{
+    width: 128px;
+    height: 128px;
+    position: absolute;
+    top: 13%;
+    left: 40%;
+    padding: 3px 3px;
+}
+.rowTarget img{
+    width: 128px;
+    height: 128px;
 }

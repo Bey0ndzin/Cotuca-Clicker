@@ -19,11 +19,22 @@ function Load(){
 	cpsSucked = 0;
 	globalCpsMult = 0;
 	Equips = 0;
-    preco = new Array(2)
+    preco = new Array(14)
     preco[0] = 5
     preco[1] = 50
     preco[2] = 120
-    upgrade = new Array(50)
+	preco[3] = 500
+	preco[4] = 1500
+	preco[5] = 5000
+	preco[6] = 15000
+	preco[7] = 50000
+	preco[8] = 100000
+	preco[9] = 500000
+	preco[10] = 1000000
+	preco[11] = 2500000
+	preco[12] = 5000000
+	preco[13] = 100000000
+    upgrade = new Array(14)
     for(var i = 0; i < upgrade.length; i++){
         upgrade[i] = 0
     }
@@ -71,8 +82,41 @@ function Upgrade(id){
 
         preco[id] = 1.15 * preco[id]
 
-		if(parseInt(id) >= 1){
+		if(parseInt(id) == 1){
 			moneyPS += id/2
+		}
+		else if(parseInt(id) == 2){
+			moneyPS += 1
+		}
+		else if(parseInt(id) == 3){
+			moneyPS += 100
+		}
+		else if(parseInt(id) == 4){
+			moneyPS += 500
+		}
+		else if(parseInt(id) == 5){
+			moneyPS += 5000
+		}
+		else if(parseInt(id) == 6){
+			moneyPS += 10000
+		}
+		else if(parseInt(id) == 7){
+			moneyPS += 50000
+		}
+		else if(parseInt(id) == 8){
+			moneyPS += 100000
+		}
+		else if(parseInt(id) == 9){
+			moneyPS += 1000000
+		}
+		else if(parseInt(id) == 10){
+			moneyPS += 5000000
+		}
+		else if(parseInt(id) == 11){
+			moneyPS += 10000000
+		}
+		else if(parseInt(id) == 12){
+			moneyPS += 50000000
 		}
 
         get('productPrice'+id).innerHTML = "R$" + Beautify(preco[id]) //Beautify(Math.round(preco[id]))
@@ -173,74 +217,6 @@ let updateClasses=function() {
     get.className=cssClasses.join(' ');
 }
 
-var volume=1
-let setVolume=function(what)
-{
-	volume=what;
-	get('music').volume = (volume / 100) / 2;
-}
-var Sounds=[];
-var SoundInsts=[];
-for (var i=0;i<12;i++){SoundInsts[i]=new Audio();}
-var SoundI=0;
-var PlaySound=function(url,vol)
-{
-	var volumeSetting=volume;
-	if (typeof vol!=='undefined') volume=vol;
-	if (volume<-5) {volume+=10;volumeSetting=volumeMusic;}
-	if (!volumeSetting || volume==0) return 0;
-	if (typeof Sounds[url]=='undefined')
-	{
-		Sounds[url]=new Audio(url);
-		Sounds[url].onloadeddata=function(e){PlaySound(url,vol);}
-	}
-	else if (Sounds[url].readyState>=2)
-	{
-		var sound=SoundInsts[SoundI];
-		SoundI++;
-		if (SoundI>=12) SoundI=0;
-		sound.src=url
-		//sound.src=Sounds[url].src;
-
-		sound.volume=Math.pow(volume/100,2);
-
-		try{sound.play();}catch(e){console.log('deu erro ao tocar')}
-	}
-}
-
-function formatEveryThirdPower(notations)
-{
-	return function (val)
-	{
-		var base=0,notationValue='';
-		if (!isFinite(val)) return 'Infinity';
-		if (val>=1000000)
-		{
-			val/=1000;
-			while(Math.round(val)>=1000)
-			{
-				val/=1000;
-				base++;
-			}
-			if (base>=notations.length) {return 'Infinity';} else {notationValue=notations[base];}
-		}
-		return (Math.round(val*1000)/1000)+notationValue;
-	};
-}
-function rawFormatter(val){return Math.round(val*1000)/1000;}
-
-var formatShort=['k','M','B','T','Qa','Qi','Sx','Sp','Oc','No'];
-var formatLong=[' thousand',' million',' billion',' trillion',' quadrillion',' quintillion',' sextillion',' septillion',' octillion',' nonillion'];
-var prefixes=['','un','duo','tre','quattuor','quin','sex','septen','octo','novem'];
-var suffixes=['decillion','vigintillion','trigintillion','quadragintillion','quinquagintillion','sexagintillion','septuagintillion','octogintillion','nonagintillion'];
-
-var numberFormatters=
-[
-	formatEveryThirdPower(formatShort),
-	formatEveryThirdPower(formatLong),
-	rawFormatter
-];
-
 var fps=30
 var sayTime=function(time,detail)
 {
@@ -336,10 +312,13 @@ CanvasRenderingContext2D.prototype.fillPattern=function(img,X,Y,W,H,iW,iH,offX,o
 	}
 }
 
-var firstLoading = [true, true];
+var firstLoading = [true, true, true, true, true, true];
 var secondsToSpellAgain = 0
+var countElfo = 0, countOrc = 0, countSergio = 0, countSimone = 0, countMaligno = 0, countChico = 0;
+
 function draw(id){
 	var img = get('enemyImg')
+	var img2 = get('targetImg')
 	if(id == 1){
 		if(firstLoading[0] == true){
 			get('row1').classList.add('enabled')
@@ -360,7 +339,7 @@ function draw(id){
 			get('spell').addEventListener('click', () =>{
 				if(secondsToSpellAgain <= 0){
 					var hp = get('hp').style.width;
-					hp = parseInt(hp) - 10
+					hp = parseInt(hp) - (10+upgrade[5]*5)
 					get('hp').style.width = hp+'%'
 					get('hp').innerText = hp+'%'
 					if(hp < 0)
@@ -381,6 +360,7 @@ function draw(id){
 				get('hp').innerText = 100+'%'
 			})
 			get('run').addEventListener('click', () =>{
+				PlaySound('../sound/runSFX.mp3')
 				alert("Você corre dessa criatura até suas pernas começarem a doer...")
 				var random = Math.floor(Math.random() * 20)
 				if(random == 1)
@@ -393,10 +373,161 @@ function draw(id){
 			firstLoading[0] = false;
 		}
 	}
-	if(id == 2){
+	if(id == 5){
 		if(firstLoading[1] == true){
 			get('row2').classList.add('enabled')
+			img2.src = '../img/targetIcon.png'
 		firstLoading[1] = false
+		}
+	}
+	if(id == 7){
+		var canvas = get('rowCanvas3');
+		var ctx = canvas.getContext('2d');
+		if(firstLoading[2] == true){
+			get('row3').classList.add('enabled')
+
+			var fundo = new Image();
+			fundo.src = '../img/PlatformBackground.png'
+
+			fundo.onload = () =>{
+				var ptrn = ctx.createPattern(fundo, 'repeat')
+				ctx.rect(0, 0, 530, 128);
+				ctx.fillStyle = ptrn;
+				ctx.fill();
+				//ctx.drawImage(fundo,0,0, 128, 130)
+
+				var elfo = new Image();
+				elfo.src = '../img/elfIcon.webp'
+
+				elfo.onload = () => {
+					ctx.drawImage(elfo, countElfo, 56, 64, 48)
+				}
+			}
+		firstLoading[2] = false
+		}
+
+		if(countElfo < 11)
+		{
+			var elfo = new Image();
+			elfo.src = '../img/elfIcon.webp'
+
+			elfo.onload = () => {
+				ctx.drawImage(elfo, countElfo*45, 56, 64, 48)
+				countElfo++;
+			}
+		}
+	}
+	if(id == 8){
+		var canvas = get('rowCanvas4');
+		var ctx = canvas.getContext('2d');
+		if(firstLoading[3] == true){
+			get('row4').classList.add('enabled')
+
+			var fundo = new Image();
+			fundo.src = '../img/PlatformBackground.png'
+
+			fundo.onload = () =>{
+				var ptrn = ctx.createPattern(fundo, 'repeat')
+				ctx.rect(0, 0, 530, 128);
+				ctx.fillStyle = ptrn;
+				ctx.fill();
+				//ctx.drawImage(fundo,0,0, 128, 130)
+
+				var orc = new Image();
+				orc.src = '../img/orcIcon.png'
+
+				orc.onload = () => {
+					ctx.drawImage(orc, countOrc, 56, 64, 48)
+				}
+			}
+		firstLoading[3] = false
+		}
+		
+		if(countOrc < 8)
+		{
+			var orc = new Image();
+			orc.src = '../img/orcIcon.png'
+
+			orc.onload = () => {
+				ctx.drawImage(orc, countOrc*60, 56, 64, 48)
+				countOrc++;
+			}
+		}
+	}
+
+	if(id == 9){
+		var canvas = get('rowCanvas5');
+		var ctx = canvas.getContext('2d');
+		if(firstLoading[4] == true){
+			get('row5').classList.add('enabled')
+
+			var fundo = new Image();
+			fundo.src = '../img/PlatformBackground.png'
+
+			fundo.onload = () =>{
+				var ptrn = ctx.createPattern(fundo, 'repeat')
+				ctx.rect(0, 0, 530, 128);
+				ctx.fillStyle = ptrn;
+				ctx.fill();
+				//ctx.drawImage(fundo,0,0, 128, 130)
+
+				var sergio = new Image();
+				sergio.src = '../img/SergioIcon.png'
+
+				sergio.onload = () => {
+					ctx.drawImage(sergio, countSergio, 56, 64, 48)
+				}
+			}
+		firstLoading[4] = false
+		}
+		
+		if(countSergio < 14)
+		{
+			var sergio = new Image();
+			sergio.src = '../img/SergioIcon.png'
+
+			sergio.onload = () => {
+				ctx.drawImage(sergio, countSergio*40, 56, 64, 48)
+				countSergio++;
+			}
+		}
+	}
+
+	if(id == 10){
+		var canvas = get('rowCanvas6');
+		var ctx = canvas.getContext('2d');
+		if(firstLoading[5] == true){
+			get('row6').classList.add('enabled')
+
+			var fundo = new Image();
+			fundo.src = '../img/PlatformBackground.png'
+
+			fundo.onload = () =>{
+				var ptrn = ctx.createPattern(fundo, 'repeat')
+				ctx.rect(0, 0, 530, 128);
+				ctx.fillStyle = ptrn;
+				ctx.fill();
+				//ctx.drawImage(fundo,0,0, 128, 130)
+
+				var simone = new Image();
+				simone.src = '../img/SergioIcon.png'
+
+				simone.onload = () => {
+					ctx.drawImage(simone, countSergio, 56, 64, 48)
+				}
+			}
+		firstLoading[5] = false
+		}
+		
+		if(countSimone < 14)
+		{
+			var simone = new Image();
+			simone.src = '../img/SergioIcon.png'
+
+			simone.onload = () => {
+				ctx.drawImage(simone, countSergio, 56, 64, 48)
+				countSimone++;
+			}
 		}
 	}
 }
