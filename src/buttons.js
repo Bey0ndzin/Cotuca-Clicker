@@ -1,3 +1,6 @@
+let dataInicial = new Date();
+dataInicial.setTime(Date.now())
+
 function get(what) {
     return document.getElementById(what);
 }
@@ -32,7 +35,7 @@ var ExportSave=function()
 {
 		//if (App) return false;
 		prefs.showBackupWarning=0;
-		prompt('<id ExportSave><h3>'+("Export save")+'</h3><div class="block">'+("This is your save code.<br>Copy it and keep it somewhere safe!")+'</div><div class="block"><textarea id="textareaPrompt" style="width:100%;height:128px;" readonly>'+WriteSave(1)+'</textarea></div>',[("All done!")]);//prompt('Copy this text and keep it somewhere safe!',WriteSave(1));
+		prompt('<id ExportSave><h3>'+("Export save")+'</h3><div class="block">'+("Esse é seu código de save.<br>Deixe ele segura em algum lugar!")+'</div><div class="block"><textarea id="textareaPrompt" style="width:100%;height:128px;" readonly>'+WriteSave(1)+'</textarea></div>',[("All done!")]);//prompt('Copy this text and keep it somewhere safe!',WriteSave(1));
 		get('textareaPrompt').focus();
 		get('textareaPrompt').select();
 	}
@@ -442,9 +445,9 @@ let UpdateMenu=function()
 		else if (elderWrath==0 && pledges>0) wrathStr=("appeased");
 				
 		var dropMult=dropRateMult();*/
-				
+
 		var date=new Date();
-		date.setTime(Date.now()-startDate);
+		date.setTime(Date.now()-dataInicial);
 		var timeInSeconds=date.getTime()/1000;
 		var startDate=sayTime(timeInSeconds*fps,-1);
 		date.setTime(Date.now()-fullDate);
@@ -560,4 +563,50 @@ let UpdateMenu=function()
 	/*AddEvent(get('selectionKeeper'),'mouseup',function(e){
 		console.log('selection:',window.getSelection());
 	});*/
+}
+
+
+let buyMode = 1;
+let buyBulk = 1;
+function storeBulkButton(id)
+{
+	if (id==0) buyMode=1;
+	else if (id==1) buyBulk=1;
+	else if (id==2) buyBulk=10;
+	else if (id==3) buyBulk=100;
+			
+	if (buyMode==1 && buyBulk==-1) buyBulk=100;
+	
+	if (buyMode==1) get('storeBulkBuy').className='storePreButton storeBulkMode selected'; else get('storeBulkBuy').className='storePreButton storeBulkMode';
+			
+	if (buyBulk==1) get('storeBulk1').className='storePreButton storeBulkAmount selected'; else get('storeBulk1').className='storePreButton storeBulkAmount';
+	if (buyBulk==10) get('storeBulk10').className='storePreButton storeBulkAmount selected'; else get('storeBulk10').className='storePreButton storeBulkAmount';
+	if (buyBulk==100) get('storeBulk100').className='storePreButton storeBulkAmount selected'; else get('storeBulk100').className='storePreButton storeBulkAmount';
+	
+	if (buyMode==1)
+	{
+		get('products').className='storeSection';
+	}
+	else
+	{
+		get('storeBulkMax').style.visibility='visible';
+		get('products').className='storeSection selling';
+	}
+	
+	storeToRefresh=1;
+	if (id!=-1) PlaySound('../sound/clickSFX.mp3');
+	CanBuy();
+}
+
+function calculateBuyValue(id){
+
+	var novoPreco = preco[id]
+	if(buyBulk != 1)
+	{
+		for(var i = 0; i < buyBulk; i++)
+		{
+			novoPreco += preco[id]*1.15
+		}
+	}
+	return novoPreco;
 }

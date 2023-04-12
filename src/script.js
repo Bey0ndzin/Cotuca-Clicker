@@ -1,5 +1,5 @@
 let clicks, upgrade, preco, moneyPS, kills, Equips, clicksEarned, clicksReset, resets, globalCpsMult, cpsSucked;
-var startDate=new Date();
+let startDate=new Date();
 startDate.setTime(Date.now());
 //Declara váriaveis globais que vão ser usadas em várias funções diferentes
 
@@ -67,56 +67,70 @@ function Click(){
 }
 function Upgrade(id){
     //Compra o primeiro upgrade
-    if(clicks >= preco[id]){ //Verifica se a pessoa tem dinheiro o suficiente
-        upgrade[id] += 1
-        clicks -= preco[id]
-        if(upgrade[id] == 1 && get('product'+(parseInt(id)+1)) != null)
-        {
-            //Caso seja a primeira compra mostra o proximo upgrade
-            $("#product"+(parseInt(id)+1)).hide();
-            get('product'+(parseInt(id)+1)).classList.remove('locked')
-            $("#product"+(parseInt(id)+1)).show(500);
-        }
-		Equips++;
+    if(clicks >= calculateBuyValue(id)){ //Verifica se a pessoa tem dinheiro o suficiente
+
+        upgrade[id] += buyBulk
+        clicks -= calculateBuyValue(id)
+		if(get('product'+(parseInt(id)+1)) != null)
+		{
+			if(get('product'+(parseInt(id)+1)).classList.contains('locked'))
+			{
+				//Caso seja a primeira compra mostra o proximo upgrade
+				$("#product"+(parseInt(id)+1)).hide();
+				get('product'+(parseInt(id)+1)).classList.remove('locked')
+				$("#product"+(parseInt(id)+1)).show(500);
+			}
+		}
+		Equips+=buyBulk;
+
 		draw(parseInt(id+1));
 
-        preco[id] = 1.15 * preco[id]
+        //preco[id] = 1.15 * preco[id]
+		if(buyBulk != 1)
+		{
+			for(var i = 0; i < buyBulk; i++)
+			{
+				preco[id] = 1.15 * preco[id]
+			}
+		}
+		else
+			preco[id] = 1.15 * preco[id]
 
 		if(parseInt(id) == 1){
 			moneyPS += id/2
 		}
 		else if(parseInt(id) == 2){
-			moneyPS += 1
+			moneyPS += 1 * buyBulk
 		}
 		else if(parseInt(id) == 3){
-			moneyPS += 100
+			moneyPS += 100 * buyBulk
 		}
 		else if(parseInt(id) == 4){
-			moneyPS += 500
+			moneyPS += 500 * buyBulk
 		}
 		else if(parseInt(id) == 5){
-			moneyPS += 5000
+			moneyPS += 5000 * buyBulk // 5k
 		}
 		else if(parseInt(id) == 6){
-			moneyPS += 10000
+			moneyPS += 10000 * buyBulk // 10k
 		}
 		else if(parseInt(id) == 7){
-			moneyPS += 50000
+			moneyPS += 50000 * buyBulk // 50k
 		}
 		else if(parseInt(id) == 8){
-			moneyPS += 100000
+			moneyPS += 100000 * buyBulk // 100k
 		}
 		else if(parseInt(id) == 9){
-			moneyPS += 1000000
+			moneyPS += 1000000 * buyBulk // 1m
 		}
 		else if(parseInt(id) == 10){
-			moneyPS += 5000000
+			moneyPS += 5000000 * buyBulk // 5m
 		}
 		else if(parseInt(id) == 11){
-			moneyPS += 10000000
+			moneyPS += 10000000 * buyBulk // 10m
 		}
 		else if(parseInt(id) == 12){
-			moneyPS += 50000000
+			moneyPS += 50000000 * buyBulk // 50m
 		}
 
         get('productPrice'+id).innerHTML = "R$" + Beautify(preco[id]) //Beautify(Math.round(preco[id]))
@@ -124,6 +138,7 @@ function Upgrade(id){
         get('productOwned'+id).innerHTML = Beautify(upgrade[id])
 
 		PlaySound('../sound/buySFX.mp3')
+		CanBuy();
 	}
     else
         console.log("Dinheiro insuficiente")
@@ -134,20 +149,45 @@ function farm(){
 	clicksEarned += moneyPS;
     clicks += moneyPS
     get("money").innerHTML = "Moedas: " + Beautify(clicks) + '<div id="moneyPerSecond">Moedas por segundo: ' + Beautify(moneyPS) + '</div>'
+
 	if(onMenu == 'stats'){
 		var status = document.getElementsByClassName('price plain')
 		status[0].innerHTML = Beautify(clicks)
 		status[1].innerHTML = Beautify(clicksEarned)
 		status[2].innerHTML = Beautify(clicksEarned)
 		var status2 = document.getElementsByClassName('listing')
-		status2[3].innerHTML = '<b>Run começou: '+'</b>'+startDate.getDate()+'/'+startDate.getMonth()+' '+startDate.getHours()+':'+startDate.getMinutes()+':'+startDate.getSeconds()
+		var date = new Date();
+		date.setTime(Date.now()-startDate);
+		var timeInSeconds=date.getTime()/1000;
+		var startDate2=sayTime(timeInSeconds*fps,-1);
+		status2[3].innerHTML = '<b>Run começou: '+'</b> '+(startDate2==''?("just now"):("%1 ago",startDate2));
 		status2[4].innerHTML = '<b>Equipamentos: </b>' + Beautify(Equips)
 		status2[5].innerHTML = '<b>Moedas por segundo: </b>' + Beautify(moneyPS,1) + '<small> (multiplicador: ' + Beautify(Math.round(globalCpsMult*100),1)+'%)</small> '
 		status2[6].innerHTML = '<b>Moedas por Click: </b>' + Beautify(upgrade[0] + 1)
-	}
+	}	
 	
-
+	CanBuy();
     evento0()
+}
+function CanBuy(){
+	for(var i = 0; i <= 13; i++)
+	{
+		if(get('product'+i).classList.contains('locked'))
+			i = i;
+		else
+		{
+			if(clicks < calculateBuyValue(i))
+			{
+				get('product'+i).classList.remove('enabled')
+				get('product'+i).classList.add('disabled')
+			}
+			else
+			{
+				get('product'+i).classList.remove('disabled')
+				get('product'+i).classList.add('enabled')
+			}
+		}
+	}
 }
 function evento0(){
     var random = Math.floor(Math.random() * 2500)
@@ -248,11 +288,11 @@ var sayTime=function(time,detail)
 		if (hours) {seconds=0;}
 		var bits=[];
 		//if (months>0) bits.push(Beautify(months)+' month'+(days==1?'':'s'));
-		if (days>0) bits.push(("%1 day",LBeautify(days)));
-		if (hours>0) bits.push(("%1 hour",LBeautify(hours)));
-		if (minutes>0) bits.push(("%1 minute",LBeautify(minutes)));
-		if (seconds>0) bits.push(("%1 second",LBeautify(seconds)));
-		if (bits.length==0) str=("less than 1 second");
+		if (days>0) bits.push((Beautify(days)+" dias"));
+		if (hours>0) bits.push(Beautify(hours)+(" horas"));
+		if (minutes>0) bits.push((Beautify(minutes)+" minutos"));
+		if (seconds>0) bits.push((Beautify(seconds)+" segundos"));
+		if (bits.length==0) str=("Menos de 1 segundo");
 		else str=bits.join(', ');
 		/*//if (months>0) bits.push(Beautify(months)+' month'+(days==1?'':'s'));
 		if (days>0) bits.push(Beautify(days)+' day'+(days==1?'':'s'));
@@ -266,10 +306,10 @@ var sayTime=function(time,detail)
 	{
 		/*if (time>=fps*60*60*24*30*2 && detail<1) str=Beautify(Math.floor(time/(fps*60*60*24*30)))+' months';
 		else if (time>=fps*60*60*24*30 && detail<1) str='1 month';
-		else */if (time>=fps*60*60*24 && detail<2) str=("%1 day",LBeautify(Math.floor(time/(fps*60*60*24))));//Beautify(Math.floor(time/(fps*60*60*24)))+' days';
-		else if (time>=fps*60*60 && detail<3) str=("%1 hour",LBeautify(Math.floor(time/(fps*60*60))));//Beautify(Math.floor(time/(fps*60*60)))+' hours';
-		else if (time>=fps*60 && detail<4) str=("%1 minute",LBeautify(Math.floor(time/(fps*60))));//Beautify(Math.floor(time/(fps*60)))+' minutes';
-		else if (time>=fps && detail<5) str=("%1 second",LBeautify(Math.floor(time/(fps))));//Beautify(Math.floor(time/(fps)))+' seconds';
+		else */if (time>=fps*60*60*24 && detail<2) str=("%1 day",Beautify(Math.floor(time/(fps*60*60*24))));//Beautify(Math.floor(time/(fps*60*60*24)))+' days';
+		else if (time>=fps*60*60 && detail<3) str=("%1 hour",Beautify(Math.floor(time/(fps*60*60))));//Beautify(Math.floor(time/(fps*60*60)))+' hours';
+		else if (time>=fps*60 && detail<4) str=("%1 minute",Beautify(Math.floor(time/(fps*60))));//Beautify(Math.floor(time/(fps*60)))+' minutes';
+		else if (time>=fps && detail<5) str=("%1 second",Beautify(Math.floor(time/(fps))));//Beautify(Math.floor(time/(fps)))+' seconds';
 		else str=("less than 1 second");
 	}
 	return str;
@@ -299,6 +339,7 @@ var getTooltip=function(text,origin,isCrate)
 	(EN?'<div class="descriptionBk"><b>'+Beautify(me.totalCookies)+'</b> '+(Math.floor(me.totalCookies)==1?'cookie':'cookies')+' '+me.actionName+' so far</div>':'<div class="descriptionBk">'+("<b>%1</b> produced so far",("%1 cookie",LBeautify(me.totalCookies)))+'</div>')
 ):'')+
 '</div>';*/
+
 CanvasRenderingContext2D.prototype.fillPattern=function(img,X,Y,W,H,iW,iH,offX,offY)
 {
 	//for when built-in patterns aren't enough
@@ -312,7 +353,7 @@ CanvasRenderingContext2D.prototype.fillPattern=function(img,X,Y,W,H,iW,iH,offX,o
 	}
 }
 
-var firstLoading = [true, true, true, true, true, true];
+var firstLoading = [true, true, true, true, true, true, true];
 var secondsToSpellAgain = 0
 var countElfo = 0, countOrc = 0, countSergio = 0, countSimone = 0, countMaligno = 0, countChico = 0;
 
@@ -510,10 +551,10 @@ function draw(id){
 				//ctx.drawImage(fundo,0,0, 128, 130)
 
 				var simone = new Image();
-				simone.src = '../img/SergioIcon.png'
+				simone.src = '../img/SimoneIcon.png'
 
 				simone.onload = () => {
-					ctx.drawImage(simone, countSergio, 56, 64, 48)
+					ctx.drawImage(simone, countSimone, 56, 64, 48)
 				}
 			}
 		firstLoading[5] = false
@@ -522,12 +563,21 @@ function draw(id){
 		if(countSimone < 14)
 		{
 			var simone = new Image();
-			simone.src = '../img/SergioIcon.png'
+			simone.src = '../img/SimoneIcon.png'
 
 			simone.onload = () => {
-				ctx.drawImage(simone, countSergio, 56, 64, 48)
+				ctx.drawImage(simone, countSimone*40, 56, 64, 48)
 				countSimone++;
 			}
+		}
+	}
+
+	if(id == 11){
+		var canvas = get('rowCanvas7');
+		var ctx = canvas.getContext('2d');
+		if(firstLoading[6] == true){
+			get('row7').classList.add('enabled')
+		firstLoading[6] = false
 		}
 	}
 }

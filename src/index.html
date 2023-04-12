@@ -110,6 +110,16 @@
                             <canvas class="rowCanvas" id="rowCanvas5" width="530" height="128"/>
                             <!---<canvas class="rowCanvas" id="rowCanvas3" width="530" height="128">-->
                         </div>
+                        <div class="row" id="row6">
+                            <div class="separatorBottom"></div>
+                            <canvas class="rowCanvas" id="rowCanvas6" width="530" height="128"/>
+                            <!---<canvas class="rowCanvas" id="rowCanvas3" width="530" height="128">-->
+                        </div>
+                        <div class="row" id="row7">
+                            <div class="separatorBottom"></div>
+                            <canvas class="rowCanvas" id="rowCanvas7" width="530" height="128"/>
+                            <!---<canvas class="rowCanvas" id="rowCanvas3" width="530" height="128">-->
+                        </div>
                     </div>
                     <div id="menu"></div>
                 </div>
@@ -127,9 +137,14 @@
                     <div class="storeTitle">Mestre Kikoku Navara</div>
                     <div id="upgrades" class="storeSection"></div>
                     <div id="products" class="storeSection">
-                        <div id="storeBulk" class="storePre"></div>
+                        <div id="storeBulk" class="storePre">
+                            <div id="storeBulkBuy" class="storePreButton storeBulk Mode selected" onclick="storeBulkButton(0);">Comprar</div>
+                            <div id="storeBulk1" class="storePreButton storeBulkAmount selected" onclick="storeBulkButton(1);">1</div>
+                            <div id="storeBulk10" class="storePreButton storeBulkAmount" onclick="storeBulkButton(2);">10</div>
+                            <div id="storeBulk100" class="storePreButton storeBulkAmount" onclick="storeBulkButton(3);">100</div>
+                        </div>
 
-                        <div class="product" id="0" onclick="Upgrade(this.id)">
+                        <div class="product unlocked" id="product0" onclick="Upgrade(0)">
                             <div class="icon" id="productIcon0"></div>
                             <div class="content">
                                 <div class="title productName" id="productName0">Espada</div>
