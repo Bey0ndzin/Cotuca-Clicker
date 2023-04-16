@@ -869,3 +869,65 @@ a.option.neato:active
     width: 128px;
     height: 128px;
 }
+.crateBox .upgradeBox{
+    filter: drop-shadow(0px, 3px, 2px, #000);
+    -webkit-filter: drop-shadow(0px, 3px, 2px, #000);
+}
+.crate:hover{
+    background-color: #000;
+    opacity: 1;
+    top: -1px;
+}
+body .crate{
+    background-image: url();
+}
+.crate {
+    width: 48px;
+    height: 48px;
+    margin: 6px;
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    background: rgba(0,0,0,0.25);
+    float: left;
+    border: none;
+}
+#tooltipAnchor{
+    position: absolute;
+    z-index: 1000000;
+    display: none;
+}
+#tooltip{
+    position: absolute;
+    transition: none;
+    pointer-events: none;
+    opacity: 1;
+}
+.framed, a.option.framed {
+    padding: 4px 8px;
+    margin: 4px;
+    border: 3px solid transparent;
+    border-image: url(../img/frameBorder.png) 3 round;
+    border-radius: 2px;
+    box-shadow: 0px 0px 1px 2px rgba(0,0,0,0.5), 0px 2px 4px rgba(0,0,0,0.25), 0px 0px 6px 1px rgba(0,0,0,0.5) inset;
+    -webkit-transition: opacity 0.1s ease-out;
+    -moz-transition: opacity 0.1s ease-out;
+    -ms-transition: opacity 0.1s ease-out;
+    -o-transition: opacity 0.1s ease-out;
+    transition: opacity 0.1s ease-out;
+}
+.framed, a.option, a.option.framed, a.option.framed:hover, .smallFramed, a.smallFancyButton {
+    border-color: #ece2b6 #875526 #733726 #dfbc9a;
+}
+.framed, a.option, .sliderBox, .smallFramed {
+    border: 1px solid #e2dd48;
+    background: #000 url(../img/DarkNoise.png);
+    background-image: url(../img/shadedBordersSoft.png),url(../img/DarkNoise.png);
+    background-size: 100% 100%,auto;
+    background-color: #000;
+    border-radius: 2px;
+    box-shadow: 0px 0px 1px 2px rgba(0,0,0,0.5), 0px 2px 4px rgba(0,0,0,0.25), 0px 0px 2px 2px #000 inset, 0px 1px 0px 1px rgba(255,255,255,0.5) inset;
+    text-shadow: 0px 1px 1px #000;
+    color: #ccc;
+    line-height: 100%;
+}

@@ -96,42 +96,18 @@ function Upgrade(id){
 		else
 			preco[id] = 1.15 * preco[id]
 
-		if(parseInt(id) == 1){
-			moneyPS += id/2
-		}
-		else if(parseInt(id) == 2){
-			moneyPS += 1 * buyBulk
-		}
-		else if(parseInt(id) == 3){
-			moneyPS += 100 * buyBulk
-		}
-		else if(parseInt(id) == 4){
-			moneyPS += 500 * buyBulk
-		}
-		else if(parseInt(id) == 5){
-			moneyPS += 5000 * buyBulk // 5k
-		}
-		else if(parseInt(id) == 6){
-			moneyPS += 10000 * buyBulk // 10k
-		}
-		else if(parseInt(id) == 7){
-			moneyPS += 50000 * buyBulk // 50k
-		}
-		else if(parseInt(id) == 8){
-			moneyPS += 100000 * buyBulk // 100k
-		}
-		else if(parseInt(id) == 9){
-			moneyPS += 1000000 * buyBulk // 1m
-		}
-		else if(parseInt(id) == 10){
-			moneyPS += 5000000 * buyBulk // 5m
-		}
-		else if(parseInt(id) == 11){
-			moneyPS += 10000000 * buyBulk // 10m
-		}
-		else if(parseInt(id) == 12){
-			moneyPS += 50000000 * buyBulk // 50m
-		}
+		if(parseInt(id) == 1){moneyPS += id/2}
+		else if(parseInt(id) == 2){moneyPS += 1 * buyBulk}
+		else if(parseInt(id) == 3){moneyPS += 100 * buyBulk}
+		else if(parseInt(id) == 4){moneyPS += 500 * buyBulk}
+		else if(parseInt(id) == 5){moneyPS += 5000 * buyBulk}// 5k
+		else if(parseInt(id) == 6){moneyPS += 10000 * buyBulk}// 10k
+		else if(parseInt(id) == 7){moneyPS += 50000 * buyBulk}// 50k
+		else if(parseInt(id) == 8){moneyPS += 100000 * buyBulk}// 100k
+		else if(parseInt(id) == 9){moneyPS += 1000000 * buyBulk}// 1m
+		else if(parseInt(id) == 10){moneyPS += 5000000 * buyBulk}// 5m
+		else if(parseInt(id) == 11){moneyPS += 10000000 * buyBulk}// 10m
+		else if(parseInt(id) == 12){moneyPS += 50000000 * buyBulk}// 50m
 
         get('productPrice'+id).innerHTML = "R$" + Beautify(preco[id]) //Beautify(Math.round(preco[id]))
         get('money').innerHTML = "Moedas: " + Beautify(clicks) + '<div id="moneyPerSecond">Moedas por segundo: ' + Beautify(moneyPS) + '</div>'
@@ -331,12 +307,12 @@ var getTooltip=function(text,origin,isCrate)
 
 /*return '<div style="position:absolute;left:1px;top:1px;right:1px;bottom:1px;background:linear-gradient(125deg,'+(false?'rgba(15,115,130,1) 0%,rgba(15,115,130,0)':'rgba(50,40,40,1) 0%,rgba(50,40,40,0)')+' 20%);mix-blend-mode:screen;z-index:1;"></div><div style="z-index:10;min-width:350px;padding:8px;position:relative;" id="tooltipBuilding"><div class="icon" style="float:left;margin-left:-8px;margin-top:-8px;'+writeIcon(icon)+'"></div><div style="float:right;text-align:right;"><span class="price'+(canBuy?'':' disabled')+'">'+Beautify(Math.round(price))+'</span>'+costDetails(price)+'</div><div class="name">'+name+'</div>'+'<small><div class="tag">'+("owned: %1",me.amount)+'</div>'+(me.free>0?'<div class="tag">'+("free: %1!",me.free)+'</div>':'')+'</small>'+
 '<div class="line"></div><div class="description"><q>'+desc+'</q></div>'+
-(me.totalCookies>0?(
+(me.totalclicks>0?(
 	'<div class="line"></div>'+
 	(me.amount>0?'<div class="descriptionBk">'+("each %1 produces <b>%2</b> per second",[me.single,("%1 cookie",LBeautify((me.storedTotalCps/me.amount)*globalCpsMult,1))])+'</div>':'')+
-	'<div class="descriptionBk">'+("%1 producing <b>%2</b> per second",[("%1 "+me.bsingle,LBeautify(me.amount)),("%1 cookie",LBeautify(me.storedTotalCps*globalCpsMult,1))])+' ('+("<b>%1%</b> of total CpS",Beautify(cookiesPs>0?((me.amount>0?((me.storedTotalCps*globalCpsMult)/cookiesPs):0)*100):0,1))+')</div>'+
+	'<div class="descriptionBk">'+("%1 producing <b>%2</b> per second",[("%1 "+me.bsingle,LBeautify(me.amount)),("%1 cookie",LBeautify(me.storedTotalCps*globalCpsMult,1))])+' ('+("<b>%1%</b> of total CpS",Beautify(clicksPs>0?((me.amount>0?((me.storedTotalCps*globalCpsMult)/clicksPs):0)*100):0,1))+')</div>'+
 	(synergiesStr?('<div class="descriptionBk">'+synergiesStr+'</div>'):'')+
-	(EN?'<div class="descriptionBk"><b>'+Beautify(me.totalCookies)+'</b> '+(Math.floor(me.totalCookies)==1?'cookie':'cookies')+' '+me.actionName+' so far</div>':'<div class="descriptionBk">'+("<b>%1</b> produced so far",("%1 cookie",LBeautify(me.totalCookies)))+'</div>')
+	(EN?'<div class="descriptionBk"><b>'+Beautify(me.totalclicks)+'</b> '+(Math.floor(me.totalclicks)==1?'cookie':'clicks')+' '+me.actionName+' so far</div>':'<div class="descriptionBk">'+("<b>%1</b> produced so far",("%1 cookie",LBeautify(me.totalclicks)))+'</div>')
 ):'')+
 '</div>';*/
 

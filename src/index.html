@@ -14,6 +14,8 @@
     <script src="buttons.js"></script>
     <script src="volume.js"></script>
     <script src="formatter.js"></script>
+    <script src="tooltip.js"></script>
+    <script src="upgrade.js"></script>
     <title>Cotuca Clicker</title>
 </head>
 <body onload="Load()">
@@ -98,27 +100,22 @@
                         <div class="row" id="row3">
                             <div class="separatorBottom"></div>
                             <canvas class="rowCanvas" id="rowCanvas3" width="530" height="128"/>
-                            <!---<canvas class="rowCanvas" id="rowCanvas3" width="530" height="128">-->
                         </div>
                         <div class="row" id="row4">
                             <div class="separatorBottom"></div>
                             <canvas class="rowCanvas" id="rowCanvas4" width="530" height="128"/>
-                            <!---<canvas class="rowCanvas" id="rowCanvas3" width="530" height="128">-->
                         </div>
                         <div class="row" id="row5">
                             <div class="separatorBottom"></div>
                             <canvas class="rowCanvas" id="rowCanvas5" width="530" height="128"/>
-                            <!---<canvas class="rowCanvas" id="rowCanvas3" width="530" height="128">-->
                         </div>
                         <div class="row" id="row6">
                             <div class="separatorBottom"></div>
                             <canvas class="rowCanvas" id="rowCanvas6" width="530" height="128"/>
-                            <!---<canvas class="rowCanvas" id="rowCanvas3" width="530" height="128">-->
                         </div>
                         <div class="row" id="row7">
                             <div class="separatorBottom"></div>
                             <canvas class="rowCanvas" id="rowCanvas7" width="530" height="128"/>
-                            <!---<canvas class="rowCanvas" id="rowCanvas3" width="530" height="128">-->
                         </div>
                     </div>
                     <div id="menu"></div>
@@ -135,7 +132,9 @@
                 </div>
                 <div class="store">
                     <div class="storeTitle">Mestre Kikoku Navara</div>
-                    <div id="upgrades" class="storeSection"></div>
+                    <div id="upgrades" class="storeSection upgradeBox">
+                        <div onclick="UpgradesById[0].click(event);" class="crate upgrade" onmouseout="SetOnCrate(0);Tooltip.shouldHide=1;" onmouseover="if(!mouseDown) {SetOnCrate(this);Tooltip.dynamic=1;Tooltip.draw(this,function(){return function(){return CrateTooltip(UpgradesById[0],'store');}();},'store');Tooltip.wobble();}" id="upgrade0" style="background-position: -576px -192px;"></div>   
+                    </div>
                     <div id="products" class="storeSection">
                         <div id="storeBulk" class="storePre">
                             <div id="storeBulkBuy" class="storePreButton storeBulk Mode selected" onclick="storeBulkButton(0);">Comprar</div>
@@ -269,8 +268,12 @@
                                 <div class="title owned" id="productOwned13">0</div>
                             </div>
                         </div>
-
                     </div>
+                </div>
+            </div>
+            <div id="tooltipAnchor" style="opacity: 1; display: none; visibility: visible; inset: 528px auto auto 864px;">
+                <div id="tooltip" class="framed" onmouseout="Tooltip.hide();" style="inset: auto;">
+                    
                 </div>
             </div>
         </div>
