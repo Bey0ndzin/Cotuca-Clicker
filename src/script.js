@@ -12,7 +12,7 @@ function choose(arr) {
 
 function Load(){
     //Seta essas várias para valores padrões
-    clicks = 50000000
+    clicks = 50000000000000
 	clicksEarned = clicks;
 	clicksReset = 0;
 	resets = 0;
@@ -96,7 +96,8 @@ function Item(id){
 		else
 			preco[id] = 1.15 * preco[id]
 		
-		if(parseInt(id) == 0){ get('upgrade0').classList.remove('locked')}
+		if(upgrade[0] >= 10){ get('upgrade0').classList.remove('locked')}
+		if(upgrade[1] >= 10){ get('upgrade1').classList.remove('locked')}
 
 		if(parseInt(id) == 1){moneyPS += id/2}
 		else if(parseInt(id) == 2){moneyPS += 1 * buyBulk}
