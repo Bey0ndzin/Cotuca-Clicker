@@ -6,6 +6,7 @@ body{
     padding: 0%;
     margin: 0;
 }
+
 /*Configurações gerais*/
 .wrapper{
     width: 100%;
@@ -892,6 +893,22 @@ body .crate{
     float: left;
     border: none;
 }
+.create:before{
+    content: '';
+    position: absolute;
+    left: -6px;
+    top: -6px;
+    width: 60px;
+    height: 60px;
+    display: block;
+    background: url(../img/UpgradeFrame.png);
+    background-position: 0px 0px;
+    z-index: 10;
+}
+#upgrade0{
+    background-image: url(../img/UpgradeFrame.png), url('../img/sharpness.png');
+    background-size: cover;
+}
 #tooltipAnchor{
     position: absolute;
     z-index: 1000000;
@@ -907,7 +924,6 @@ body .crate{
     padding: 4px 8px;
     margin: 4px;
     border: 3px solid transparent;
-    border-image: url(../img/frameBorder.png) 3 round;
     border-radius: 2px;
     box-shadow: 0px 0px 1px 2px rgba(0,0,0,0.5), 0px 2px 4px rgba(0,0,0,0.25), 0px 0px 6px 1px rgba(0,0,0,0.5) inset;
     -webkit-transition: opacity 0.1s ease-out;
@@ -919,8 +935,7 @@ body .crate{
 .framed, a.option, a.option.framed, a.option.framed:hover, .smallFramed, a.smallFancyButton {
     border-color: #ece2b6 #875526 #733726 #dfbc9a;
 }
-.framed, a.option, .sliderBox, .smallFramed {
-    border: 1px solid #e2dd48;
+.framed, a.option, .smallFramed {
     background: #000 url(../img/DarkNoise.png);
     background-image: url(../img/shadedBordersSoft.png),url(../img/DarkNoise.png);
     background-size: 100% 100%,auto;
@@ -930,4 +945,18 @@ body .crate{
     text-shadow: 0px 1px 1px #000;
     color: #ccc;
     line-height: 100%;
+}
+.tag {
+    background-color: #ccc;
+    background-image: linear-gradient(to bottom,rgba(0,0,0,0.3),transparent);
+    display: inline-block;
+    font-family: Arial;
+    font-size: 10px;
+    color: #000;
+    text-shadow: 0px 1px 0px rgba(255,255,255,0.25);
+    border-radius: 3px;
+    opacity: 0.85;
+    padding: 0px 3px;
+    margin: 1px 2px 0px 0px;
+    font-weight: bold;
 }

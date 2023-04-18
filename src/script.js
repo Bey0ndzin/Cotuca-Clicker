@@ -57,7 +57,7 @@ function Load(){
 }
 function Click(){
     //Váriavel para aumentar a grana cada vez que clica no cotuca
-	PlaySound('../sound/clickerSFX.mp3')
+	PlaySound('../sound/clickSFX.mp3')
     clicks += 1+upgrade[0]/2 //Aumenta o click baseado na quantidade de espadas que a pessoa tem
 	clicksEarned += 1+upgrade[0];
     get('money').innerHTML = "Moedas: " + Beautify(clicks) + 
@@ -65,7 +65,7 @@ function Click(){
 	 + Beautify(moneyPS * 100) + '</div>'
     //Atualiza o H1 que mostra a quantidade de grana
 }
-function Upgrade(id){
+function Item(id){
     //Compra o primeiro upgrade
     if(clicks >= calculateBuyValue(id)){ //Verifica se a pessoa tem dinheiro o suficiente
 
@@ -95,6 +95,8 @@ function Upgrade(id){
 		}
 		else
 			preco[id] = 1.15 * preco[id]
+		
+		if(parseInt(id) == 0){ get('upgrade0').classList.remove('locked')}
 
 		if(parseInt(id) == 1){moneyPS += id/2}
 		else if(parseInt(id) == 2){moneyPS += 1 * buyBulk}

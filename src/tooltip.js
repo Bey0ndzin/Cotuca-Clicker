@@ -79,7 +79,6 @@ function Crate(me,context,forceClickStr,id,style)
 		if (context=='stats' && !prefs.crates) noFrame=1;
 		
 		classes+=' upgrade';
-		if (me.pool=='prestige') classes+=' heavenly';
 				
 	}
 	else if (me.type=='achievement')
@@ -98,15 +97,12 @@ function Crate(me,context,forceClickStr,id,style)
 		if (neuromancy) clickStr='AchievementsById['+me.id+'].toggle();';
 	}
 			
-	if (context=='store') attachment='store';
-			
 	if (forceClickStr) clickStr=forceClickStr;
 			
 	if (me.choicesFunction) classes+=' selector';
 			
 			
 	var icon=me.icon;
-	if (mysterious) icon=[0,7];
 		
 	if (me.iconFunction) icon=me.iconFunction();
 			
@@ -164,28 +160,25 @@ function CrateTooltip(me,context)
 				
 		if (me.pool=='prestige') tags.push(("[Tag]Heavenly",0,'Heavenly'),'#efa438');
 		else if (me.pool=='click') tags.push(("[Tag]Cookie",0,'Cookie'),0);
-		else tags.push(("[Tag]Upgrade",0,'Upgrade'),0);
+		else tags.push(("[Tag]Melhoria",0,'Melhoria'),0);
 				
 		if (me.bought>0)
 		{
-			ariaText+='Owned. ';
-			tags.push(("Purchased"),0);
+			ariaText+='Você tem. ';
+			tags.push(("Comprado"),0);
 		}
 				
 		if (me.lasting && me.unked) tags.push(("Unked forever"),'#f2ff87');
 				
 		var canBuy=(context=='store'?me.canBuy():true);
 		var cost=me.getPrice();
-		if (me.priceLumps>0) cost=me.priceLumps;
+
 		
 		if (me.priceLumps==0 && cost==0) price='';
 		else
 		{
 			price='<div style="float:right;text-align:right;"><span class="price'+
-				(me.priceLumps>0?(' lump'):'')+
-				(me.pool=='prestige'?((me.bought || heavenlyChips>=cost)?' heavenly':' heavenly disabled'):'')+
-				(context=='store'?(canBuy?'':' disabled'):'')+
-			'">'+Beautify(Math.round(cost))+'</span>'+((me.pool!='prestige' && me.priceLumps==0))+'</div>';
+			'">'+'R$'+Beautify(Math.round(cost))+'</span>'+'</div>';
 					
 			ariaText+=(me.bought?'Bought for':canBuy?'Can buy for':'Cannot afford the')+' '+Beautify(Math.round(cost))+' '+((me.priceLumps>0)?'sugar lumps':(me.pool=='prestige')?'heavenly chips':'clicks')+'. ';
 		}
@@ -197,9 +190,6 @@ function CrateTooltip(me,context)
 		else tags.push(("Achievement"),0);
 		if (me.won>0) {tags.push(("Unked"),0);ariaText+='Unked. ';}
 		else {tags.push(("ked"),0);mysterious=1;}
-				
-		if (neuromancy && me.won==0) tags.push(("Click to win!"),'#00c462');
-		else if (neuromancy && me.won>0) tags.push(("Click to lose!"),'#00c462');
 	}
 			
 	var tagsStr='';
@@ -217,7 +207,7 @@ function CrateTooltip(me,context)
 			
 	if (tip!='') ariaText+=tip+' ';
 			
-	var desc=me.ddesc;
+	var desc=me.desc;
 	if (me.descFunc) desc=me.descFunc(context);
 	if (me.bought && context=='store' && me.displayFuncWhenOwned) desc=me.displayFuncWhenOwned()+'<div class="line"></div>'+desc;
 	if (me.unkAt)
@@ -255,7 +245,7 @@ function writeIcon(icon)
 {
 	//returns CSS for an icon's background image
 	//for use in CSS strings
-	return ('background-image:url('+icon+'.png) '+'background-position:'+(0)+'px '+(0)+'px;');
+	return ('background-image:url('+icon+'.png); '+'background-position:'+(0)+'px '+(0)+'px;'+'background-size: cover');
 }
 
 Tooltip={text:'', x:0, y:0, origin:'', on:0, tt:get('Tooltip'), tta:get('TooltipAnchor'), shouldHide:1, dynamic:0, from:0};
