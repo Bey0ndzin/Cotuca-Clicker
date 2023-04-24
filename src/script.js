@@ -48,7 +48,7 @@ function Load(){
     alert("Perdido em seus pensamentos sobre pães de queijo e cafézinhos quentinhos...")
     alert("Você foi brutalmente atropelado por um carrinho de supermercado que você nem viu chegando...")
     alert("Você acorda desnorteado, você não estava mais no estacionamento do Carrefour")
-    alert("Agora você estava em um mundo totalmente diferente, parecia um mundo de rpg... E você com o conhecimento de 5000 monges da malásia, sabia qual era sua missão")
+    alert("Agora você estava em um mundo totalmente diferente, parecia um mundo de rpg... E você com o conhecimento de 5000 monges da Malásia, sabia qual era sua missão")
     alert("Clicar!")*/
     AddEvent(get('options'),'click',function(){ShowMenu('options');});
     AddEvent(get('stats'),'click',function(){ShowMenu('stats');});
@@ -62,7 +62,7 @@ function Click(){
 	clicksEarned += 1+upgrade[0];
     get('money').innerHTML = "Moedas: " + Beautify(clicks) + 
 	'<div id="moneyPerSecond">Moedas por segundo: '
-	 + Beautify(moneyPS * 100) + '</div>'
+	 + Beautify(moneyPS) + '</div>'
     //Atualiza o H1 que mostra a quantidade de grana
 }
 function Item(id){
@@ -96,8 +96,16 @@ function Item(id){
 		else
 			preco[id] = 1.15 * preco[id]
 		
-		if(upgrade[0] >= 10){ get('upgrade0').classList.remove('locked')}
-		if(upgrade[1] >= 10){ get('upgrade1').classList.remove('locked')}
+		if(upgrade[0] >= 10 && get('upgrade0').classList.contains('locked')){ 
+			$("#upgrade0").hide();
+			get('upgrade0').classList.remove('locked')
+			$("#upgrade0").show(250);
+		}
+		if(upgrade[1] >= 10 && get('upgrade1').classList.contains('locked')){ 
+			$("#upgrade1").hide();
+			get('upgrade1').classList.remove('locked')
+			$("#upgrade1").show(250);
+		}
 
 		if(parseInt(id) == 1){moneyPS += id/2}
 		else if(parseInt(id) == 2){moneyPS += 1 * buyBulk}

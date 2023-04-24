@@ -186,14 +186,17 @@ Upgrade.prototype.buy=function(bypass)
 				this.bought=1;
 				if (this.buyFunction) this.buyFunction();
 				PlaySound('../sound/buySFX.mp3')
-				if(UpgradesById[this.id+1].equip == this.equip)
-				{
+				if(UpgradesById[this.id+1] != null)
+					if(UpgradesById[this.id+1].equip == this.equip)
+					{
+						get('productIcon'+this.which).style.backgroundImage = 'url('+this.icon+'.png)'
+						get('upgrade'+this.which).style.backgroundImage = 'url(../img/UpgradeFrame.png), ' + 'url('+UpgradesById[this.id+1].icon+'.png)'
+						get('upgrade'+this.which).setAttribute('onclick', "UpgradesById["+(this.id+1)+"].click(event)")
+						get('upgrade'+this.which).setAttribute('onmouseout', "SetOnCrate("+(this.id+1)+");Tooltip.shouldHide=1;Tooltip.hide();")
+						get('upgrade'+this.which).setAttribute('onmouseover', "if(!mouseDown) {SetOnCrate(this);Tooltip.dynamic=1;Tooltip.draw(this,function(){return function(){return CrateTooltip(UpgradesById["+(this.id+1)+"],'store');}();},'store');Tooltip.wobble();}")
+					}
+				if(this.id == 16)
 					get('productIcon'+this.which).style.backgroundImage = 'url('+this.icon+'.png)'
-					get('upgrade'+this.which).style.backgroundImage = 'url(../img/UpgradeFrame.png), ' + 'url('+UpgradesById[this.id+1].icon+'.png)'
-					get('upgrade'+this.which).setAttribute('onclick', "UpgradesById["+(this.id+1)+"].click(event)")
-					get('upgrade'+this.which).setAttribute('onmouseout', "SetOnCrate("+(this.id+1)+");Tooltip.shouldHide=1;Tooltip.hide();")
-					get('upgrade'+this.which).setAttribute('onmouseover', "if(!mouseDown) {SetOnCrate(this);Tooltip.dynamic=1;Tooltip.draw(this,function(){return function(){return CrateTooltip(UpgradesById["+(this.id+1)+"],'store');}();},'store');Tooltip.wobble();}")
-				}
 				success=1;
 			}
 		}
@@ -211,13 +214,18 @@ new Upgrade('Afiação XX',"Sua espadinha fica encantada com <b>AFIAÇÃO</b> XX
 new Upgrade('Afiação L',"Sua espadinha fica encantada com <b>AFIAÇÃO</b> L",10000000, "../img/sharpness", 'sword',0);
 new Upgrade('Afiação C',"Sua espadinha fica encantada com <b>AFIAÇÃO</b> C",100000000, "../img/sharpness", 'sword',0);
 new Upgrade('Afiação D',"Sua espadinha fica encantada com <b>AFIAÇÃO</b> D",10000000000, "../img/sharpness", 'sword',0);
-new Upgrade('Afiação M',"Sua espadinha fica encantada com <b>AFIAÇÃO</b> M",1000000000000, "../img/sharpness", 'sword',0); //10
+new Upgrade('Afiação M',"Sua espadinha fica encantada com <b>AFIAÇÃO</b> M",1000000000000, "../img/sharpness", 'sword',0); //9
 
-new Upgrade('Perfect Block', "Você aprende a dar PB nos seus adversários quebrando a postura deles", 500, "../img/pb", 'shield',1) //11
-new Upgrade('Aço do espAÇO', "Seu escudinho é reforçado com um aço de outra dimensão (esse é dos bons)", 15000, "../img/aco", 'shield',1)
-new Upgrade('adof ariedaM', "acipé atul amu arp anodalob acif oducse ues od ariedam A", 50000, "../img/madeirite", 'shield',1)
+new Upgrade('Perfect Block', "Você aprende a dar PB nos seus adversários quebrando a postura deles", 500, "../img/escudoPb", 'shield',1) //11
+new Upgrade('Aço do espAÇO', "Seu escudinho é reforçado com um aço de outra dimensão (esse é dos bons)", 15000, "../img/escudoAco", 'shield',1)
+new Upgrade('adof ariedaM', "acipé atul amu arp anodalob acif oducse ues od ariedam A", 50000, "../img/escudoMad", 'shield',1)
 new Upgrade('Benção do Druida', "Um druida que você achou caminhando por ai quer abençoar seu escudo", 150000, "../img/escudoBenc", 'shield',1)
-new Upgrade('Maldição do Druida', "O mesmo druida fez uma trollagem hardcore e agora seu escudo tem boca", 500000, "../img/escudoMald", 'shield',1)
-new Upgrade('Herói do escudo', "Tu aprendeu a manusear teu escudo corretamente e ficou realmente bom nisso...", 1500000, "../img/heroiEscudo", 'shield',1) //15
+new Upgrade('Maldição do Druida', "O mesmo druida fez uma trollagem hardcore e agora seu escudo ficou buxa", 500000, "../img/escudoMald", 'shield',1)
+new Upgrade('Herói do escudo', "Tu aprendeu a manusear teu escudo corretamente e ficou realmente bom nisso...", 1500000, "../img/escudoHeroi", 'shield',1) //16
+
+new Upgrade('Diamante poderoso', "Você pegou diamante para reforça seus equipamentos <p style='color:red'>!PODE ATRAIR INTERESSEIRAS!</p>", 5000, "../img/armDima", 'armor',2) //11
+new Upgrade('Obsidiana', "Você minerou obsidana para colocar na sua armadura para ficar mais resistente(tu vai ficar mais pesado também)", 500000, "../img/armObs", 'armor',2)
+new Upgrade('Pedra de Fogo', "Você pega uma pedra vulcânica pra deixar sua armadura flamejante", 1000000, "../img/armFogo", 'armor',2)
+new Upgrade('Brilho Brilhoso', "Tu acha um líquido ", 5000000, "../img/armBrilho", 'armor',2)
 
 //new Upgrade('Sharpness I',"Sua espadinha fica encantada com <b>SHARPNESS</b> I"+'<q>prod prod</q>',100,[0,0]);
