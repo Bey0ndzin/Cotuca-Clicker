@@ -910,7 +910,11 @@ body .crate{
     background-size: cover;
 }
 #upgrade1{
-    background-image: url(../img/UpgradeFrame.png), url('../img/pb.png');
+    background-image: url(../img/UpgradeFrame.png), url('../img/escudoPb.png');
+    background-size: cover;
+}
+#upgrade2{
+    background-image: url(../img/UpgradeFrame.png), url('../img/armDima.png');
     background-size: cover;
 }
 #tooltipAnchor{

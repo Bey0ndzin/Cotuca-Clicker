@@ -189,14 +189,26 @@ Upgrade.prototype.buy=function(bypass)
 				if(UpgradesById[this.id+1] != null)
 					if(UpgradesById[this.id+1].equip == this.equip)
 					{
-						get('productIcon'+this.which).style.backgroundImage = 'url('+this.icon+'.png)'
-						get('upgrade'+this.which).style.backgroundImage = 'url(../img/UpgradeFrame.png), ' + 'url('+UpgradesById[this.id+1].icon+'.png)'
+						if(this.id >= 17 && this.id <= 20){
+							get('productIcon'+this.which).style.backgroundImage = 'url('+this.icon[0]+'.png)'
+							get('productIcon'+(this.which+1)).style.backgroundImage = 'url('+this.icon[1]+'.png)'
+							get('upgrade'+this.which).style.backgroundImage = 'url(../img/UpgradeFrame.png), ' + 'url('+UpgradesById[this.id+1].icon[0]+'.png)'
+						}
+						else{
+							get('productIcon'+this.which).style.backgroundImage = 'url('+this.icon+'.png)'
+							get('upgrade'+this.which).style.backgroundImage = 'url(../img/UpgradeFrame.png), ' + 'url('+UpgradesById[this.id+1].icon+'.png)'
+						}
 						get('upgrade'+this.which).setAttribute('onclick', "UpgradesById["+(this.id+1)+"].click(event)")
 						get('upgrade'+this.which).setAttribute('onmouseout', "SetOnCrate("+(this.id+1)+");Tooltip.shouldHide=1;Tooltip.hide();")
 						get('upgrade'+this.which).setAttribute('onmouseover', "if(!mouseDown) {SetOnCrate(this);Tooltip.dynamic=1;Tooltip.draw(this,function(){return function(){return CrateTooltip(UpgradesById["+(this.id+1)+"],'store');}();},'store');Tooltip.wobble();}")
 					}
 				if(this.id == 16)
 					get('productIcon'+this.which).style.backgroundImage = 'url('+this.icon+'.png)'
+				if(this.id == 20)
+				{
+					get('productIcon'+this.which).style.backgroundImage = 'url('+this.icon[0]+'.png)'
+					get('productIcon'+(this.which+1)).style.backgroundImage = 'url('+this.icon[1]+'.png)'
+				}
 				success=1;
 			}
 		}
@@ -223,9 +235,14 @@ new Upgrade('Benção do Druida', "Um druida que você achou caminhando por ai q
 new Upgrade('Maldição do Druida', "O mesmo druida fez uma trollagem hardcore e agora seu escudo ficou buxa", 500000, "../img/escudoMald", 'shield',1)
 new Upgrade('Herói do escudo', "Tu aprendeu a manusear teu escudo corretamente e ficou realmente bom nisso...", 1500000, "../img/escudoHeroi", 'shield',1) //16
 
-new Upgrade('Diamante poderoso', "Você pegou diamante para reforça seus equipamentos <p style='color:red'>!PODE ATRAIR INTERESSEIRAS!</p>", 5000, "../img/armDima", 'armor',2) //11
-new Upgrade('Obsidiana', "Você minerou obsidana para colocar na sua armadura para ficar mais resistente(tu vai ficar mais pesado também)", 500000, "../img/armObs", 'armor',2)
-new Upgrade('Pedra de Fogo', "Você pega uma pedra vulcânica pra deixar sua armadura flamejante", 1000000, "../img/armFogo", 'armor',2)
-new Upgrade('Brilho Brilhoso', "Tu acha um líquido ", 5000000, "../img/armBrilho", 'armor',2)
+new Upgrade('Diamante poderoso', "Você pegou diamante para reforça seus equipamentos <p style='color:red'>!PODE ATRAIR INTERESSEIRAS!</p>", 5000, ["../img/armDima", '../img/botaDima'], 'armor',2) //17
+new Upgrade('Obsidiana', "Você minerou obsidana para colocar na sua armadura para ficar mais resistente(tu vai ficar mais pesado também)", 500000, ["../img/armObs", '../img/botaObs'], 'armor',2)
+new Upgrade('Pedra de Fogo', "Você pega uma pedra vulcânica pra deixar sua armadura flamejante", 1000000, ["../img/armFogo", '../img/botaFogo'], 'armor',2)
+new Upgrade('Brilho Brilhoso', "Tu acha um líquido duvidoso para passar na sua armadura (vai ficar tinindo)", 5000000, ["../img/armBrilho", '../img/botaBrilho'], 'armor',2) //20
+
+new Upgrade('???', "É sério que tu vai pegar algodão para passar no teu arco???", 15000, "../img/bowAlgodao.png", 'bow',4) //21
+new Upgrade('Matinho', "Namoral que tu vai pegar e colocar mato agora no seu arco? Tu tem problema?", 100000, "../img/bowMato", 'bow',4)
+new Upgrade('Molhado', "E ainda vai passar água no teu arco?????? Como assim isso vai funcionar mano deixa de ser idiota", 1500000, "../img/bowAgua", 'bow',4)
+new Upgrade('Ecossistema', "Tu acha um líquido duvidoso para passar na sua armadura (vai ficar tinindo)", 5000000, ["../img/armBrilho", '../img/botaBrilho'], 'armor',2) //20
 
 //new Upgrade('Sharpness I',"Sua espadinha fica encantada com <b>SHARPNESS</b> I"+'<q>prod prod</q>',100,[0,0]);

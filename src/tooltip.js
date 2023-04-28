@@ -245,6 +245,8 @@ function writeIcon(icon)
 {
 	//returns CSS for an icon's background image
 	//for use in CSS strings
+	if(Array.isArray(icon))
+		return ('background-image:url('+icon[0]+'.png); '+'background-position:'+(0)+'px '+(0)+'px;'+'background-size: cover');
 	return ('background-image:url('+icon+'.png); '+'background-position:'+(0)+'px '+(0)+'px;'+'background-size: cover');
 }
 

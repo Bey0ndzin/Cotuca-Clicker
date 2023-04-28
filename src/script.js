@@ -106,6 +106,11 @@ function Item(id){
 			get('upgrade1').classList.remove('locked')
 			$("#upgrade1").show(250);
 		}
+		if(upgrade[2] >= 10 && upgrade[3] >= 10 && get('upgrade2').classList.contains('locked')){ 
+			$("#upgrade2").hide();
+			get('upgrade2').classList.remove('locked')
+			$("#upgrade2").show(250);
+		}
 
 		if(parseInt(id) == 1){moneyPS += id/2}
 		else if(parseInt(id) == 2){moneyPS += 1 * buyBulk}
