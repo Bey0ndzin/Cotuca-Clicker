@@ -325,7 +325,7 @@ let UpdateMenu=function()
 				'<div class="title">'+("Configurações")+'</div>'+
 				((App && App.writeCloudUI)?App.writeCloudUI():'')+
 				'<div class="listing">'+
-					WriteSlider('volumeSlider',("Volume"),'[$]%',function(){return volume;},'setVolume(Math.round(get(\'volumeSlider\').value));get(\'volumeSliderRightText\').innerHTML=volume+\'%\';')+
+					WriteSlider('volumeSlider',("Volume"),'[$]%',function(){return volume;},'setVolume(Math.round(get(\'volumeSlider\').value));get(\'volumeSliderRightText\').innerHTML=volume+\'%\';get(\'music\').play();')+
 					'<br>'+
 				'</div>'+
 				//'<div class="listing">'+WritePrefButton('autosave','autosaveButton','Autosave ON','Autosave OFF')+'</div>'+

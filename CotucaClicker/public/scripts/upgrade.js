@@ -200,7 +200,7 @@ Upgrade.prototype.buy=function(bypass)
 						}
 						get('upgrade'+this.which).setAttribute('onclick', "UpgradesById["+(this.id+1)+"].click(event)")
 						get('upgrade'+this.which).setAttribute('onmouseout', "SetOnCrate("+(this.id+1)+");Tooltip.shouldHide=1;Tooltip.hide();")
-						get('upgrade'+this.which).setAttribute('onmouseover', "if(!mouseDown) {SetOnCrate(this);Tooltip.dynamic=1;Tooltip.draw(this,function(){return function(){return CrateTooltip(UpgradesById["+(this.id+1)+"],'store');}();},'store');Tooltip.wobble();}")
+						get('upgrade'+this.which).setAttribute('onmouseover', "if(!mouseDown) {SetOnCrate("+get('upgrade'+this.which+");Tooltip.dynamic=1;Tooltip.draw(this,function(){return function(){return CrateTooltip(UpgradesById["+(this.id+1)+"],'store');}();},'store');Tooltip.wobble();}")
 					}
 				if(this.id == 16)
 					get('productIcon'+this.which).style.backgroundImage = 'url('+this.icon+'.png)'

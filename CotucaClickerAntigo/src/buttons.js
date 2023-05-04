@@ -127,28 +127,14 @@ var WriteSave=function(type)
 	(type==3?'\n	pledge time left : ':'')+parseInt(Math.floor(pledgeT))+';'+
 	(type==3?'\n	currently researching : ':'')+parseInt(Math.floor(nextResearch))+';'+
 	(type==3?'\n	research time left : ':'')+parseInt(Math.floor(researchT))+';'+
-	(type==3?'\n	ascensions : ':'')+parseInt(Math.floor(resets))+';'+
-	(type==3?'\n	golden cookie clicks (this run) : ':'')+parseInt(Math.floor(goldenClicksLocal))+';'+
-	(type==3?'\n	cookies sucked by wrinklers : ':'')+parseFloat(cookiesSucked).toString()+';'+
-	(type==3?'\n	wrinkles popped : ':'')+parseInt(Math.floor(wrinklersPopped))+';'+
-	(type==3?'\n	santa level : ':'')+parseInt(Math.floor(santaLevel))+';'+
-	(type==3?'\n	reindeer clicked : ':'')+parseInt(Math.floor(reindeerClicked))+';'+
-	(type==3?'\n	season time left : ':'')+parseInt(Math.floor(seasonT))+';'+
-	(type==3?'\n	season switcher uses : ':'')+parseInt(Math.floor(seasonUses))+';'+
-	(type==3?'\n	current season : ':'')+(season?season:'')+';';
-	var wrinklers=SaveWrinklers();
+	(type==3?'\n	ascensions : ':'')+parseInt(Math.floor(resets))+';'
 	str+=
-	(type==3?'\n	amount of cookies contained in wrinklers : ':'')+parseFloat(Math.floor(wrinklers.amount))+';'+
-	(type==3?'\n	number of wrinklers : ':'')+parseInt(Math.floor(wrinklers.number))+';'+
 	(type==3?'\n	prestige level : ':'')+parseFloat(prestige).toString()+';'+
 	(type==3?'\n	heavenly chips : ':'')+parseFloat(heavenlyChips).toString()+';'+
 	(type==3?'\n	heavenly chips spent : ':'')+parseFloat(heavenlyChipsSpent).toString()+';'+
 	(type==3?'\n	heavenly cookies : ':'')+parseFloat(heavenlyCookies).toString()+';'+
 	(type==3?'\n	ascension mode : ':'')+parseInt(Math.floor(ascensionMode))+';'+
 	(type==3?'\n	permanent upgrades : ':'')+parseInt(Math.floor(permanentUpgrades[0]))+';'+parseInt(Math.floor(permanentUpgrades[1]))+';'+parseInt(Math.floor(permanentUpgrades[2]))+';'+parseInt(Math.floor(permanentUpgrades[3]))+';'+parseInt(Math.floor(permanentUpgrades[4]))+';'+
-	(type==3?'\n	dragon level : ':'')+parseInt(Math.floor(dragonLevel))+';'+
-	(type==3?'\n	dragon aura : ':'')+parseInt(Math.floor(dragonAura))+';'+
-	(type==3?'\n	dragon aura 2 : ':'')+parseInt(Math.floor(dragonAura2))+';'+
 	(type==3?'\n	chime type : ':'')+parseInt(Math.floor(chimeType))+';'+
 	(type==3?'\n	volume : ':'')+parseInt(Math.floor(volume))+';'+
 	(type==3?'\n	number of shiny wrinklers : ':'')+parseInt(Math.floor(wrinklers.shinies))+';'+
@@ -157,10 +143,8 @@ var WriteSave=function(type)
 	(type==3?'\n	total amount of sugar lumps made : ':'')+parseFloat(Math.floor(lumpsTotal))+';'+
 	(type==3?'\n	time when current sugar lump started : ':'')+parseFloat(Math.floor(lumpT))+';'+
 	(type==3?'\n	time when last refilled a minigame with a sugar lump : ':'')+parseFloat(Math.floor(lumpRefill))+';'+
-	(type==3?'\n	sugar lump type : ':'')+parseInt(Math.floor(lumpCurrentType))+';'+
 	(type==3?'\n	vault : ':'')+vault.join(',')+';'+
 	(type==3?'\n	heralds : ':'')+parseInt(heralds)+';'+
-	(type==3?'\n	golden cookie fortune : ':'')+parseInt(fortuneGC)+';'+
 	(type==3?'\n	CpS fortune : ':'')+parseInt(fortuneCPS)+';'+
 	(type==3?'\n	highest raw CpS : ':'')+parseFloat(cookiesPsRawHighest)+';'+
 	(type==3?'\n	music volume : ':'')+parseInt(Math.floor(volumeMusic))+';'+
@@ -325,7 +309,7 @@ let UpdateMenu=function()
 				'<div class="title">'+("Configurações")+'</div>'+
 				((App && App.writeCloudUI)?App.writeCloudUI():'')+
 				'<div class="listing">'+
-					WriteSlider('volumeSlider',("Volume"),'[$]%',function(){return volume;},'setVolume(Math.round(get(\'volumeSlider\').value));get(\'volumeSliderRightText\').innerHTML=volume+\'%\';')+
+					WriteSlider('volumeSlider',("Volume"),'[$]%',function(){return volume;},'setVolume(Math.round(get(\'volumeSlider\').value));get(\'volumeSliderRightText\').innerHTML=volume+\'%\';get(\'music\').play();')+
 					'<br>'+
 				'</div>'+
 				//'<div class="listing">'+WritePrefButton('autosave','autosaveButton','Autosave ON','Autosave OFF')+'</div>'+

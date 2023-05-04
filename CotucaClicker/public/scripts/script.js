@@ -41,8 +41,8 @@ function Load(){
     moneyPS = 0;
     kills = 0;
 	setVolume(volume)
-	if(get('music') != null)
-		get('music').play();
+	/*if(get('music') != null)
+		get('music').play();*/
     /*alert("Você dominou o mundo...")
     alert("Depois de sua incrível jornada, todos amavam seu pão de queijo")
     alert("Mas nem tudo é perfeito...")
@@ -566,7 +566,6 @@ function draw(id){
 
 function diminuteSpellTime(){
 	setTimeout(() => {
-		console.log(secondsToSpellAgain)
 		secondsToSpellAgain = secondsToSpellAgain - 1
 		if(secondsToSpellAgain == 0)
 			get('spell').innerText = 'Feitiço'

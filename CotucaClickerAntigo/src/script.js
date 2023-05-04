@@ -50,6 +50,7 @@ function Load(){
     alert("Você acorda desnorteado, você não estava mais no estacionamento do Carrefour")
     alert("Agora você estava em um mundo totalmente diferente, parecia um mundo de rpg... E você com o conhecimento de 5000 monges da Malásia, sabia qual era sua missão")
     alert("Clicar!")*/
+	console.log('options')
     AddEvent(get('options'),'click',function(){ShowMenu('options');});
     AddEvent(get('stats'),'click',function(){ShowMenu('stats');});
     AddEvent(get('login'),'click',function(){ShowMenu('login');});
@@ -203,7 +204,8 @@ let ShowMenu=function(what)
 	else if (what==onMenu) {get('game').classList.remove('onMenu');what='';}
 	//if (what=='log') get('donateBox').className='on'; else get('donateBox').className='';
 	onMenu=what;
-			
+
+	console.log('options')
 	get('options').className=(onMenu=='options')?'panelButton selected':'panelButton';
 	get('stats').className=(onMenu=='stats')?'panelButton selected':'panelButton';
 	get('login').className=(onMenu=='login')?'panelButton selected':'panelButton';

@@ -1,4 +1,4 @@
-var onCrate = 0;
+onCrate = 0;
 var mouseDown = 0;
 var scale = 1;
 var TopBarOffset = 32;
