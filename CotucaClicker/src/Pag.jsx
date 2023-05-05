@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import React, { Component } from 'react';
-//import axios from 'axios'
+import axios from 'axios'
 
 import cotuca from '../public/img/cotuca.png'
 import musica from './music/Musga.mp3'
@@ -9,15 +9,28 @@ import mestre from '../public/img/seller.png'
 
 import './App.css'
 
+const urlAPI = "http://localhost:5276/api/player"
 const initialState = {
-    player: { id: 0, money: 0, user: '', senha: '', moneyPS: 0, moneyLifetime: 0},
-    lista: []
+    player: { username: '', senha: '', clicks: 0, 
+              moneyPerSecond: 0, moneyThisRun: 0, moneyLifetime: 0, 
+              initialDate: '00/00/0000', quantEquip: 0, sword: 0,
+              shield: 0, armor: 0, boot: 0,
+              staff: 0, elf: 0, orc: 0,
+              sergio: 0, simone: 0, patricia: 0,
+              sampaio: 0, maligno: 0, boletim: 0,
+              upgrade0: 0, upgrade1: 0, upgrade2: 0},
 }
 var firstLoading = true;
 
 export default class Pag extends Component {
 
     state = { ...initialState}
+
+    componentDidMount(){
+        axios(urlAPI).then(resp => {
+            console.log(resp.data);
+        })
+    }
 
   renderGame(){
     return(
@@ -126,11 +139,11 @@ export default class Pag extends Component {
                         <img src={mestre} alt=""></img>
                     </div>
                     <div className="store">
-                        <div className="storeTitle">Mestre Kikoku Navara</div>
+                        <div className="storeTitle">Mestre Kawara Nofuro</div>
                         <div id="upgrades" className="storeSection upgradeBox">
-                            <div onClick={() => {UpgradesById[0].click(event);}} className="crate upgrade locked" onMouseOut={() => {SetOnCrate(0);Tooltip.shouldHide=1;Tooltip.hide();}} onMouseOver={() => {if(!mouseDown) {SetOnCrate(get('upgrade0'));Tooltip.dynamic=1;Tooltip.draw(this,function(){return function(){return CrateTooltip(UpgradesById[0],'store');}();},'store');Tooltip.wobble();}}} id="upgrade0" style={{backgroundPosition: '-576px -192px'}}></div> 
-                            <div onClick={() => {UpgradesById[11].click(event);}} className="crate upgrade locked" onMouseOut={() => {SetOnCrate(11);Tooltip.shouldHide=1;Tooltip.hide();}} onMouseOver={() => {if(!mouseDown) {SetOnCrate(get('upgrade1'));Tooltip.dynamic=1;Tooltip.draw(this,function(){return function(){return CrateTooltip(UpgradesById[11],'store');}();},'store');Tooltip.wobble();}}} id="upgrade1" style={{backgroundPosition: '-576px -192px'}}></div>
-                            <div onClick={() => {UpgradesById[17].click(event);}} className="crate upgrade locked" onMouseOut={() => {SetOnCrate(17);Tooltip.shouldHide=1;Tooltip.hide();}} onMouseOver={() => {if(!mouseDown) {SetOnCrate(get('upgrade2'));Tooltip.dynamic=1;Tooltip.draw(this,function(){return function(){return CrateTooltip(UpgradesById[17],'store');}();},'store');Tooltip.wobble();}}} id="upgrade2" style={{backgroundPosition: '-576px -192px'}}></div>  
+                        <div onClick={() => {UpgradesById[0].click(event);}} className="crate upgrade locked" onMouseOut={() => {SetOnCrate(0);Tooltip.shouldHide=1;Tooltip.hide();}} onMouseOver={() => {"if(!mouseDown) {SetOnCrate(get(upgrade0));Tooltip.dynamic=1;Tooltip.draw(this,function(){return function(){return CrateTooltip(UpgradesById[0],'store');}();},'store');Tooltip.wobble();}"}} id='upgrade0' style={{backgroundPosition: '-576px -192px'}}></div>
+                            <div onClick={() => {UpgradesById[11].click(event);}} className="crate upgrade locked" onMouseOut={() => {SetOnCrate(11);Tooltip.shouldHide=1;Tooltip.hide();}} onMouseOver={() => {"if(!mouseDown) {SetOnCrate(this);Tooltip.dynamic=1;Tooltip.draw(this,function(){return function(){return CrateTooltip(UpgradesById[11],'store');}();},'store');Tooltip.wobble();}"}} id="upgrade1" style={{backgroundPosition: '-576px -192px'}}></div>
+                            <div onClick={() => {UpgradesById[17].click(event);}} className="crate upgrade locked" onMouseOut={() => {SetOnCrate(17);Tooltip.shouldHide=1;Tooltip.hide();}} onMouseOver={() => {"if(!mouseDown) {SetOnCrate(this);Tooltip.dynamic=1;Tooltip.draw(this,function(){return function(){return CrateTooltip(UpgradesById[17],'store');}();},'store');Tooltip.wobble();}"}} id="upgrade2" style={{backgroundPosition: '-576px -192px'}}></div>  
                         </div>
                         <div id="products" className="storeSection">
                             <div id="storeBulk" className="storePre">
@@ -260,7 +273,7 @@ export default class Pag extends Component {
                             <div id="product13" className="product locked" onClick={() => {Item(13)}}>
                                 <div className="icon" id="productIcon13"></div>
                                 <div className="content">
-                                    <div className="title productName" id="productName13">Chico</div>
+                                    <div className="title productName" id="productName13">Boletim</div>
                                     <span className="price" id="productPrice13">R$100.000 million</span>
                                     <div className="title owned" id="productOwned13">0</div>
                                 </div>
@@ -306,6 +319,10 @@ export default class Pag extends Component {
         const jquery = document.createElement('script');
         jquery.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"
         document.head.appendChild(jquery);
+
+        const login = document.createElement('script');
+        login.src = "../public/scripts/login"
+        document.head.appendChild(login);
 
         firstLoading = false;
 

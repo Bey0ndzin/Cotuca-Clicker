@@ -64,231 +64,6 @@ let WritePrefButton=function(prefName,button,on,off,callback,invert)
 
 var WriteSave=function(type)
 {
-	toSave=false;
-	//type: none is default, 1=return string only, 2=return uncompressed string, 3=return uncompressed, commented string
-	lastDate=parseInt(time);
-	var str='';
-	if (type==3) str+='\nGame version\n';
-	str+=version+'|';
-	str+='|';//just in case we need some more stuff here
-	if (type==3) str+='\n\nRun details';
-	str+=//save stats
-	(type==3?'\n	run start date : ':'')+parseInt(startDate)+';'+
-	(type==3?'\n	legacy start date : ':'')+parseInt(fullDate)+';'+
-	(type==3?'\n	date when we last opened the game : ':'')+parseInt(lastDate)+';'+
-	(type==3?'\n	bakery name : ':'')+(bakeryName)+';'+
-	(type==3?'\n	seed : ':'')+(seed)+
-	'|';
-	if (type==3) str+='\n\nPacked preferences bitfield\n	';
-	var str2=//prefs
-	(prefs.particles?'1':'0')+
-	(prefs.numbers?'1':'0')+
-	(prefs.autosave?'1':'0')+
-	(prefs.autoupdate?'1':'0')+
-	(prefs.milk?'1':'0')+
-	(prefs.fancy?'1':'0')+
-	(prefs.warn?'1':'0')+
-	(prefs.cursors?'1':'0')+
-	(prefs.focus?'1':'0')+
-	(prefs.format?'1':'0')+
-	(prefs.notifs?'1':'0')+
-	(prefs.wobbly?'1':'0')+
-	(prefs.monospace?'1':'0')+
-	(prefs.filters?'1':'0')+
-	(prefs.cookiesound?'1':'0')+
-	(prefs.crates?'1':'0')+
-	(prefs.showBackupWarning?'1':'0')+
-	(prefs.extraButtons?'1':'0')+
-	(prefs.askLumps?'1':'0')+
-	(prefs.customGrandmas?'1':'0')+
-	(prefs.timeout?'1':'0')+
-	(prefs.cloudSave?'1':'0')+
-	(prefs.bgMusic?'1':'0')+
-	(prefs.notScary?'1':'0')+
-	(prefs.fullscreen?'1':'0')+
-	(prefs.screenreader?'1':'0')+
-	(prefs.discordPresence?'1':'0')+
-	'';
-	str2=pack3(str2);
-	str+=str2+'|';
-	if (type==3) str+='\n\nMisc game data';
-	str+=
-	(type==3?'\n	cookies : ':'')+parseFloat(cookies).toString()+';'+
-	(type==3?'\n	total cookies earned : ':'')+parseFloat(cookiesEarned).toString()+';'+
-	(type==3?'\n	cookie clicks : ':'')+parseInt(Math.floor(cookieClicks))+';'+
-	(type==3?'\n	golden cookie clicks : ':'')+parseInt(Math.floor(goldenClicks))+';'+
-	(type==3?'\n	cookies made by clicking : ':'')+parseFloat(handmadeCookies).toString()+';'+
-	(type==3?'\n	golden cookies missed : ':'')+parseInt(Math.floor(missedGoldenClicks))+';'+
-	(type==3?'\n	background type : ':'')+parseInt(Math.floor(bgType))+';'+
-	(type==3?'\n	milk type : ':'')+parseInt(Math.floor(milkType))+';'+
-	(type==3?'\n	cookies from past runs : ':'')+parseFloat(cookiesReset).toString()+';'+
-	(type==3?'\n	elder wrath : ':'')+parseInt(Math.floor(elderWrath))+';'+
-	(type==3?'\n	pledges : ':'')+parseInt(Math.floor(pledges))+';'+
-	(type==3?'\n	pledge time left : ':'')+parseInt(Math.floor(pledgeT))+';'+
-	(type==3?'\n	currently researching : ':'')+parseInt(Math.floor(nextResearch))+';'+
-	(type==3?'\n	research time left : ':'')+parseInt(Math.floor(researchT))+';'+
-	(type==3?'\n	ascensions : ':'')+parseInt(Math.floor(resets))+';'+
-	(type==3?'\n	golden cookie clicks (this run) : ':'')+parseInt(Math.floor(goldenClicksLocal))+';'+
-	(type==3?'\n	cookies sucked by wrinklers : ':'')+parseFloat(cookiesSucked).toString()+';'+
-	(type==3?'\n	wrinkles popped : ':'')+parseInt(Math.floor(wrinklersPopped))+';'+
-	(type==3?'\n	santa level : ':'')+parseInt(Math.floor(santaLevel))+';'+
-	(type==3?'\n	reindeer clicked : ':'')+parseInt(Math.floor(reindeerClicked))+';'+
-	(type==3?'\n	season time left : ':'')+parseInt(Math.floor(seasonT))+';'+
-	(type==3?'\n	season switcher uses : ':'')+parseInt(Math.floor(seasonUses))+';'+
-	(type==3?'\n	current season : ':'')+(season?season:'')+';';
-	var wrinklers=SaveWrinklers();
-	str+=
-	(type==3?'\n	amount of cookies contained in wrinklers : ':'')+parseFloat(Math.floor(wrinklers.amount))+';'+
-	(type==3?'\n	number of wrinklers : ':'')+parseInt(Math.floor(wrinklers.number))+';'+
-	(type==3?'\n	prestige level : ':'')+parseFloat(prestige).toString()+';'+
-	(type==3?'\n	heavenly chips : ':'')+parseFloat(heavenlyChips).toString()+';'+
-	(type==3?'\n	heavenly chips spent : ':'')+parseFloat(heavenlyChipsSpent).toString()+';'+
-	(type==3?'\n	heavenly cookies : ':'')+parseFloat(heavenlyCookies).toString()+';'+
-	(type==3?'\n	ascension mode : ':'')+parseInt(Math.floor(ascensionMode))+';'+
-	(type==3?'\n	permanent upgrades : ':'')+parseInt(Math.floor(permanentUpgrades[0]))+';'+parseInt(Math.floor(permanentUpgrades[1]))+';'+parseInt(Math.floor(permanentUpgrades[2]))+';'+parseInt(Math.floor(permanentUpgrades[3]))+';'+parseInt(Math.floor(permanentUpgrades[4]))+';'+
-	(type==3?'\n	dragon level : ':'')+parseInt(Math.floor(dragonLevel))+';'+
-	(type==3?'\n	dragon aura : ':'')+parseInt(Math.floor(dragonAura))+';'+
-	(type==3?'\n	dragon aura 2 : ':'')+parseInt(Math.floor(dragonAura2))+';'+
-	(type==3?'\n	chime type : ':'')+parseInt(Math.floor(chimeType))+';'+
-	(type==3?'\n	volume : ':'')+parseInt(Math.floor(volume))+';'+
-	(type==3?'\n	number of shiny wrinklers : ':'')+parseInt(Math.floor(wrinklers.shinies))+';'+
-	(type==3?'\n	amount of cookies contained in shiny wrinklers : ':'')+parseFloat(Math.floor(wrinklers.amountShinies))+';'+
-	(type==3?'\n	current amount of sugar lumps : ':'')+parseFloat(Math.floor(lumps))+';'+
-	(type==3?'\n	total amount of sugar lumps made : ':'')+parseFloat(Math.floor(lumpsTotal))+';'+
-	(type==3?'\n	time when current sugar lump started : ':'')+parseFloat(Math.floor(lumpT))+';'+
-	(type==3?'\n	time when last refilled a minigame with a sugar lump : ':'')+parseFloat(Math.floor(lumpRefill))+';'+
-	(type==3?'\n	sugar lump type : ':'')+parseInt(Math.floor(lumpCurrentType))+';'+
-	(type==3?'\n	vault : ':'')+vault.join(',')+';'+
-	(type==3?'\n	heralds : ':'')+parseInt(heralds)+';'+
-	(type==3?'\n	golden cookie fortune : ':'')+parseInt(fortuneGC)+';'+
-	(type==3?'\n	CpS fortune : ':'')+parseInt(fortuneCPS)+';'+
-	(type==3?'\n	highest raw CpS : ':'')+parseFloat(cookiesPsRawHighest)+';'+
-	(type==3?'\n	music volume : ':'')+parseInt(Math.floor(volumeMusic))+';'+
-			
-	'|';//cookies and lots of other stuff
-			
-	if (type==3) str+='\n\nBuildings : amount, bought, cookies produced, level, minigame data';
-	for (var i in Objects)//buildings
-	{
-		var me=Objects[i];
-		if (type==3) str+='\n	'+me.name+' : ';
-		if (me.vanilla)
-		{
-			str+=me.amount+','+me.bought+','+parseFloat(Math.floor(me.totalCookies))+','+parseInt(me.level);
-			if (isMinigameReady(me)) str+=','+me.minigame.save(); else str+=','+(me.minigameSave||'');
-			str+=','+(me.muted?'1':'0');
-			str+=','+me.highest;
-			str+=';';
-		}
-	}
-	str+='|';
-	if (type==3) str+='\n\nPacked upgrades bitfield (unlocked and bought)\n	';
-	var toCompress=[];
-	for (var i in UpgradesById)//upgrades
-	{
-		var me=UpgradesById[i];
-		if (me.vanilla) toCompress.push(Math.min(me.unlocked,1),Math.min(me.bought,1));
-	};
-			
-	toCompress=pack3(toCompress.join(''));//toCompress=pack(toCompress);//CompressLargeBin(toCompress);
-			
-	str+=toCompress;
-	str+='|';
-	if (type==3) str+='\n\nPacked achievements bitfield (won)\n	';
-	var toCompress=[];
-	for (var i in AchievementsById)//achievements
-	{
-		var me=AchievementsById[i];
-		if (me.vanilla) toCompress.push(Math.min(me.won));
-	}
-	toCompress=pack3(toCompress.join(''));//toCompress=pack(toCompress);//CompressLargeBin(toCompress);
-	str+=toCompress;
-			
-	str+='|';
-	if (type==3) str+='\n\nBuffs : type, maxTime, time, arg1, arg2, arg3';
-	for (var i in buffs)
-	{
-		var me=buffs[i];
-		if (me.type)
-		{
-			if (type==3) str+='\n	'+me.type.name+' : ';
-			if (me.type.vanilla)
-			{
-				str+=me.type.id+','+me.maxTime+','+me.time;
-				if (typeof me.arg1!=='undefined') str+=','+parseFloat(me.arg1);
-				if (typeof me.arg2!=='undefined') str+=','+parseFloat(me.arg2);
-				if (typeof me.arg3!=='undefined') str+=','+parseFloat(me.arg3);
-				str+=';';
-			}
-		}
-	}
-			
-			
-	if (type==3) str+='\n\nCustom :\n';
-			
-	str+='|';
-	str+=saveModData();
-			
-	lastSaveData=str;
-			
-	if (type==2 || type==3)
-	{
-		return str;
-	}
-	else if (type==1)
-	{
-		str=escape(utf8_to_b64(str)+'!END!');
-		return str;
-	}
-	else
-	{
-		if (useLocalStorage)
-		{
-			//so we used to save the game using browser cookies, which was just really neat considering the game's name
-			//we're using localstorage now, which is more efficient but not as cool
-			//a moment of silence for our fallen puns
-			str=utf8_to_b64(str)+'!END!';
-			if (str.length<10)
-			{
-				Notify('Saving failed!','Purchasing an upgrade and saving again might fix this.<br>This really shouldn\'t happen; please notify Orteil on his tumblr.');
-			}
-			else
-			{
-				str=escape(str);
-				localStorageSet(SaveTo,str);//aaand save
-				if (App) App.save(str);
-				if (!localStorageGet(SaveTo))
-				{
-					Notify(("Error while saving"),("Export your save instead!"));
-				}
-				else if (document.hasFocus())
-				{
-					Notify(("Game saved"),'','',1,1);
-				}
-			}
-		}
-		else//legacy system
-		{
-			//that's right
-			//we're using cookies
-			//yeah I went there
-			var now=new Date();//we storin dis for 5 years, people
-			now.setFullYear(now.getFullYear()+5);//mmh stale cookies
-			str=utf8_to_b64(str)+'!END!';
-			saveData=escape(str);
-			str=SaveTo+'='+escape(str)+'; expires='+now.toUTCString()+';';
-			document.cookie=str;//aaand save
-			if (App) App.save(str);
-			if (document.cookie.indexOf(SaveTo)<0)
-			{
-				Notify(("Error while saving"),("Export your save instead!"),'',0,1);
-			}
-			else if (document.hasFocus())
-			{
-				Notify(("Game saved"),'','',1,1);
-			}
-		}
-	}
 }
 
 var App = {};
@@ -334,18 +109,6 @@ let UpdateMenu=function()
 				'</div>'+
 			'</div>'+
 		'</div>';
-		
-		if (App && App.writeModUI)
-		{
-			str+=
-				'<div class="block" style="padding:0px;margin:8px 4px;">'+
-					'<div class="subsection" style="padding:0px;">'+
-							
-					'<div class="title">'+("Mods")+'</div>'+
-					App.writeModUI()+
-					'</div>'+
-				'</div>';
-		}
 				
 		str+='<div style="height:128px;"></div>';
 	}
@@ -354,8 +117,9 @@ let UpdateMenu=function()
 		str+='<div class="section">'+("Login")+'</div>';
 		
 		str+=
-			(App?'<div class="listing"><a class="option smallFancyButton" onClick="PlaySound(\'../sound/clickSFX.mp3\'); login();">Login</a>' + 
-			'<a class="option smallFancyButton" onClick="PlaySound(\'../sound/clickSFX.mp3\'); register();">Registrar</a></div>':'')+
+			(App?'<div class="listing"><a class="option smallFancyButton" onClick="PlaySound(\'../sound/SwishSFX.mp3\'); login();">Login</a>' + 
+			'<a class="option smallFancyButton" onClick="PlaySound(\'../sound/SwooshSFX.mp3\'); register();">Registrar</a></div>':'')+
+
 			'<div class="block" id="loginForm" style="padding:0px;margin:8px 4px;">'+
 				'<div class="subsection" style="padding:0px;">'+	
 				'<div class="title">'+("Login")+'</div>'+
@@ -372,7 +136,7 @@ let UpdateMenu=function()
 				'<div class="title">'+("Registrar")+'</div>'+
 					(App?'<form class="listing" style="text-align: center;"><input type="text" placeholder="Usuário" class="option smallFancyButton"><br>':'')+
 					'<input type="password" placeholder="Senha" class="option smallFancyButton"><br>'+
-					'<a class="option smallFancyButton" onClick="Login();PlaySound(\'../sound/clickSFX.mp3\');">'+("Criar Conta")+'</a></form>'+
+					'<a class="option smallFancyButton" onClick="SaveGame();PlaySound(\'../sound/clickSFX.mp3\');">'+("Criar Conta")+'</a></form>'+
 								
 				'</div>'+
 			'</div>';
@@ -431,9 +195,6 @@ let UpdateMenu=function()
 			}
 		}
 	}
-	/*AddEvent(get('selectionKeeper'),'mouseup',function(e){
-		console.log('selection:',window.getSelection());
-	});*/
 }
 
 
