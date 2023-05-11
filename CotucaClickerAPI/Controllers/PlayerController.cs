@@ -89,5 +89,29 @@ namespace CotucaClickerAPI.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Falha ao acessar banco de dados");
             }
         }
+
+        [HttpDelete("{PlayerName}")]
+        public void DeletePlayer(string PlayerName)
+        {
+             try
+            {
+                var playerToDelete = _context.Player.Find(PlayerName); 
+
+                if (playerToDelete == null)
+                {
+                    NotFound();
+                }
+                else
+                {
+                    _context.Remove(playerToDelete);
+                    _context.SaveChanges();
+                }
+            }
+            catch (Exception)
+            {
+                StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error deleting data");
+            }
+        }
     }
 }
