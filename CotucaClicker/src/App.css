@@ -562,6 +562,7 @@ a, a:visited {
     top: 0px;
     bottom: 0px;
     background-color: #000;
+    height: 1475px;
 }
 /*Configuração de toda aba direita (Shop)*/
 .panelButton:active{
