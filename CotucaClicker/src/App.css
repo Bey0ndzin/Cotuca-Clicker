@@ -499,7 +499,7 @@ a, a:visited {
     background-image: url(../img/malignoIcon.png);
 }
 #productIcon13{
-    background-image: url(../img/chicoIcon.png);
+    background-image: url(../img/boletimIcon.png);
 }
 .icon{
     width: 48px;
@@ -977,4 +977,28 @@ body .crate{
     transition: transform 1s;
     position: absolute;
     left: 150px;
+}
+@keyframes logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  @media (prefers-reduced-motion: no-preference) {
+    .logo.react{
+      animation: logo-spin infinite 10s linear;
+    }
+}
+#rowCanvas7{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url('../public/img/patBackground.png');
+    background-repeat: repeat;
+}
+.logo.react{
+    width: 128px;
 }

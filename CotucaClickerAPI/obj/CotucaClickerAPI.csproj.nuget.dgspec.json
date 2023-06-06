@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\u22152\\Desktop\\Cotuca-Clicker\\CotucaClickerAPI\\CotucaClickerAPI.csproj": {}
+    "C:\\Users\\u22147\\Documents\\GitHub\\Cotuca-Clicker\\CotucaClickerAPI\\CotucaClickerAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\u22152\\Desktop\\Cotuca-Clicker\\CotucaClickerAPI\\CotucaClickerAPI.csproj": {
+    "C:\\Users\\u22147\\Documents\\GitHub\\Cotuca-Clicker\\CotucaClickerAPI\\CotucaClickerAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\u22152\\Desktop\\Cotuca-Clicker\\CotucaClickerAPI\\CotucaClickerAPI.csproj",
+        "projectUniqueName": "C:\\Users\\u22147\\Documents\\GitHub\\Cotuca-Clicker\\CotucaClickerAPI\\CotucaClickerAPI.csproj",
         "projectName": "CotucaClickerAPI",
-        "projectPath": "C:\\Users\\u22152\\Desktop\\Cotuca-Clicker\\CotucaClickerAPI\\CotucaClickerAPI.csproj",
-        "packagesPath": "C:\\Users\\u22152\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\u22152\\Desktop\\Cotuca-Clicker\\CotucaClickerAPI\\obj\\",
+        "projectPath": "C:\\Users\\u22147\\Documents\\GitHub\\Cotuca-Clicker\\CotucaClickerAPI\\CotucaClickerAPI.csproj",
+        "packagesPath": "C:\\Users\\u22147\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\u22147\\Documents\\GitHub\\Cotuca-Clicker\\CotucaClickerAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\u22152\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\u22147\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],

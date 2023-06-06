@@ -34,11 +34,9 @@ AddEvent(window,'keydown',function(e){
 			e.preventDefault();
 		}
 	}
-	if (!OnAscend && AscendTimer==0)
-	{
-		if (e.ctrlKey && e.keyCode==83) {toSave=true;e.preventDefault();}//ctrl-s saves the game
-		else if (e.ctrlKey && e.keyCode==79) {ImportSave();e.preventDefault();}//ctrl-o opens the import menu
-	}
+	if (e.ctrlKey && e.keyCode==83) {toSave=true;e.preventDefault();}//ctrl-s saves the game
+	else if (e.ctrlKey && e.keyCode==79) {ImportSave();e.preventDefault();}//ctrl-o opens the import menu
+	
 	if ((e.keyCode==16 || e.keyCode==17) && tooltip.dynamic) tooltip.update();
 	keys[e.keyCode]=1;
 	if (e.keyCode==9) keys=[];//reset keys on tab press

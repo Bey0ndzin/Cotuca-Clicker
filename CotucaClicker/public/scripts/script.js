@@ -1,4 +1,5 @@
 let clicks, upgrade, preco, moneyPS, kills, Equips, clicksEarned, clicksReset, resets, globalCpsMult, cpsSucked;
+let upgrade0, upgrade1, upgrade2;
 let startDate=new Date();
 startDate.setTime(Date.now());
 //Declara váriaveis globais que vão ser usadas em várias funções diferentes
@@ -14,12 +15,9 @@ function Load(){
     //Seta essas várias para valores padrões
     clicks = 50000000000000
 	clicksEarned = clicks;
-	clicksReset = 0;
-	resets = 0;
-	cpsSucked = 0;
-	globalCpsMult = 0;
-	Equips = 0;
+	clicksReset = resets = cpsSucked = globalCpsMult = Equips = 0;
     preco = new Array(14)
+	upgrade0 = upgrade1 = upgrade2 = 0;
     preco[0] = 5
     preco[1] = 50
     preco[2] = 120
@@ -84,7 +82,9 @@ function Item(id){
 		}
 		Equips+=buyBulk;
 
-		draw(parseInt(id+1));
+		var isBulking = buyBulk>1? true : false;
+
+		draw(parseInt(id+1), isBulking);
 
         //preco[id] = 1.15 * preco[id]
 		if(buyBulk != 1)
@@ -125,6 +125,7 @@ function Item(id){
 		else if(parseInt(id) == 10){moneyPS += 5000000 * buyBulk}// 5m
 		else if(parseInt(id) == 11){moneyPS += 10000000 * buyBulk}// 10m
 		else if(parseInt(id) == 12){moneyPS += 50000000 * buyBulk}// 50m
+		else if(parseInt(id) == 13){moneyPS += 100000000 * buyBulk}// 100m
 
         get('productPrice'+id).innerHTML = "R$" + Beautify(preco[id])
         get('money').innerHTML = "Moedas: " + Beautify(clicks) + '<div id="moneyPerSecond">Moedas por segundo: ' + Beautify(moneyPS) + '</div>'
@@ -339,7 +340,7 @@ var firstLoading = [true, true, true, true, true, true, true];
 var secondsToSpellAgain = 0
 var countElfo = 0, countOrc = 0, countSergio = 0, countSimone = 0, countMaligno = 0, countChico = 0;
 
-function draw(id){
+function draw(id, isBulking){
 	var img = get('enemyImg')
 	var img2 = get('targetImg')
 	if(id == 1){
@@ -435,8 +436,18 @@ function draw(id){
 			elfo.src = '../img/elfIcon.webp'
 
 			elfo.onload = () => {
-				ctx.drawImage(elfo, countElfo*45, 56, 64, 48)
-				countElfo++;
+				if(isBulking)
+				{
+					for(var i = 0; i < buyBulk; i++)
+					{
+						ctx.drawImage(elfo, countElfo*40, 56, 64, 48)
+						countElfo++;
+					}
+				}
+				else{
+					ctx.drawImage(elfo, countElfo*40, 56, 64, 48)
+					countElfo++;
+				}
 			}
 		}
 	}
@@ -472,8 +483,18 @@ function draw(id){
 			orc.src = '../img/orcIcon.png'
 
 			orc.onload = () => {
-				ctx.drawImage(orc, countOrc*60, 56, 64, 48)
-				countOrc++;
+				if(isBulking)
+				{
+					for(var i = 0; i < buyBulk; i++)
+					{
+						ctx.drawImage(orc, countOrc*40, 56, 64, 48)
+						countOrc++;
+					}
+				}
+				else{
+					ctx.drawImage(orc, countOrc*40, 56, 64, 48)
+					countOrc++;
+				}
 			}
 		}
 	}
@@ -510,8 +531,18 @@ function draw(id){
 			sergio.src = '../img/SergioIcon.png'
 
 			sergio.onload = () => {
-				ctx.drawImage(sergio, countSergio*40, 56, 64, 48)
-				countSergio++;
+				if(isBulking)
+				{
+					for(var i = 0; i < buyBulk; i++)
+					{
+						ctx.drawImage(sergio, countSergio*40, 56, 64, 48)
+						countSergio++;
+					}
+				}
+				else{
+					ctx.drawImage(sergio, countSergio*40, 56, 64, 48)
+					countSergio++;
+				}
 			}
 		}
 	}
@@ -533,7 +564,7 @@ function draw(id){
 				//ctx.drawImage(fundo,0,0, 128, 130)
 
 				var simone = new Image();
-				simone.src = '../img/SimoneIcon.png'
+				simone.src = '../img/simoneIcon.png'
 
 				simone.onload = () => {
 					ctx.drawImage(simone, countSimone, 56, 64, 48)
@@ -545,18 +576,26 @@ function draw(id){
 		if(countSimone < 14)
 		{
 			var simone = new Image();
-			simone.src = '../img/SimoneIcon.png'
+			simone.src = '../img/simoneIcon.png'
 
 			simone.onload = () => {
-				ctx.drawImage(simone, countSimone*40, 56, 64, 48)
-				countSimone++;
+				if(isBulking)
+				{
+					for(var i = 0; i < buyBulk; i++)
+					{
+						ctx.drawImage(simone, countSimone*40, 56, 64, 48)
+						countSimone++;
+					}
+				}
+				else{
+					ctx.drawImage(simone, countSimone*40, 56, 64, 48)
+					countSimone++;
+				}
 			}
 		}
 	}
 
 	if(id == 11){
-		var canvas = get('rowCanvas7');
-		var ctx = canvas.getContext('2d');
 		if(firstLoading[6] == true){
 			get('row7').classList.add('enabled')
 		firstLoading[6] = false

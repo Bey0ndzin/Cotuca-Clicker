@@ -86,9 +86,8 @@ let UpdateMenu=function()
 			'<div class="block" style="padding:0px;margin:8px 4px;">'+
 				'<div class="subsection" style="padding:0px;">'+
 				'<div class="title">'+("Geral")+'</div>'+
-					(App?'<div class="listing"><a class="option smallFancyButton" '+clickStr+'onClick="PlaySound(\'../sound/clickSFX.mp3\');toSave=true;toQuit=true;">'+("Salvar e sair")+'</a></div>':'')+
-					'<div class="listing"><a class="option smallFancyButton" '+clickStr+'onClick="toSave=true;PlaySound(\'../sound/clickSFX.mp3\');">'+("Save")+'</a><label>'+("Salvar manualmente (O jogo salva automaticamente a cada minuto; atalho: ctrl+S)")+'</label></div>'+
-					'<div class="listing"><a class="option smallFancyButton" '+clickStr+'onClick="ExportSave();PlaySound(\'../sound/clickSFX.mp3\');">'+("Exportar save")+'</a><a class="option smallFancyButton" '+clickStr+'="ImportSave();PlaySound(\'../sound/clickSFX.mp3\');">'+("Importar save")+'</a><label>'+("Você pode usar isso para fazer um backup ou transferir saves (atalho para importar: ctrl+O)")+'</label></div>'+
+					(App?'<div class="listing"><a class="option smallFancyButton" '+clickStr+'onClick="PlaySound(\'../sound/clickSFX.mp3\');jsx.SaveGame();">'+("Salvar e sair")+'</a></div>':'')+
+					'<div class="listing"><a class="option smallFancyButton" '+clickStr+'onClick="jsx.SaveGame();PlaySound(\'../sound/clickSFX.mp3\');">'+("Salvar")+'</a><label>'+("Salvar manualmente (atalho: ctrl+S)")+'</label></div>'+
 					(!App?('<div class="listing"><a class="option smallFancyButton" '+clickStr+'onClick="FileSave();PlaySound(\'../sound/clickSFX.mp3);">'+("Salvar em arquivo")+'</a><a class="option smallFancyButton" style="position:relative;"><input id="FileLoadInput" type="file" style="cursor:pointer;opacity:0;position:absolute;left:0px;top:0px;width:100%;height:100%;" onchange="FileLoad(event);" '+clickStr+'="PlaySound(\'../sound/clickSFX.mp3\');"/>'+("Load from file")+'</a><label>'+("Use para manter seu progresso em um backup")+'</label></div>'):'')+
 					'<div class="listing" style="text-align:right;"><label>'+("Deletar todo progresso, incluindo conquistas")+'</label><a class="option smallFancyButton warning" '+clickStr+'="HardReset();PlaySound(\'../sound/clickSFX.mp3\');">'+("Deletar Save")+'</a></div>'+
 							
@@ -123,9 +122,9 @@ let UpdateMenu=function()
 			'<div class="block" id="loginForm" style="padding:0px;margin:8px 4px;">'+
 				'<div class="subsection" style="padding:0px;">'+	
 				'<div class="title">'+("Login")+'</div>'+
-					(App?'<form class="listing" style="text-align: center;"><input type="text" placeholder="Usuário" class="option smallFancyButton"><br>':'')+
-					'<input type="password" placeholder="Senha" class="option smallFancyButton"><br>'+
-					'<a class="option smallFancyButton" onClick="Login();PlaySound(\'../sound/clickSFX.mp3\');">'+("Entrar na Conta")+'</a></form>'+
+					(App?'<form class="listing" style="text-align: center;"><input type="text" id="logUser" placeholder="Usuário" class="option smallFancyButton"><br>':'')+
+					'<input type="password" id="logPassword" placeholder="Senha" class="option smallFancyButton"><br>'+
+					'<a class="option smallFancyButton" onClick="jsx.LoadGame();PlaySound(\'../sound/clickSFX.mp3\');">'+("Entrar na Conta")+'</a></form>'+
 							
 				'</div>'+
 			'</div>';
@@ -134,9 +133,9 @@ let UpdateMenu=function()
 			'<div class="block" id="regForm" style="padding:0px;margin:8px 4px;">'+
 				'<div class="subsection" style="padding:0px;">'+
 				'<div class="title">'+("Registrar")+'</div>'+
-					(App?'<form class="listing" style="text-align: center;"><input type="text" placeholder="Usuário" class="option smallFancyButton"><br>':'')+
-					'<input type="password" placeholder="Senha" class="option smallFancyButton"><br>'+
-					'<a class="option smallFancyButton" onClick="SaveGame();PlaySound(\'../sound/clickSFX.mp3\');">'+("Criar Conta")+'</a></form>'+
+					(App?'<form class="listing" style="text-align: center;"><input type="text" id="regUser" placeholder="Usuário" class="option smallFancyButton"><br>':'')+
+					'<input type="password" id="regPassword" placeholder="Senha" class="option smallFancyButton"><br>'+
+					'<a class="option smallFancyButton" onClick="jsx.CreateAccount();PlaySound(\'../sound/clickSFX.mp3\');">'+("Criar Conta")+'</a></form>'+
 								
 				'</div>'+
 			'</div>';
@@ -167,8 +166,6 @@ let UpdateMenu=function()
 			'<div class="listing"><b>'+("Moedas no banco:")+'</b> <div class="price plain">'+tinyCotuca()+Beautify(clicks)+'</div></div>'+
 			'<div class="listing"><b>'+("Moedas ganhas (nesse ano):")+'</b> <div class="price plain">'+tinyCotuca()+Beautify(clicksEarned)+'</div></div>'+
 			'<div class="listing"><b>'+("Moedas ganhas (todos os anos):")+'</b> <div class="price plain">'+tinyCotuca()+Beautify(clicksEarned+clicksReset)+'</div></div>'+
-			//(clicksReset>0?'<div class="listing"><b>'+("Cookies forfeited by ascending:")+'</b> <div class="price plain">'+tinyCotuca()+Beautify(clicksReset)+'</div></div>':'')+
-			//(resets?('<div class="listing"><b>'+("Legacy started:")+'</b> '+(fullDate==''?("just now"):("%1 ago",fullDate))+', '+("with %1 ascension",LBeautify(resets))+'</div>'):'')+
 			'<div class="listing"><b>'+("Run começou:")+'</b> '+(startDate==''?("just now"):("%1 ago",startDate))+'</div>'+
 			'<div class="listing"><b>'+("Equipamentos:")+'</b> '+Beautify(equips)+'</div>'+
 			'<div class="listing"><b>'+("Moedas por segundo:")+'</b> '+Beautify(moneyPS,1)+' <small>'+
