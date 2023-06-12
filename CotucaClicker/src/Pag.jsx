@@ -30,12 +30,45 @@ export default class Pag extends Component {
     }
 
     SaveGame(){
-        const player = this.state.player;
+        var player = this.state.player;
         const metodo = 'put';
         const url = `${urlAPI}/${player.username}`;
+
+        player.clicks = clicks;
+        player.moneyLifetime = clicksEarned;
+        player.moneyThisRun = resets;
+
+        player.sword = upgrade[0];
+        player.shield = upgrade[1];
+        player.armor = upgrade[2];
+        player.boot = upgrade[3];
+        player.bow = upgrade[4];
+        player.staff = upgrade[5];
+        player.elf = upgrade[6];
+        player.orc = upgrade[7];
+        player.sergio = upgrade[8];
+        player.simone = upgrade[9];
+        player.patricia = upgrade[10];
+        player.sampaio = upgrade[11];
+        player.maligno = upgrade[12];
+        player.boletim = upgrade[13];
+
+        player.upgrade0 = upgrade0;
+        player.upgrade1 = upgrade1;
+        player.upgrade2 = upgrade2;
     
         axios[metodo](url, player).then(resp => { 
-            this.setState({ player: initialState.player})
+            this.setState({ player })
+        })
+    }
+    DeleteAccount(){
+        const player = this.state.player;
+        const url = `${urlAPI}/${player.username}`;
+        const metodo = 'delete'
+        
+        axios[metodo](url).then(() => {
+            this.setState({ player: initialState.player })
+            this.atualizarDados();
         })
     }
     validateData(data){
@@ -51,9 +84,6 @@ export default class Pag extends Component {
     }
     
     CreateAccount(){
-        var lowerCaseLetters = /[a-z]/g;
-        var upperCaseLetters = /[A-Z]/g;
-        var numbers = /[0-9]/g;
         var nomeValido = false;
         var senhaValida = false;
         var valido = false;
@@ -105,8 +135,7 @@ export default class Pag extends Component {
         player.upgrade2 = upgrade2;
     
         axios[metodo](urlAPI, player).then(resp => {
-            console.log('salvou')
-            this.setState({player: initialState.player})
+            this.setState({ player })
         })
     }
     
@@ -125,16 +154,22 @@ export default class Pag extends Component {
 
     atualizarDados(playerLogou){
         var player = playerLogou;
-        clicks = player.clicks;
-        resets = player.moneyLifetime;
-        clicksEarned = player.moneyThisRun;
-        startDate = player.initialDate;
     
         upgrade[0] = player.sword; upgrade[1] = player.shield; upgrade[2] = player.armor;
         upgrade[3] = player.boot; upgrade[4] = player.bow; upgrade[5] = player.staff;
         upgrade[6] = player.elf; upgrade[7] = player.orc; upgrade[8] = player.sergio;
         upgrade[9] = player.simone; upgrade[10] = player.patricia; upgrade[11] = player.sampaio;
         upgrade[12] = player.maligno; upgrade[13] = player.boletim;
+
+        clicks = player.clicks;
+        resets = player.moneyLifetime;
+        clicksEarned = player.moneyThisRun;
+        startDate = player.initialDate;
+
+        moneyPS = 0;
+        for(var i = 0; i <= 13; i++){
+            preco[i] = 0;
+        }
 
         for(var i = 0; i <= 13; i++)
         {
@@ -155,7 +190,6 @@ export default class Pag extends Component {
 
             if(upgrade[i] > 0)
             {
-                get('rowCanvas')
                 if(get('product'+(i+1)) != null)
                 {
                     if(get('product'+(i+1)).classList.contains('locked'))
@@ -178,6 +212,27 @@ export default class Pag extends Component {
                         get('upgrade'+i).classList.remove('locked')
                         $("#upgrade"+i).show(250);
                     }
+                }
+            }else{
+                if(get('rowCanvas'+(i+1)) != null){
+                    get('rowCanvas'+(i+1)).classList.add('locked');
+                    get('row'+(i+1)).classList.remove('enabled');
+                }
+                if(get('product'+(i+1)) != null)
+                {
+                    get('product'+(i+1)).classList.add('locked')
+                    $("#product"+(i+1)).hide(500);
+                }
+                get('productPrice'+i).innerHTML = "R$" + Beautify(preco[i])
+                get('money').innerHTML = "Moedas: " + Beautify(clicks) + '<div id="moneyPerSecond">Moedas por segundo: ' + Beautify(moneyPS) + '</div>'
+                get('productOwned'+i).innerHTML = Beautify(upgrade[i])
+                
+                Equips--;
+
+                if(get('upgrade'+i) != null)
+                {
+                    get('upgrade'+i).classList.add('locked')
+                    $("#upgrade"+i).hide(500);
                 }
             }
             var numDesenho = 14;
@@ -218,7 +273,7 @@ export default class Pag extends Component {
                         <div id="moneyPerSecond">Moedas por segundo: 0</div>
                     </div>
                     <div className="ancoragemCotuca">
-                        <div className="cotucaDiv" onClick={() => {"Click(); PlaySound('../sound/cotucaSFX.mp3')"}}>
+                        <div className="cotucaDiv" onClick={() => {Click(); PlaySound('../sound/cotucaSFX.mp3')}}>
                             <img src={cotuca} alt="Png do Cotuca" className="cotuca" />
                         </div>
                     </div>

@@ -39,6 +39,7 @@ a, a:visited {
     text-decoration: underline;
     cursor: pointer;
     color: #fff;
+    padding: 2px;
 }
 /*Configuração da barra de navegação*/
 #game{

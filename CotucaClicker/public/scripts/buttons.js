@@ -86,10 +86,8 @@ let UpdateMenu=function()
 			'<div class="block" style="padding:0px;margin:8px 4px;">'+
 				'<div class="subsection" style="padding:0px;">'+
 				'<div class="title">'+("Geral")+'</div>'+
-					(App?'<div class="listing"><a class="option smallFancyButton" '+clickStr+'onClick="PlaySound(\'../sound/clickSFX.mp3\');jsx.SaveGame();">'+("Salvar e sair")+'</a></div>':'')+
 					'<div class="listing"><a class="option smallFancyButton" '+clickStr+'onClick="jsx.SaveGame();PlaySound(\'../sound/clickSFX.mp3\');">'+("Salvar")+'</a><label>'+("Salvar manualmente (atalho: ctrl+S)")+'</label></div>'+
-					(!App?('<div class="listing"><a class="option smallFancyButton" '+clickStr+'onClick="FileSave();PlaySound(\'../sound/clickSFX.mp3);">'+("Salvar em arquivo")+'</a><a class="option smallFancyButton" style="position:relative;"><input id="FileLoadInput" type="file" style="cursor:pointer;opacity:0;position:absolute;left:0px;top:0px;width:100%;height:100%;" onchange="FileLoad(event);" '+clickStr+'="PlaySound(\'../sound/clickSFX.mp3\');"/>'+("Load from file")+'</a><label>'+("Use para manter seu progresso em um backup")+'</label></div>'):'')+
-					'<div class="listing" style="text-align:right;"><label>'+("Deletar todo progresso, incluindo conquistas")+'</label><a class="option smallFancyButton warning" '+clickStr+'="HardReset();PlaySound(\'../sound/clickSFX.mp3\');">'+("Deletar Save")+'</a></div>'+
+					'<div class="listing" style="text-align:right;"><label>'+("Deletar todo progresso, incluindo conquistas")+'</label><a class="option smallFancyButton warning" onclick="jsx.DeleteAccount();PlaySound(\'../sound/clickSFX.mp3\');">'+("Deletar Save")+'</a></div>'+
 							
 				'</div>'+
 			'</div>'+
@@ -116,8 +114,8 @@ let UpdateMenu=function()
 		str+='<div class="section">'+("Login")+'</div>';
 		
 		str+=
-			(App?'<div class="listing"><a class="option smallFancyButton" onClick="PlaySound(\'../sound/SwishSFX.mp3\'); login();">Login</a>' + 
-			'<a class="option smallFancyButton" onClick="PlaySound(\'../sound/SwooshSFX.mp3\'); register();">Registrar</a></div>':'')+
+			'<div class="listing"><a class="option smallFancyButton" onClick="PlaySound(\'../sound/SwishSFX.mp3\'); login();">Login</a>' + 
+			'<a class="option smallFancyButton" onClick="PlaySound(\'../sound/SwooshSFX.mp3\'); register();">Registrar</a></div>'+
 
 			'<div class="block" id="loginForm" style="padding:0px;margin:8px 4px;">'+
 				'<div class="subsection" style="padding:0px;">'+	

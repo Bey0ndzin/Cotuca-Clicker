@@ -13,7 +13,7 @@ function choose(arr) {
 
 function Load(){
     //Seta essas várias para valores padrões
-    clicks = 50000000000000
+    clicks = 0
 	clicksEarned = clicks;
 	clicksReset = resets = cpsSucked = globalCpsMult = Equips = 0;
     preco = new Array(14)
