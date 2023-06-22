@@ -1,4 +1,3 @@
-var volume=1
 function setVolume(what)
 {
 	volume=what;
@@ -6,10 +5,6 @@ function setVolume(what)
 		get('music').volume = (volume / 100) / 2;
 }
 
-var Sounds=[];
-var SoundInsts=[];
-for (var i=0;i<12;i++){SoundInsts[i]=new Audio();}
-var SoundI=0;
 function PlaySound(url,vol)
 {
 	var volumeSetting=volume;

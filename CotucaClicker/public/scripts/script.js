@@ -1,58 +1,5 @@
-let clicks, upgrade, preco, moneyPS, kills, Equips, clicksEarned, clicksReset, resets, globalCpsMult, cpsSucked;
-let upgrade0, upgrade1, upgrade2;
-let startDate=new Date();
-startDate.setTime(Date.now());
-//Declara váriaveis globais que vão ser usadas em várias funções diferentes
-
-function get(what) {
-    return document.getElementById(what);
-}
 function choose(arr) {
 	return arr[Math.floor(Math.random()*arr.length)];
-}
-
-function Load(){
-    //Seta essas várias para valores padrões
-    clicks = 5000
-	clicksEarned = clicks;
-	clicksReset = resets = cpsSucked = globalCpsMult = Equips = 0;
-    preco = new Array(14)
-	upgrade0 = upgrade1 = upgrade2 = 0;
-    preco[0] = 5
-    preco[1] = 50
-    preco[2] = 120
-	preco[3] = 500
-	preco[4] = 1500
-	preco[5] = 5000
-	preco[6] = 15000
-	preco[7] = 50000
-	preco[8] = 100000
-	preco[9] = 500000
-	preco[10] = 1000000
-	preco[11] = 2500000
-	preco[12] = 5000000
-	preco[13] = 100000000
-    upgrade = new Array(14)
-    for(var i = 0; i < upgrade.length; i++){
-        upgrade[i] = 0;
-    }
-    moneyPS = 0;
-    kills = 0;
-	setVolume(volume)
-	/*if(get('music') != null)
-		get('music').play();*/
-    /*alert("Você dominou o mundo...")
-    alert("Depois de sua incrível jornada, todos amavam seu pão de queijo")
-    alert("Mas nem tudo é perfeito...")
-    alert("Perdido em seus pensamentos sobre pães de queijo e cafézinhos quentinhos...")
-    alert("Você foi brutalmente atropelado por um carrinho de supermercado que você nem viu chegando...")
-    alert("Você acorda desnorteado, você não estava mais no estacionamento do Carrefour")
-    alert("Agora você estava em um mundo totalmente diferente, parecia um mundo de rpg... E você com o conhecimento de 5000 monges da Malásia, sabia qual era sua missão")
-    alert("Clicar!")*/
-    AddEvent(get('options'),'click',function(){ShowMenu('options');});
-    AddEvent(get('stats'),'click',function(){ShowMenu('stats');});
-    AddEvent(get('login'),'click',function(){ShowMenu('login');});
-    AddEvent(get('ascend'),'click',function(){PlaySound('../sound/clickSFX.mp3');Ascend();});
 }
 function Click(){
     //Váriavel para aumentar a grana cada vez que clica no cotuca
@@ -223,17 +170,6 @@ let ShowMenu=function(what)
 			if (me.minigame && me.minionResize) me.minionResize();
 		}
 	}
-}
-//Função que adiciona eventos em objetos
-function AddEvent(el,ev,func)
-{
-    //el = Objeto
-    //ev = ação a ser lida ('click', 'hover', etc.)
-    //func = função a ser executada
-	//ie. myListener=AddEvent(get('element'),'click',function(){console.log('teste');});
-	if (el.addEventListener) {el.addEventListener(ev,func,false);return [el,ev,func];}
-	else if (el.attachEvent) {var func2=function(){func.call(el);};el.attachEvent('on'+ev,func2);return [el,ev,func2];}
-	return false;
 }
 
 var cssClasses = [];

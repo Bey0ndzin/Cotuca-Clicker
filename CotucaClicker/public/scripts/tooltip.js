@@ -43,7 +43,6 @@ function GetMouseCoords(e)
 function SetOnCrate(what)
 {
 	onCrate=what;
-	return onCrate;
 }   
 
 Element.prototype.getBounds=function(){
