@@ -362,9 +362,9 @@ export default class Pag extends Component {
                     <div className="store">
                         <div className="storeTitle">Mestre Kawara Nofuro</div>
                         <div id="upgrades" className="storeSection upgradeBox">
-                        <div onClick={() => {UpgradesById[0].click(event);}} className="crate upgrade locked" onMouseOut={() => {SetOnCrate(0);Tooltip.shouldHide=1;Tooltip.hide();}} onMouseOver={() => {"if(!mouseDown) {SetOnCrate(get(upgrade0));Tooltip.dynamic=1;Tooltip.draw(this,function(){return function(){return CrateTooltip(UpgradesById[0],'store');}();},'store');Tooltip.wobble();}"}} id='upgrade0' style={{backgroundPosition: '-576px -192px'}}></div>
-                            <div onClick={() => {UpgradesById[11].click(event);}} className="crate upgrade locked" onMouseOut={() => {SetOnCrate(11);Tooltip.shouldHide=1;Tooltip.hide();}} onMouseOver={() => {"if(!mouseDown) {SetOnCrate(this);Tooltip.dynamic=1;Tooltip.draw(this,function(){return function(){return CrateTooltip(UpgradesById[11],'store');}();},'store');Tooltip.wobble();}"}} id="upgrade1" style={{backgroundPosition: '-576px -192px'}}></div>
-                            <div onClick={() => {UpgradesById[17].click(event);}} className="crate upgrade locked" onMouseOut={() => {SetOnCrate(17);Tooltip.shouldHide=1;Tooltip.hide();}} onMouseOver={() => {"if(!mouseDown) {SetOnCrate(this);Tooltip.dynamic=1;Tooltip.draw(this,function(){return function(){return CrateTooltip(UpgradesById[17],'store');}();},'store');Tooltip.wobble();}"}} id="upgrade2" style={{backgroundPosition: '-576px -192px'}}></div>  
+                            <div onClick={() => {UpgradesById[0].click(event);}} className="crate upgrade locked" onMouseOut={() => {SetOnCrate(0);Tooltip.shouldHide=1;Tooltip.hide();}} onMouseOver={() => {if(!mouseDown) {SetOnCrate(get(upgrade0));Tooltip.dynamic=1;Tooltip.draw(this,function(){return function(){return CrateTooltip(UpgradesById[0],'store');}();},'store');}}} id='upgrade0' style={{backgroundPosition: '-576px -192px'}}></div>
+                            <div onClick={() => {UpgradesById[11].click(event);}} className="crate upgrade locked" onMouseOut={() => {SetOnCrate(1);Tooltip.shouldHide=1;Tooltip.hide();}} onMouseOver={() => {if(!mouseDown) {SetOnCrate(get(upgrade1));Tooltip.dynamic=1;Tooltip.draw(this,function(){return function(){return CrateTooltip(UpgradesById[11],'store');}();},'store');}}} id="upgrade1" style={{backgroundPosition: '-576px -192px'}}></div>
+                            <div onClick={() => {UpgradesById[17].click(event);}} className="crate upgrade locked" onMouseOut={() => {SetOnCrate(2);Tooltip.shouldHide=1;Tooltip.hide();}} onMouseOver={() => {if(!mouseDown) {SetOnCrate(get(upgrade2));Tooltip.dynamic=1;Tooltip.draw(this,function(){return function(){return CrateTooltip(UpgradesById[17],'store');}();},'store');}}} id="upgrade2" style={{backgroundPosition: '-576px -192px'}}></div>  
                         </div>
                         <div id="products" className="storeSection">
                             <div id="storeBulk" className="storePre">
@@ -544,6 +544,7 @@ export default class Pag extends Component {
         firstLoading = false;
 
         window.addEventListener('load', () => {Load()})
+        window.addEventListener('mousemove', () => {GetMouseCoords()})
     }
     return(
         <div>

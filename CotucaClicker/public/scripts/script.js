@@ -13,7 +13,7 @@ function choose(arr) {
 
 function Load(){
     //Seta essas várias para valores padrões
-    clicks = 0
+    clicks = 5000
 	clicksEarned = clicks;
 	clicksReset = resets = cpsSucked = globalCpsMult = Equips = 0;
     preco = new Array(14)
@@ -157,7 +157,7 @@ function farm(){
 		status2[3].innerHTML = '<b>Run começou: '+'</b> '+(startDate2==''?("just now"):("%1 ago",startDate2));
 		status2[4].innerHTML = '<b>Equipamentos: </b>' + Beautify(Equips)
 		status2[5].innerHTML = '<b>Moedas por segundo: </b>' + Beautify(moneyPS,1) + '<small> (multiplicador: ' + Beautify(Math.round(globalCpsMult*100),1)+'%)</small> '
-		status2[6].innerHTML = '<b>Moedas por Click: </b>' + Beautify(upgrade[0] + 1)
+		status2[6].innerHTML = '<b>Moedas por Click: </b>' + Beautify(upgrade[0]/2 + 1)
 	}	
 	
 	CanBuy();

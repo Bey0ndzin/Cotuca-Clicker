@@ -36,12 +36,14 @@ function GetMouseCoords(e)
 	mouseY=(posy-y)/scale;
 	mouseMoved=1;
 	lastActivity=time;
-	if (mouseMoved || Scroll || Tooltip.dynamic) Tooltip.update();
+	if(Tooltip.tt)
+		if (mouseMoved || Scroll || Tooltip.dynamic) Tooltip.update();
 }
 
 function SetOnCrate(what)
 {
 	onCrate=what;
+	return onCrate;
 }   
 
 Element.prototype.getBounds=function(){
@@ -288,11 +290,12 @@ Tooltip.update=function()
 {
 	var X=0;
 	var Y=0;
-	var width=this.tt.offsetWidth;
-	var height=this.tt.offsetHeight;
+	var width = 0;
+	var height = 0;
 	if (this.origin=='store')
 	{
-		X=windowW-332-width;
+		X=windowW-700-width;
+		//X=windowW-332-width;
 		Y=mouseY-32;
 		if (onCrate) Y=onCrate.getBounds().top-42;
 		Y=Math.max(0,Math.min(windowH-height-44,Y));
@@ -363,6 +366,7 @@ Tooltip.update=function()
 			Y=Math.max(0,Math.min(windowH-height-64,Y));
 		}
 	}
+	//Aqui
 	this.tta.style.left=X+'px';
 	this.tta.style.right='auto';
 	this.tta.style.top=Y+'px';
@@ -390,13 +394,13 @@ function getTooltip(text,origin,isCrate)
 {
 	origin=(origin?origin:'middle');
 	if (isCrate) return 'onMouseOut="setOnCrate(0);Tooltip.shouldHide=1;" onMouseOver="if (!mouseDown) {setOnCrate(this);Tooltip.dynamic=0;Tooltip.draw(this,\''+escape(text)+'\',\''+origin+'\');Tooltip.wobble();}"';
-	else return 'onMouseOut="Tooltip.shouldHide=1;" onMouseOver="Tooltip.dynamic=0;Tooltip.draw(this,\''+escape(text)+'\',\''+origin+'\');Tooltip.wobble();"';
+	else return 'onMouseOut="Tooltip.shouldHide=1;" onMouseOver="Tooltip.dynamic=0;Tooltip.draw(this,\''+escape(text)+'\',\''+origin+'\');"';
 }
 function getDynamicTooltip(func,origin,isCrate)
 {
 	origin=(origin?origin:'middle');
 	if (isCrate) return 'onMouseOut="setOnCrate(0);Tooltip.shouldHide=1;" onMouseOver="if (!mouseDown) {setOnCrate(this);Tooltip.dynamic=1;Tooltip.draw(this,'+'function(){return '+func+'();}'+',\''+origin+'\');Tooltip.wobble();}"';
-	return 'onMouseOut="Tooltip.shouldHide=1;" onMouseOver="Tooltip.dynamic=1;Tooltip.draw(this,'+'function(){return '+func+'();}'+',\''+origin+'\');Tooltip.wobble();"';
+	return 'onMouseOut="Tooltip.shouldHide=1;" onMouseOver="Tooltip.dynamic=1;Tooltip.draw(this,'+'function(){return '+func+'();}'+',\''+origin+'\');"';
 }
 function attachTooltip(el,func,origin)
 {
@@ -408,14 +412,4 @@ function attachTooltip(el,func,origin)
 	origin=(origin?origin:'middle');
 	AddEvent(el,'mouseover',function(func,el,origin){return function(){Tooltip.dynamic=1;Tooltip.draw(el,func,origin);};}(func,el,origin));
 	AddEvent(el,'mouseout',function(){return function(){Tooltip.shouldHide=1;};}());
-}
-Tooltip.wobble=function()
-{
-	//disabled because this effect doesn't look good with the slight slowdown it might or might not be causing.
-	if (false)
-	{
-		this.tt.className='framed';
-		void this.tt.offsetWidth;
-		this.tt.className='framed wobbling';
-	}
 }

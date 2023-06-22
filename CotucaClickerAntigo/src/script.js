@@ -41,7 +41,7 @@ function Load(){
     moneyPS = 0
     kills = 0
 	setVolume(volume)
-	get('music').play();
+	//get('music').play();
     /*alert("Você dominou o mundo...")
     alert("Depois de sua incrível jornada, todos amavam seu pão de queijo")
     alert("Mas nem tudo é perfeito...")

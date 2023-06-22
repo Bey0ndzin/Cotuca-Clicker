@@ -170,7 +170,7 @@ let UpdateMenu=function()
 				'('+("multiplicador:")+' '+Beautify(Math.round(globalCpsMult*100),1)+'%)'+
 				(cpsSucked>0?' <span class="warning">('+("withered:")+' '+Beautify(Math.round(cpsSucked*100),1)+'%)</span>':'')+
 				'</small></div>'+
-			'<div class="listing"><b>'+("Moedas por Click:")+'</b> '+Beautify(upgrade[0] + 1,1)+'</div>'+
+			'<div class="listing"><b>'+("Moedas por Click:")+'</b> '+Beautify(upgrade[0]/2 + 1)+'</div>'+
 		'</div>';
 	}
 	get('menu').innerHTML=str;

@@ -196,9 +196,13 @@ Upgrade.prototype.buy=function(bypass)
 							get('productIcon'+this.which).style.backgroundImage = 'url('+this.icon+'.png)'
 							get('upgrade'+this.which).style.backgroundImage = 'url(../img/UpgradeFrame.png), ' + 'url('+UpgradesById[this.id+1].icon+'.png)'
 						}
-						get('upgrade'+this.which).setAttribute('onclick', "UpgradesById["+(this.id+1)+"].click(event)")
+						var prox = this.id+1
+						get('upgrade'+this.which).onclick = () => {UpgradesById[prox].click(event)}
+						get('upgrade'+this.which).onmouseout = () => {SetOnCrate(prox);Tooltip.shouldHide=1;Tooltip.hide();}
+						get('upgrade'+this.which).onmouseover = () => {if(!mouseDown) {SetOnCrate(get('upgrade'+this.which));Tooltip.dynamic=1;Tooltip.draw(this,function(){return function(){return CrateTooltip(UpgradesById[prox],'store');}();},'store');}}
+						/*get('upgrade'+this.which).setAttribute('onclick', "UpgradesById["+(this.id+1)+"].click(event)")
 						get('upgrade'+this.which).setAttribute('onmouseout', "SetOnCrate("+(this.id+1)+");Tooltip.shouldHide=1;Tooltip.hide();")
-						get('upgrade'+this.which).setAttribute('onmouseover', "if(!mouseDown) {SetOnCrate(this);Tooltip.dynamic=1;Tooltip.draw(this,function(){return function(){return CrateTooltip(UpgradesById["+(this.id+1)+"],'store');}();},'store');Tooltip.wobble();}")
+						get('upgrade'+this.which).setAttribute('onmouseover', "if(!mouseDown) {SetOnCrate('upgrade"+this.which+"');Tooltip.dynamic=1;Tooltip.draw(this,function(){return function(){return CrateTooltip(UpgradesById["+(this.id+1)+"],'store');}();},'store');}")*/
 					}
 				if(this.id == 16)
 					get('productIcon'+this.which).style.backgroundImage = 'url('+this.icon+'.png)'
