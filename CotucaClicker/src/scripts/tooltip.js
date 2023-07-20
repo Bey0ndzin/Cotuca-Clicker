@@ -1,4 +1,4 @@
-onCrate = 0;
+var onCrate = 0;
 var mouseDown = 0;
 var scale = 1;
 var TopBarOffset = 32;
@@ -12,6 +12,11 @@ var mouseY=0;
 var mouseX2=0;
 var mouseY2=0;
 var mouseMoved=0;
+
+import script from './script'
+import formatter from './formatter'
+import vars from './var'
+import upgrade from './upgrade'
 
 function GetMouseCoords(e)
 {
@@ -35,7 +40,7 @@ function GetMouseCoords(e)
 	mouseX=(posx-x)/scale;
 	mouseY=(posy-y)/scale;
 	mouseMoved=1;
-	lastActivity=time;
+	upgrade.lastActivity=vars.time;
 	if(Tooltip.tt)
 		if (mouseMoved || Scroll || Tooltip.dynamic) Tooltip.update();
 }
@@ -180,9 +185,9 @@ function CrateTooltip(me,context)
 		else
 		{
 			price='<div style="float:right;text-align:right;"><span class="price'+
-			'">'+'R$'+Beautify(Math.round(cost))+'</span>'+'</div>';
+			'">'+'R$'+formatter.Beautify(Math.round(cost))+'</span>'+'</div>';
 					
-			ariaText+=(me.bought?'Bought for':canBuy?'Can buy for':'Cannot afford the')+' '+Beautify(Math.round(cost))+' '+((me.priceLumps>0)?'sugar lumps':(me.pool=='prestige')?'heavenly chips':'clicks')+'. ';
+			ariaText+=(me.bought?'Bought for':canBuy?'Can buy for':'Cannot afford the')+' '+formatter.Beautify(Math.round(cost))+' '+((me.priceLumps>0)?'sugar lumps':(me.pool=='prestige')?'heavenly chips':'clicks')+'. ';
 		}
 	}
 	else if (me.type=='achievement')
@@ -228,7 +233,7 @@ function CrateTooltip(me,context)
 			
 	ariaText+='Description: '+desc+' ';
 			
-	if (prefs.screenreader)
+	if (vars.prefs.screenreader)
 	{
 		var ariaLabel=l('ariaReader-'+me.type+'-'+me.id);
 		if (ariaLabel) ariaLabel.innerHTML=ariaText.replace(/(<([^>]+)>)/gi,' ');
@@ -252,11 +257,11 @@ function writeIcon(icon)
 	return ('background-image:url('+icon+'.png); '+'background-position:'+(0)+'px '+(0)+'px;'+'background-size: cover');
 }
 
-var Tooltip={text:'', x:0, y:0, origin:'', on:0, tt:get('Tooltip'), tta:get('TooltipAnchor'), shouldHide:1, dynamic:0, from:0};
+var Tooltip={text:'', x:0, y:0, origin:'', on:0, tt:script.get('Tooltip'), tta:script.get('TooltipAnchor'), shouldHide:1, dynamic:0, from:0};
 Tooltip.draw=function(from,text,origin)
 {
-    this.tt=get('tooltip')
-    this.tta=get('tooltipAnchor')
+    this.tt=script.get('tooltip')
+    this.tta=script.get('tooltipAnchor')
 	this.shouldHide=0;
 	this.text=text;
 	this.from=from;
@@ -288,6 +293,7 @@ Tooltip.draw=function(from,text,origin)
 }
 Tooltip.update=function()
 {
+
 	var X=0;
 	var Y=0;
 	var width = 0;
@@ -413,3 +419,10 @@ function attachTooltip(el,func,origin)
 	AddEvent(el,'mouseover',function(func,el,origin){return function(){Tooltip.dynamic=1;Tooltip.draw(el,func,origin);};}(func,el,origin));
 	AddEvent(el,'mouseout',function(){return function(){Tooltip.shouldHide=1;};}());
 }
+
+const ttooltip = {
+	GetMouseCoords, mouseDown, SetOnCrate,
+	Tooltip, CrateTooltip
+}
+
+export default ttooltip

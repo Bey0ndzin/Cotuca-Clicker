@@ -1,16 +1,21 @@
-upgradesToRebuild=1;
-Upgrades={};
-UpgradesById={};
-UpgradesN=0;
-UpgradesInStore=[];
-UpgradesOwned=0;
-lastActivity=Date.now();
-time=Date.now();
-promptOn=0;
+var upgradesToRebuild=1;
+var Upgrades={};
+var UpgradesById={};
+var UpgradesN=0;
+var UpgradesInStore=[];
+var UpgradesOwned=0;
+var lastActivity=Date.now();
+var time=Date.now();
+var promptOn=0;
 
-keys=[];
+var keys=[];
 
-AddEvent(window,'keyup',function(e){
+import script from './script'
+import vars from './var'
+import tt from './tooltip'
+import volume from './volume'
+
+script.AddEvent(window,'keyup',function(e){
 	lastActivity=time;
 	if (e.keyCode==27)
 	{
@@ -23,7 +28,7 @@ AddEvent(window,'keyup',function(e){
 	}
 	keys[e.keyCode]=0;
 });
-AddEvent(window,'keydown',function(e){
+script.AddEvent(window,'keydown',function(e){
 	if (promptOn)
 	{
 		if (e.keyCode==9)
@@ -42,7 +47,7 @@ AddEvent(window,'keydown',function(e){
 	if (e.keyCode==9) keys=[];//reset keys on tab press
 });
 
-AddEvent(window,'visibilitychange',function(e){
+script.AddEvent(window,'visibilitychange',function(e){
 	keys=[];//reset all key pressed on visibility change (should help prevent ctrl still being down after ctrl-tab)
 });
 
@@ -66,7 +71,7 @@ function Upgrade(name,desc,price,icon,equip,which)
 	this.buildingTie=0;
 	this.equip=equip;
 			
-	last=this;
+	var last=this;
 	Upgrades[this.name]=this;
 	UpgradesById[this.id]=this;
 	UpgradesN++;
@@ -85,7 +90,7 @@ Upgrade.prototype.getPrice=function()
 Upgrade.prototype.canBuy=function()
 {
 	if (this.canBuyFunc) return this.canBuyFunc();
-	if (clicks>=this.getPrice()) return true; else return false;
+	if (vars.clicks>=this.getPrice()) return true; else return false;
 }
 Upgrade.prototype.click=function(e)
 {
@@ -99,13 +104,13 @@ Upgrade.prototype.click=function(e)
 			PlaySound('../sound/buySFX.mp3');
 		}
 	}
-	else this.buy();
+	else return this.buy();
 }
 		
 		
 Upgrade.prototype.buy=function(bypass)
 {
-	var success=0;
+	var success=false;
 	var cancelPurchase=0;
 	if (this.clickFunction && !bypass) cancelPurchase=!this.clickFunction();
 	if (!cancelPurchase)
@@ -169,49 +174,43 @@ Upgrade.prototype.buy=function(bypass)
 				get('toggleBox').focus();
 				Tooltip.hide();
 				PlaySound('../sound/buySFX.mp3');
-				success=1;
+				success=true;
 			}
 		}
 		else
 		{
 			var price=this.getPrice();
-			if (clicks>=price && !this.bought)
+			if (vars.clicks>=price && !this.bought)
 			{
-				clicks-=price;
+				vars.clicks-=price;
 				//clicksSpent+=price;
-				Tooltip.hide();
+				tt.Tooltip.hide();
 				this.unlocked=1;
 				this.bought=1;
 				if (this.buyFunction) this.buyFunction();
-				PlaySound('../sound/buySFX.mp3')
+				volume.PlaySound('../sound/buySFX.mp3')
 				if(UpgradesById[this.id+1] != null)
 					if(UpgradesById[this.id+1].equip == this.equip)
 					{
 						if(this.id >= 17 && this.id <= 20){
-							get('productIcon'+this.which).style.backgroundImage = 'url('+this.icon[0]+'.png)'
-							get('productIcon'+(this.which+1)).style.backgroundImage = 'url('+this.icon[1]+'.png)'
-							get('upgrade'+this.which).style.backgroundImage = 'url(../img/UpgradeFrame.png), ' + 'url('+UpgradesById[this.id+1].icon[0]+'.png)'
+							script.get('productIcon'+this.which).style.backgroundImage = 'url('+this.icon[0]+'.png)'
+							script.get('productIcon'+(this.which+1)).style.backgroundImage = 'url('+this.icon[1]+'.png)'
+							script.get('upgrade'+this.which).style.backgroundImage = 'url(../img/UpgradeFrame.png), ' + 'url('+UpgradesById[this.id+1].icon[0]+'.png)'
 						}
 						else{
-							get('productIcon'+this.which).style.backgroundImage = 'url('+this.icon+'.png)'
-							get('upgrade'+this.which).style.backgroundImage = 'url(../img/UpgradeFrame.png), ' + 'url('+UpgradesById[this.id+1].icon+'.png)'
+							script.get('productIcon'+this.which).style.backgroundImage = 'url('+this.icon+'.png)'
+							script.get('upgrade'+this.which).style.backgroundImage = 'url(../img/UpgradeFrame.png), ' + 'url('+UpgradesById[this.id+1].icon+'.png)'
 						}
 						var prox = this.id+1
-						get('upgrade'+this.which).onclick = () => {UpgradesById[prox].click(event)}
-						get('upgrade'+this.which).onmouseout = () => {SetOnCrate(prox);Tooltip.shouldHide=1;Tooltip.hide();}
-						get('upgrade'+this.which).onmouseover = () => {if(!mouseDown) {SetOnCrate(get('upgrade'+this.which));Tooltip.dynamic=1;Tooltip.draw(this,function(){return function(){return CrateTooltip(UpgradesById[prox],'store');}();},'store');}}
-						/*get('upgrade'+this.which).setAttribute('onclick', "UpgradesById["+(this.id+1)+"].click(event)")
-						get('upgrade'+this.which).setAttribute('onmouseout', "SetOnCrate("+(this.id+1)+");Tooltip.shouldHide=1;Tooltip.hide();")
-						get('upgrade'+this.which).setAttribute('onmouseover', "if(!mouseDown) {SetOnCrate('upgrade"+this.which+"');Tooltip.dynamic=1;Tooltip.draw(this,function(){return function(){return CrateTooltip(UpgradesById["+(this.id+1)+"],'store');}();},'store');}")*/
 					}
 				if(this.id == 16)
-					get('productIcon'+this.which).style.backgroundImage = 'url('+this.icon+'.png)'
+					script.get('productIcon'+this.which).style.backgroundImage = 'url('+this.icon+'.png)'
 				if(this.id == 20)
 				{
-					get('productIcon'+this.which).style.backgroundImage = 'url('+this.icon[0]+'.png)'
-					get('productIcon'+(this.which+1)).style.backgroundImage = 'url('+this.icon[1]+'.png)'
+					script.get('productIcon'+this.which).style.backgroundImage = 'url('+this.icon[0]+'.png)'
+					script.get('productIcon'+(this.which+1)).style.backgroundImage = 'url('+this.icon[1]+'.png)'
 				}
-				success=1;
+				success=true;
 			}
 		}
 	}
@@ -248,3 +247,9 @@ new Upgrade('Molhado', "E ainda vai passar água no teu arco?????? Como assim is
 new Upgrade('Ecossistema', "Tu acha um líquido duvidoso para passar na sua armadura (vai ficar tinindo)", 5000000, ["../img/armBrilho", '../img/botaBrilho'], 'armor',2) //20
 
 //new Upgrade('Sharpness I',"Sua espadinha fica encantada com <b>SHARPNESS</b> I"+'<q>prod prod</q>',100,[0,0]);
+
+const upgrades = {
+	UpgradesById, lastActivity
+}
+
+export default upgrades
