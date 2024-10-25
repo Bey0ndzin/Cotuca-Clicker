@@ -1,0 +1,1 @@
+It is basically a Cookie Clicker clone that uses ASP.NET and React with Vite to work, it can be played if you run the Vite application, but it wont save your informations because the database isn't accessible right now.
